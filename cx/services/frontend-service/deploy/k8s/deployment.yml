@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend-service
+spec:
+  selector:
+    matchLabels:
+      app: frontend-service
+  template:
+    metadata:
+      labels:
+        app: frontend-service
+    spec:
+      containers:
+        - image: frontend-service
+          name: frontend-service
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 3000
+          resources: { }
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: frontend-service
+spec:
+  type: NodePort
+  selector:
+    app: frontend-service
+  ports:
+    - port: 3000
+      targetPort: 3000
