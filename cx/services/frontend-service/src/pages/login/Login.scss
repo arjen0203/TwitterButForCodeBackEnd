@@ -1,0 +1,75 @@
+@import './../../colors';
+
+.center {
+    .login-fields {
+        display: flex;
+        flex-direction: column;
+        background-color: $terraCotta;
+        padding: 20px;
+        border-radius: 20px;
+        margin-top: 60px;
+        width: 350px;
+
+        * {
+            color: $eggShell;
+            font-size: 18px;
+        }
+
+        .login-title {
+            text-align: center;
+            color: $eggShell;
+        }
+
+        .login-username-input {
+            margin-top: 3px;
+            margin-bottom: 10px;
+            color: black;
+            padding-left: 3px;
+        }
+
+        .login-password-input {
+            margin-top: 3px;
+            margin-bottom: 10px;
+            color: black;
+            padding-left: 3px;
+        }
+
+        .login-error {
+            color: $fireEngineRed;
+            font-size: 20px;
+            text-align: center;
+            margin-top: 8px;
+            margin-bottom: -8px;
+        }
+
+        .login-submit-button {
+            display: inline-block;
+            margin-top: 5px;
+            padding: 5px;
+            background-color: $greenSheenDark;
+            color: $eggShellLight;
+            cursor: pointer;
+            text-decoration: none;
+            border: none;
+            transition: 0.4s;
+            width: 200px;
+            margin-left: 75px;
+            border-radius: 5px;
+            border: 3.5px solid $greenSheenDarker;
+
+            &:hover {
+                background-color: $greenSheenDarker;
+            }
+            &:active {
+                position:relative;
+                top:1px;
+            }
+        }
+        .to-register-link {
+            text-align: center;
+            margin-top: 10px;
+            cursor: pointer;
+            text-decoration: underline;
+        }
+    }
+}

@@ -1,0 +1,104 @@
+@import './../../colors';
+
+.post {
+    display: flex;
+    flex-direction: column;
+    background-color: $terraCotta;
+    margin-top: 25px;
+    padding: 20px;
+    border-radius: 5px;
+    width: 100%;
+
+    .title {
+        font-weight: bold;
+        font-size: 28px;
+    }
+
+    .author {
+        font-style: italic;
+        font-size: 20px;
+        margin-top: -5px;
+        margin-left: 2px;
+        margin-bottom: 5px;
+    }
+    .body {
+        background-color: $terraCottaLight;
+        padding: 0px 20px 20px 20px;
+        margin: 0px -20px 0px -20px;
+        
+
+        .block {
+            .sub-title {
+                margin-top: 15px;
+                font-weight: bold;
+                font-size: 22px;
+            }
+            
+            .description {
+                font-size: 18px;
+            }
+        
+            .file-name {
+                font-size: 14px;
+                font-style: italic;
+                margin-top: 10px;
+                margin-left: 5px;
+            }
+        
+            .code {
+                font-family: 'Courier New', Courier, monospace;
+                background-color: $eggShellDark;
+                border-radius: 2px;
+                padding: 10px;
+                margin-top: 4px;
+                margin-bottom: 5px;
+                white-space: pre-wrap;
+                font-size: 18px;
+            }    
+        }
+    }
+
+    .stats {
+        display: flex;
+        flex-direction: row;
+        font-style: italic;
+        margin-top: 10px;
+        font-size: 16px;
+
+        div {
+            margin-right: 5px;
+        }
+    }
+
+    .bottom-buttons {
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-end;
+
+        button {
+            margin-left: 4px;
+            display: inline-block;
+            font-size: 16px;
+            padding: 5px;
+            background-color: $greenSheenDark;
+            color: $eggShellLight;
+            cursor: pointer;
+            text-decoration: none;
+            transition: 0.4s;
+            border-radius: 5px;
+            border: 3.5px solid $greenSheenDarker;
+
+            &:hover {
+                background-color: $greenSheenDarker;
+            }
+            &:active {
+                position:relative;
+                top:1px;
+            }
+        }
+
+        .active-button {
+            background-color: $greenSheenDarker;
+        }
+    }
+}

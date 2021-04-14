@@ -1,0 +1,135 @@
+@import './../../../colors';
+
+.edit-profile-header {
+    margin-top: 25px;
+    background-color: $terraCotta;
+    padding: 10px;
+    border-radius: 5px;
+    width: 90%;
+    max-width: 1000px;
+
+    .title {
+        margin: 10px 10px 0px 10px;
+        font-size: 36px;
+        display: flex;
+        width: 100%;
+        white-space: pre-wrap;
+        flex-wrap: wrap;
+        
+        .name {
+            font-weight: bold;
+        }
+    }
+
+    .status {
+        margin: 10px;
+        font-weight: bold;
+        font-size: 18px;
+        .input {
+            width: 100%;
+            height: 100px;
+            font-size: 20px;
+            white-space: wrap;
+            resize: none;
+        }
+    }
+
+    .profile-privacy {
+        font-size: 18px;
+        font-weight: bold;
+        margin-left: 10px;
+
+        .privacy-buttons {
+            margin-top: 5px;
+            margin-bottom: 15px;
+
+            .button-active, .button-inactive {
+                margin-right: 4px;
+                display: inline-block;
+                font-size: 16px;
+                padding: 5px;
+                background-color: $greenSheenDark;
+                color: $eggShellLight;
+                cursor: pointer;
+                text-decoration: none;
+                transition: 0.1s;
+                border-radius: 5px;
+                border: 3.5px solid $greenSheenDarker;
+    
+                &:hover {
+                    background-color: $greenSheenDarker;
+                }
+                &:active {
+                    position:relative;
+                    top:1px;
+                }
+            }
+
+            .button-active {
+                background-color: $greenSheenDarker;
+            } 
+        }
+    }
+
+    .post-privacy {
+        font-size: 18px;
+        font-weight: bold;
+        margin-left: 10px;
+
+        .post-buttons {
+            margin-top: 5px;
+            margin-bottom: 5px;
+
+            .button-active, .button-inactive {
+                margin-right: 4px;
+                display: inline-block;
+                font-size: 16px;
+                padding: 5px;
+                background-color: $greenSheenDark;
+                color: $eggShellLight;
+                cursor: pointer;
+                text-decoration: none;
+                transition: 0.1s;
+                border-radius: 5px;
+                border: 3.5px solid $greenSheenDarker;
+    
+                &:hover {
+                    background-color: $greenSheenDarker;
+                }
+                &:active {
+                    position:relative;
+                    top:1px;
+                }
+            }
+
+            .button-active {
+                background-color: $greenSheenDarker;
+            } 
+        }
+    }
+
+    .bottom {
+        display: flex;
+        flex-direction: row-reverse;
+        .save-profile {
+            display: inline-block;
+            font-size: 16px;
+            padding: 5px;
+            background-color: $greenSheenDark;
+            color: $eggShellLight;
+            cursor: pointer;
+            text-decoration: none;
+            transition: 0.4s;
+            border-radius: 5px;
+            border: 3.5px solid $greenSheenDarker;
+
+            &:hover {
+                background-color: $greenSheenDarker;
+            }
+            &:active {
+                position:relative;
+                top:1px;
+            }
+        }
+    }
+}
