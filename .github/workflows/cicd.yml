@@ -9,8 +9,8 @@ on:
 
 jobs:
 
-  build-scan-test-maven:
-    name: build-scan-test-maven
+  build-test-scan-maven:
+    name: build-test-scan-maven
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
