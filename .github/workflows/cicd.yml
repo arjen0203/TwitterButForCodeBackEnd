@@ -45,7 +45,7 @@ jobs:
         run: npm run build
 
   test:
-    needs: build-maven, build-react
+    needs: [build-maven, build-react]
 
     runs-on: ubuntu-latest
 
