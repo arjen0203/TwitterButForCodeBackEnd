@@ -43,3 +43,11 @@ jobs:
       - name: Build
         working-directory: ./cx/services/frontend-service
         run: npm run build
+
+  test:
+    needs: build-java, build-react
+    runs-on: ubuntu-latest
+      steps:
+      - uses: actions/checkout@v2
+      - name: Test Maven build
+        run: mvn -test
