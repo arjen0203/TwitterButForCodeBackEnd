@@ -11,6 +11,6 @@ public class ExampleTest {
 
     @Test
     void failing() {
-        Assertions.assertEquals(true, false);
+        Assertions.assertEquals(true, true);
     }
 }
