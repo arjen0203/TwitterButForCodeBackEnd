@@ -56,5 +56,5 @@ jobs:
         with:
           java-version: '11'
           distribution: 'adopt'
-      - name: Build with Maven
+      - name: Test with Maven
         run: mvn test

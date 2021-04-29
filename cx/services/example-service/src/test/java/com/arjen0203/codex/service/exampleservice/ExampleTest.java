@@ -5,12 +5,12 @@ import org.junit.jupiter.api.Test;
 
 public class ExampleTest {
     @Test
-    public void RunningTest() {
+    void succeeding() {
         Assertions.assertEquals(true, true);
     }
 
     @Test
-    public void FailingTest() {
+    void failing() {
         Assertions.assertEquals(true, false);
     }
 }
