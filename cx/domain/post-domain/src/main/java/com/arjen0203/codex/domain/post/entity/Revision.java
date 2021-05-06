@@ -19,7 +19,6 @@ public class Revision {
     private long id;
 
     @OneToOne
-    @JoinColumn(name = "post_id")
-    @Column(nullable = false)
+    @JoinColumn(name = "post_id", nullable = false)
     private Post originalPost;
 }

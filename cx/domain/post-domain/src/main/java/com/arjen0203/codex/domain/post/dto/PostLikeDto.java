@@ -4,6 +4,6 @@ import java.util.UUID;
 import lombok.Data;
 
 @Data
-public class LikeDto {
+public class PostLikeDto {
     private UUID user;
 }

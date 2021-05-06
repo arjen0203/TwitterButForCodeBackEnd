@@ -11,7 +11,7 @@ public class PostDto {
     private String title;
     private Instant createdAt;
     private List<ContentBlockDto> contentBlockDtos;
-    private List<LikeDto> likeDtos;
+    private List<PostLikeDto> postLikeDtos;
     private List<CommentDto> commentDtos;
     private RevisionDto revisionDto;
 }

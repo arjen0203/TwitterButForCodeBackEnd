@@ -1,7 +1,6 @@
 package com.arjen0203.codex.domain.post.entity;
 
 import java.time.Instant;
-import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -45,7 +44,7 @@ public class Post {
             fetch = FetchType.LAZY,
             cascade = CascadeType.REMOVE,
             orphanRemoval = true)
-    private List<Like> likes;
+    private List<PostLike> postLikes;
 
     @OneToMany(
             mappedBy = "post",
@@ -55,7 +54,6 @@ public class Post {
     private List<Comment> comments;
 
     //if there exist no revision data then it is a original post.
-    @OneToOne(mappedBy = "post")
-    @Column
+    @OneToOne
     private Revision revision;
 }
