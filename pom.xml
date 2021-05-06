@@ -19,9 +19,11 @@
   <modules>
     <!-- Domain -->
     <module>cx/domain/core-domain</module>
+    <module>cx/domain/post-domain</module>
 
     <!-- Services -->
     <module>cx/services/example-service</module>
+    <module>cx/services/post-service</module>
   </modules>
 
   <build>
