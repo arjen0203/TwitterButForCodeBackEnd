@@ -12,8 +12,11 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import com.arjen0203.codex.domain.post.dto.CommentDto;
+import lombok.Data;
 import org.hibernate.annotations.Type;
 
+@Data
 @Entity
 public class Comment {
     @Id
@@ -33,4 +36,8 @@ public class Comment {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "post_id", nullable = false)
     private Post post;
+
+    public void update(CommentDto commentDto) {
+        this.content = commentDto.getContent();
+    }
 }
