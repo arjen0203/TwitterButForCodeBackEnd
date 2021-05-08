@@ -11,8 +11,10 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import lombok.Data;
 import org.hibernate.annotations.Type;
 
+@Data
 @Entity
 public class PostLike {
     @Id

@@ -14,6 +14,8 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
+import com.arjen0203.codex.domain.post.dto.CommentDto;
+import com.arjen0203.codex.domain.post.dto.PostDto;
 import lombok.Data;
 import org.hibernate.annotations.Type;
 
@@ -56,6 +58,15 @@ public class Post {
     private List<Comment> comments;
 
     //if there exist no revision data then it is a original post.
-    @OneToOne
-    private Revision revision;
+    @OneToMany(
+            mappedBy = "originalPost",
+            fetch = FetchType.LAZY,
+            cascade = CascadeType.REMOVE,
+            orphanRemoval = true)
+    private List<Revision> revisions;
+
+    public void update(PostDto postDto) {
+        this.title = postDto.getTitle();
+        //todo add contentblocks updating
+    }
 }

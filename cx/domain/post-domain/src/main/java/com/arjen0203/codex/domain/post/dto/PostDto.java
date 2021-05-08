@@ -12,6 +12,7 @@ import lombok.Data;
 
 @Data
 public class PostDto {
+    private long id;
     private UUID author;
     private String title;
     private Instant createdAt;
@@ -22,11 +23,11 @@ public class PostDto {
 
     @Data
     public static class RequestData {
-        @NotBlank(message = "Content can't be blank")
-        @Size(min = 3, max = 128, message = "Content must be between 3 and 128 characters")
+        @NotBlank(message = "title can't be blank")
+        @Size(min = 3, max = 128, message = "Title must be between 3 and 128 characters")
         private String title;
 
-        @NotEmpty
+        //@NotEmpty
         @Size(max = 5, message = "Content blocks can't be more then 5")
         private List<ContentBlockDto> contentBlockDtos;
 

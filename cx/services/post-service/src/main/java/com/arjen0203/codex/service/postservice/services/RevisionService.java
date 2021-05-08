@@ -6,8 +6,10 @@ import java.util.UUID;
 import com.arjen0203.codex.domain.core.general.exceptions.ConflictException;
 import com.arjen0203.codex.domain.core.general.exceptions.NotFoundException;
 import com.arjen0203.codex.domain.post.dto.PostDto;
-import com.arjen0203.codex.domain.post.entity.Post;
+import com.arjen0203.codex.domain.post.dto.RevisionDto;
+import com.arjen0203.codex.domain.post.entity.Revision;
 import com.arjen0203.codex.service.postservice.repositories.PostRepository;
+import com.arjen0203.codex.service.postservice.repositories.RevisionRepository;
 import lombok.AllArgsConstructor;
 import lombok.val;
 import org.modelmapper.ModelMapper;
@@ -18,19 +20,11 @@ import org.springframework.stereotype.Service;
 
 @Service
 @AllArgsConstructor
-public class PostService {
+public class RevisionService {
     private final PostRepository postRepository;
+    private final RevisionRepository revisionRepository;
     private final ModelMapper modelMapper;
 
-    /**
-     * The method for getting all the posts.
-     *
-     * @return a list of all the posts.
-     */
-    public Page<PostDto> getAllPosts(int pageNr, int size) {
-        var postPage = postRepository.findAll(PageRequest.of(pageNr, size));
-        return postPage.map(f -> modelMapper.map(f, PostDto.class));
-    }
 
     /**
      * Retrieves a specific Project by id.
@@ -38,34 +32,34 @@ public class PostService {
      * @param id id of project
      * @return Project
      */
-    public PostDto getPostById(long id) {
-        val oPost = postRepository.findById(id);
-        if (oPost.isEmpty()) {
+    public RevisionDto getRevisionById(long id) {
+        val oRevision = revisionRepository.findById(id);
+        if (oRevision.isEmpty()) {
             throw new NotFoundException();
         }
-        return modelMapper.map(oPost.get(), PostDto.class);
+        return modelMapper.map(oRevision.get(), RevisionDto.class);
     }
 
     /**
      * Creates a new Project with user as owner.
      *
      * @param user uuid of user
-     * @param postDto data used to create Project
+     * @param revisionDto data used to create Project
      * @return created Project
      */
-    public PostDto storePost(UUID user, PostDto.RequestData postDto) {
-        val post = modelMapper.map(postDto, Post.class);
+    public RevisionDto storeRevision(UUID user, RevisionDto.RequestData revisionDto) {
+        val revision = modelMapper.map(revisionDto, Revision.class);
 
-        post.setAuthor(user);
-        post.setCreatedAt(Instant.now());
+        revision.getPost().setAuthor(user);
+        revision.getPost().setCreatedAt(Instant.now());
 
         try {
-            postRepository.save(post);
+            revisionRepository.save(revision);
         } catch (DataIntegrityViolationException ex) {
             throw new ConflictException("Could not create post");
         }
 
-        return modelMapper.map(post, PostDto.class);
+        return modelMapper.map(revision, RevisionDto.class);
     }
 
     /**

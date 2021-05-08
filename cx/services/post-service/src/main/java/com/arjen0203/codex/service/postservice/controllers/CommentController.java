@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
@@ -26,7 +27,7 @@ import org.springframework.web.bind.annotation.RestController;
  * <p>It contains basic crud functionality for comments.
  */
 @RestController
-@RequestMapping
+@RequestMapping("/{postId}/comments")
 @RequiredArgsConstructor
 public class CommentController {
   private final CommentService commentService;
@@ -37,7 +38,7 @@ public class CommentController {
    * @return a page of comments
    */
   @GetMapping
-  public ResponseEntity<Page<CommentDto>> allFlowers(
+  public ResponseEntity<Page<CommentDto>> allComments(
       @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "20") int size) {
     return ResponseEntity.ok(commentService.getAllComments(page, size));
   }
@@ -49,24 +50,23 @@ public class CommentController {
    * @return a response entity with the comment (if found)
    */
   @GetMapping("/{id}")
-  public ResponseEntity<CommentDto> getFlowerById(@PathVariable long id) {
+  public ResponseEntity<CommentDto> getCommentById(@PathVariable long id) {
     return ResponseEntity.ok(commentService.getComment(id));
   }
 
   /**
-   * Posting a flower to be saved.
+   * Posting a comment to be saved.
    *
-   * @param commentDto the flower to be stored
-   * @param postId the id of the post you want the comment on
-   * @param user the uuid of the user making the comment
-   * @return a response entity with the updated flower, hopefully the same as the one send
+   * @param commentDto the comment to be stored
+   * @param userId the uuid of the user making the comment
+   * @return a response entity with the created comment
    */
   @PostMapping
   public ResponseEntity<CommentDto> createComment(
+          @RequestHeader UUID userId,
           @PathVariable long postId,
-          @Valid @RequestBody CommentDto.RequestData commentDto,
-          @Valid @RequestBody UUID user) {
-    return ResponseEntity.ok(commentService.storeComment(user, commentDto, postId));
+          @Valid @RequestBody CommentDto.RequestData commentDto) {
+    return ResponseEntity.ok(commentService.storeComment(userId, commentDto, postId));
   }
 
   /**

@@ -1,24 +1,28 @@
 package com.arjen0203.codex.domain.post.entity;
 
-import java.util.UUID;
-
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
+import javax.validation.constraints.NotNull;
 
-import org.hibernate.annotations.Type;
+import lombok.Data;
 
+@Data
 @Entity
 public class Revision {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @OneToOne
-    @JoinColumn(name = "post_id", nullable = false)
+    @ManyToOne
+    @JoinColumn(name = "original_post_id", nullable = false)
     private Post originalPost;
+
+    @OneToOne
+    @NotNull
+    private Post post;
 }

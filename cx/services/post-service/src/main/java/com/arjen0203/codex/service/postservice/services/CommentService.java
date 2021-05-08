@@ -1,5 +1,6 @@
 package com.arjen0203.codex.service.postservice.services;
 
+import java.time.Instant;
 import java.util.UUID;
 
 import com.arjen0203.codex.domain.post.dto.CommentDto;
@@ -15,6 +16,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.client.RestTemplate;
 
 /** The service for dealing with all the comment actions. */
@@ -57,9 +59,11 @@ public class CommentService {
    */
   public CommentDto storeComment(UUID user, CommentDto.RequestData commentDto, long postId) {
     val post = postService.getPostById(postId);
+    if (post == null) throw new NotFoundException("Post");
     val comment = modelMapper.map(commentDto, Comment.class);
     comment.setPost(modelMapper.map(post, Post.class));
     comment.setUser(user);
+    comment.setCreatedAt(Instant.now());
 
     try {
       commentRepository.save(comment);
