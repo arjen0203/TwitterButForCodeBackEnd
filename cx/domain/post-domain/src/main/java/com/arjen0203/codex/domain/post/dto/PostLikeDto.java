@@ -10,6 +10,6 @@ import lombok.Data;
 
 @Data
 public class PostLikeDto {
+    private long id;
     private UUID user;
-    private Post post;
 }

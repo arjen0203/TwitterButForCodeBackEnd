@@ -33,10 +33,6 @@ public class Comment {
     @Column(length = 512)
     private String content;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "post_id", nullable = false)
-    private Post post;
-
     public void update(CommentDto commentDto) {
         this.content = commentDto.getContent();
     }

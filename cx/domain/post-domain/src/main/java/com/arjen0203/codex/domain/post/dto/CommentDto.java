@@ -25,9 +25,6 @@ public class CommentDto {
 
     private String content;
 
-    @NotBlank(message = "Post can't be blank")
-    private Post post;
-
     @Data
     public static class RequestData {
         @NotBlank(message = "Content can't be blank")

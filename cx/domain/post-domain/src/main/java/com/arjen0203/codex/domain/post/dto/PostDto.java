@@ -1,7 +1,9 @@
 package com.arjen0203.codex.domain.post.dto;
 
 import java.time.Instant;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 import javax.validation.constraints.NotBlank;
@@ -16,10 +18,10 @@ public class PostDto {
     private UUID author;
     private String title;
     private Instant createdAt;
-    private List<ContentBlockDto> contentBlockDtos;
-    private List<PostLikeDto> postLikeDtos;
-    private List<CommentDto> commentDtos;
-    private RevisionDto revisionDto;
+    private Set<ContentBlockDto> contentBlocks = new HashSet<>();
+    private Set<PostLikeDto> postLikes = new HashSet<>();
+    private Set<CommentDto> comments = new HashSet<>();
+    private RevisionDto revision;
 
     @Data
     public static class RequestData {
@@ -29,8 +31,8 @@ public class PostDto {
 
         //@NotEmpty
         @Size(max = 5, message = "Content blocks can't be more then 5")
-        private List<ContentBlockDto> contentBlockDtos;
+        private Set<ContentBlockDto> contentBlocks;
 
-        private RevisionDto revisionDto;
+        private RevisionDto revision;
     }
 }

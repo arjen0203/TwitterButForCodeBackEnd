@@ -1,7 +1,9 @@
 package com.arjen0203.codex.domain.post.entity;
 
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 import javax.persistence.CascadeType;
@@ -14,7 +16,6 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
-import com.arjen0203.codex.domain.post.dto.CommentDto;
 import com.arjen0203.codex.domain.post.dto.PostDto;
 import lombok.Data;
 import org.hibernate.annotations.Type;
@@ -36,34 +37,20 @@ public class Post {
     @Column(nullable = false)
     private Instant createdAt;
 
-    @OneToMany(
-            mappedBy = "post",
-            fetch = FetchType.LAZY,
-            cascade = CascadeType.REMOVE,
-            orphanRemoval = true)
-    private List<ContentBlock> contentBlocks;
+    @OneToMany(cascade = {CascadeType.ALL})
+    private Set<ContentBlock> contentBlocks;
 
-    @OneToMany(
-            mappedBy = "post",
-            fetch = FetchType.LAZY,
-            cascade = CascadeType.REMOVE,
-            orphanRemoval = true)
-    private List<PostLike> postLikes;
+    @OneToMany(cascade = {CascadeType.ALL})
+    private Set<PostLike> postLikes;
 
-    @OneToMany(
-            mappedBy = "post",
-            fetch = FetchType.LAZY,
-            cascade = CascadeType.REMOVE,
-            orphanRemoval = true)
-    private List<Comment> comments;
+    @OneToMany(cascade = {CascadeType.ALL})
+    private Set<Comment> comments;
 
-    //if there exist no revision data then it is a original post.
-    @OneToMany(
-            mappedBy = "originalPost",
-            fetch = FetchType.LAZY,
-            cascade = CascadeType.REMOVE,
-            orphanRemoval = true)
-    private List<Revision> revisions;
+    @OneToMany(cascade = {CascadeType.ALL})
+    private Set<Revision> revisions;
+
+    @OneToOne
+    private Revision isRevision;
 
     public void update(PostDto postDto) {
         this.title = postDto.getTitle();

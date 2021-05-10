@@ -5,6 +5,7 @@ import java.util.UUID;
 import javax.validation.Valid;
 
 import com.arjen0203.codex.domain.post.dto.CommentDto;
+import com.arjen0203.codex.domain.post.dto.PostDto;
 import com.arjen0203.codex.service.postservice.services.CommentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;

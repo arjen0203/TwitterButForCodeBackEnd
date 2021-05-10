@@ -33,7 +33,7 @@ public class PostLikeController {
    */
   @GetMapping("/{id}")
   public ResponseEntity<PostLikeDto> getPostLikeById(@PathVariable long id) {
-    return ResponseEntity.ok(postLikeService.getPostLikeById(id));
+    return ResponseEntity.ok(postLikeService.getPostLikeDtoById(id));
   }
 
   /**

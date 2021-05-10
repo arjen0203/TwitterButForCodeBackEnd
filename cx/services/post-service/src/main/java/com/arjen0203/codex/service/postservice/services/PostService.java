@@ -1,11 +1,16 @@
 package com.arjen0203.codex.service.postservice.services;
 
 import java.time.Instant;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import com.arjen0203.codex.domain.core.general.exceptions.ConflictException;
 import com.arjen0203.codex.domain.core.general.exceptions.NotFoundException;
 import com.arjen0203.codex.domain.post.dto.PostDto;
+import com.arjen0203.codex.domain.post.entity.ContentBlock;
 import com.arjen0203.codex.domain.post.entity.Post;
 import com.arjen0203.codex.service.postservice.repositories.PostRepository;
 import lombok.AllArgsConstructor;
@@ -38,12 +43,14 @@ public class PostService {
      * @param id id of project
      * @return Project
      */
-    public PostDto getPostById(long id) {
+    public PostDto getPostDtoById(long id) {
+        return modelMapper.map(getPostById(id), PostDto.class);
+    }
+
+    public Post getPostById(long id) {
         val oPost = postRepository.findById(id);
-        if (oPost.isEmpty()) {
-            throw new NotFoundException();
-        }
-        return modelMapper.map(oPost.get(), PostDto.class);
+
+        return oPost.orElseThrow(NotFoundException::new);
     }
 
     /**
@@ -59,13 +66,19 @@ public class PostService {
         post.setAuthor(user);
         post.setCreatedAt(Instant.now());
 
+        Set<ContentBlock> contentBlocks = new HashSet(
+                postDto.getContentBlocks()
+                .stream()
+                .map(contentBlockDto -> modelMapper.map(contentBlockDto, ContentBlock.class))
+                .collect(Collectors.toList()));
+
+        post.setContentBlocks(contentBlocks);
+
         try {
-            postRepository.save(post);
+            return modelMapper.map(postRepository.save(post), PostDto.class);
         } catch (DataIntegrityViolationException ex) {
             throw new ConflictException("Could not create post");
         }
-
-        return modelMapper.map(post, PostDto.class);
     }
 
     /**
@@ -78,11 +91,8 @@ public class PostService {
      */
     public PostDto updatePost(PostDto postDto, long id) {
         var oPost = postRepository.findById(id);
-        if (oPost.isEmpty()) {
-            throw new NotFoundException("Post");
-        }
 
-        var post = oPost.get();
+        var post = oPost.orElseThrow(NotFoundException::new);
         post.update(postDto);
 
         return modelMapper.map(postRepository.save(post), PostDto.class);

@@ -8,6 +8,7 @@ import com.arjen0203.codex.domain.post.dto.PostLikeDto;
 import com.arjen0203.codex.domain.post.entity.Post;
 import com.arjen0203.codex.domain.post.entity.PostLike;
 import com.arjen0203.codex.service.postservice.repositories.PostLikeRepository;
+import com.arjen0203.codex.service.postservice.repositories.PostRepository;
 import lombok.AllArgsConstructor;
 import lombok.val;
 import org.modelmapper.ModelMapper;
@@ -20,6 +21,7 @@ public class PostLikeService {
     private final PostLikeRepository postLikeRepository;
     private final PostService postService;
     private final ModelMapper modelMapper;
+    private final PostRepository postRepository;
 
     /**
      * Retrieves a specific Project by id.
@@ -27,12 +29,19 @@ public class PostLikeService {
      * @param id id of project
      * @return Project
      */
-    public PostLikeDto getPostLikeById(long id) {
+    public PostLikeDto getPostLikeDtoById(long id) {
+        return modelMapper.map(getPostLikeById(id), PostLikeDto.class);
+    }
+
+    /**
+     * Retrieves a specific Project by id.
+     *
+     * @param id id of project
+     * @return Project
+     */
+    public PostLike getPostLikeById(long id) {
         val oPostLike = postLikeRepository.findById(id);
-        if (oPostLike.isEmpty()) {
-            throw new NotFoundException();
-        }
-        return modelMapper.map(oPostLike.get(), PostLikeDto.class);
+        return oPostLike.orElseThrow(NotFoundException::new);
     }
 
     /**
@@ -45,13 +54,14 @@ public class PostLikeService {
     public PostLikeDto storePostLike(UUID user, long postId) {
         //todo add check if the user already has a post liked
         val post = postService.getPostById(postId);
-        if (post == null) throw new NotFoundException("Post");
+
         val postLike = new PostLike();
-        postLike.setPost(modelMapper.map(post, Post.class));
         postLike.setUser(user);
 
+        post.getPostLikes().add(postLike);
+
         try {
-            postLikeRepository.save(postLike);
+            postRepository.save(post);
         } catch (DataIntegrityViolationException ex) {
             throw new ConflictException("Could not create post");
         }

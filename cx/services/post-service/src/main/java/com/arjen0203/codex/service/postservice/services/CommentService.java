@@ -4,11 +4,13 @@ import java.time.Instant;
 import java.util.UUID;
 
 import com.arjen0203.codex.domain.post.dto.CommentDto;
+import com.arjen0203.codex.domain.post.dto.PostDto;
 import com.arjen0203.codex.domain.post.entity.Comment;
 import com.arjen0203.codex.domain.post.entity.Post;
 import com.arjen0203.codex.service.postservice.repositories.CommentRepository;
 import com.arjen0203.codex.domain.core.general.exceptions.ConflictException;
 import com.arjen0203.codex.domain.core.general.exceptions.NotFoundException;
+import com.arjen0203.codex.service.postservice.repositories.PostRepository;
 import lombok.AllArgsConstructor;
 import lombok.val;
 import org.modelmapper.ModelMapper;
@@ -26,6 +28,7 @@ public class CommentService {
   private final CommentRepository commentRepository;
   private final ModelMapper modelMapper;
   private final PostService postService;
+  private final PostRepository postRepository;
 
   /**
    * The method for getting all the comments.
@@ -59,19 +62,19 @@ public class CommentService {
    */
   public CommentDto storeComment(UUID user, CommentDto.RequestData commentDto, long postId) {
     val post = postService.getPostById(postId);
-    if (post == null) throw new NotFoundException("Post");
+
     val comment = modelMapper.map(commentDto, Comment.class);
-    comment.setPost(modelMapper.map(post, Post.class));
     comment.setUser(user);
     comment.setCreatedAt(Instant.now());
 
+    post.getComments().add(comment);
+
+    postRepository.save(post);
     try {
-      commentRepository.save(comment);
+      return modelMapper.map(comment, CommentDto.class);
     } catch (DataIntegrityViolationException ex) {
       throw new ConflictException("comment could not be saved");
     }
-
-    return modelMapper.map(comment, CommentDto.class);
   }
 
   /**
