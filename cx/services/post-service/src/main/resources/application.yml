@@ -9,4 +9,4 @@ spring:
           spring-boot: true
 server:
   servlet:
-    context-path: "/api/posts"
+    context-path: "/api/"

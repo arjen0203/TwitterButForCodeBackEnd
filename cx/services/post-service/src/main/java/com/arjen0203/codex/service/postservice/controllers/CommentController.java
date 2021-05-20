@@ -5,7 +5,6 @@ import java.util.UUID;
 import javax.validation.Valid;
 
 import com.arjen0203.codex.domain.post.dto.CommentDto;
-import com.arjen0203.codex.domain.post.dto.PostDto;
 import com.arjen0203.codex.service.postservice.services.CommentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -28,7 +27,7 @@ import org.springframework.web.bind.annotation.RestController;
  * <p>It contains basic crud functionality for comments.
  */
 @RestController
-@RequestMapping("/{postId}/comments")
+@RequestMapping("/posts")
 @RequiredArgsConstructor
 public class CommentController {
   private final CommentService commentService;
@@ -38,21 +37,12 @@ public class CommentController {
    *
    * @return a page of comments
    */
-  @GetMapping
-  public ResponseEntity<Page<CommentDto>> allComments(
-      @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "20") int size) {
-    return ResponseEntity.ok(commentService.getAllComments(page, size));
-  }
-
-  /**
-   * The method for getting a specific comment.
-   *
-   * @param id the id of the desired comment
-   * @return a response entity with the comment (if found)
-   */
-  @GetMapping("/{id}")
-  public ResponseEntity<CommentDto> getCommentById(@PathVariable long id) {
-    return ResponseEntity.ok(commentService.getComment(id));
+  @GetMapping("/{postId}/comments")
+  public ResponseEntity<Page<CommentDto>> allCommentsOfPost(
+      @PathVariable long postId,
+      @RequestParam(defaultValue = "0") int page,
+      @RequestParam(defaultValue = "20") int size) {
+    return ResponseEntity.ok(commentService.getAllComments(postId, page, size));
   }
 
   /**
@@ -60,13 +50,14 @@ public class CommentController {
    *
    * @param commentDto the comment to be stored
    * @param userId the uuid of the user making the comment
+   * @param postId the id of the post the comments is being made on
    * @return a response entity with the created comment
    */
-  @PostMapping
+  @PostMapping("/{postId}/comments")
   public ResponseEntity<CommentDto> createComment(
-          @RequestHeader UUID userId,
-          @PathVariable long postId,
-          @Valid @RequestBody CommentDto.RequestData commentDto) {
+      @RequestHeader UUID userId,
+      @PathVariable long postId,
+      @Valid @RequestBody CommentDto.RequestData commentDto) {
     return ResponseEntity.ok(commentService.storeComment(userId, commentDto, postId));
   }
 
@@ -76,10 +67,11 @@ public class CommentController {
    * @param id the id for the comment you want to update
    * @return a response entity with the updated comment, hopefully the same as the one send
    */
-  @PutMapping("/{id}")
+  @PutMapping("/comments/{id}")
   public ResponseEntity<CommentDto> updateComment(
-      @Valid @RequestPart("comment") CommentDto commentDto,
-      @PathVariable long id) {
+      @RequestHeader UUID userId,
+      @PathVariable long id,
+      @Valid @RequestBody CommentDto.RequestData commentDto) {
     return ResponseEntity.ok(commentService.updateComment(commentDto, id));
   }
 
@@ -89,7 +81,7 @@ public class CommentController {
    * @param id the id of the comment that should be removed.
    * @return a response entity with a string of the result.
    */
-  @DeleteMapping("/{id}")
+  @DeleteMapping("/comments/{id}")
   public ResponseEntity<String> removeComment(@PathVariable long id) {
     commentService.removeComment(id);
     return ResponseEntity.ok("ok");
