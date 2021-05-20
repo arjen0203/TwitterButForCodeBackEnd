@@ -5,7 +5,6 @@ import java.util.UUID;
 
 import com.arjen0203.codex.domain.core.general.exceptions.ConflictException;
 import com.arjen0203.codex.domain.core.general.exceptions.NotFoundException;
-import com.arjen0203.codex.domain.post.dto.PostDto;
 import com.arjen0203.codex.domain.post.dto.RevisionDto;
 import com.arjen0203.codex.domain.post.entity.Revision;
 import com.arjen0203.codex.service.postservice.repositories.PostRepository;
@@ -14,23 +13,20 @@ import lombok.AllArgsConstructor;
 import lombok.val;
 import org.modelmapper.ModelMapper;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 @Service
 @AllArgsConstructor
 public class RevisionService {
-    private final PostRepository postRepository;
     private final RevisionRepository revisionRepository;
     private final ModelMapper modelMapper;
 
 
     /**
-     * Retrieves a specific Project by id.
+     * Retrieves a specific revision by id.
      *
-     * @param id id of project
-     * @return Project
+     * @param id id of revision
+     * @return Revision
      */
     public RevisionDto getRevisionById(long id) {
         val oRevision = revisionRepository.findById(id);
@@ -44,8 +40,8 @@ public class RevisionService {
      * Creates a new Project with user as owner.
      *
      * @param user uuid of user
-     * @param revisionDto data used to create Project
-     * @return created Project
+     * @param revisionDto data used to create revision
+     * @return created revision
      */
     public RevisionDto storeRevision(UUID user, RevisionDto.RequestData revisionDto) {
         val revision = modelMapper.map(revisionDto, Revision.class);
@@ -56,38 +52,38 @@ public class RevisionService {
         try {
             revisionRepository.save(revision);
         } catch (DataIntegrityViolationException ex) {
-            throw new ConflictException("Could not create post");
+            throw new ConflictException("Could not create revision");
         }
 
         return modelMapper.map(revision, RevisionDto.class);
     }
 
     /**
-     * The method for updating a post.
+     * The method for updating a revision.
      *
-     * <p>The method makes a post entity based on the given dto. This entity is then stored.
+     * <p>The method makes a revision entity based on the given dto. This entity is then stored.
      *
-     * @param postDto the dto of the updated post.
-     * @return the updated post.
+     * @param revisionDto the dto of the updated revision.
+     * @return the updated revision.
      */
-    public PostDto updatePost(PostDto postDto, long id) {
-        var oPost = postRepository.findById(id);
-        if (oPost.isEmpty()) {
-            throw new NotFoundException("Post");
+    public RevisionDto updateRevision(RevisionDto revisionDto, long id) {
+        var oRevision = revisionRepository.findById(id);
+        if (oRevision.isEmpty()) {
+            throw new NotFoundException("Revision");
         }
 
-        var post = oPost.get();
-        post.update(postDto);
+        var revision = oRevision.get();
+        revision.update(revisionDto);
 
-        return modelMapper.map(postRepository.save(post), PostDto.class);
+        return modelMapper.map(revisionRepository.save(revision), RevisionDto.class);
     }
 
     /**
-     * The method for removing a post.
+     * The method for removing a revision.
      *
-     * @param id the id of the post that should be removed.
+     * @param id the id of the revision that should be removed.
      */
-    public void removePost(long id) {
-        postRepository.deleteById(id);
+    public void removeRevision(long id) {
+        revisionRepository.deleteById(id);
     }
 }

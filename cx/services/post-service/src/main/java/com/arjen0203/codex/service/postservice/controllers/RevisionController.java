@@ -4,9 +4,10 @@ import java.util.UUID;
 
 import javax.validation.Valid;
 
-import com.arjen0203.codex.domain.post.dto.CommentDto;
 import com.arjen0203.codex.domain.post.dto.PostDto;
+import com.arjen0203.codex.domain.post.dto.RevisionDto;
 import com.arjen0203.codex.service.postservice.services.PostService;
+import com.arjen0203.codex.service.postservice.services.RevisionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
@@ -17,26 +18,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-public class PostController {
-    private final PostService postService;
-
-    /**
-     * Get all the posts (or at least a page).
-     *
-     * @return a page of posts
-     */
-    @GetMapping
-    public ResponseEntity<Page<PostDto>> allPosts (
-            @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "20") int size) {
-        return ResponseEntity.ok(postService.getAllPosts(page, size));
-    }
+public class RevisionController {
+    private final RevisionService revisionService;
 
     /**
      * The method for getting a specific post.
@@ -45,22 +34,22 @@ public class PostController {
      * @return a response entity with the post (if found)
      */
     @GetMapping("/{id}")
-    public ResponseEntity<PostDto> getPostById(@PathVariable long id) {
-        return ResponseEntity.ok(postService.getPostDtoById(id));
+    public ResponseEntity<RevisionDto> getRevisionById(@PathVariable long id) {
+        return ResponseEntity.ok(revisionService.getRevisionById(id));
     }
 
     /**
      * Posting a post to be saved.
      *
-     * @param postDto the post to be stored
+     * @param revisionDto the post to be stored
      * @param userId the uuid of the user making the post
      * @return a response entity with the created post
      */
     @PostMapping
-    public ResponseEntity<PostDto> createPost(
+    public ResponseEntity<RevisionDto> createRevision(
             @RequestHeader UUID userId,
-            @RequestBody PostDto.RequestData postDto) {
-        return ResponseEntity.ok(postService.storePost(userId, postDto));
+            @RequestBody RevisionDto.RequestData revisionDto) {
+        return ResponseEntity.ok(revisionService.storeRevision(userId, revisionDto));
     }
 
     /**
@@ -70,10 +59,10 @@ public class PostController {
      * @return a response entity with the updated post, hopefully the same as the one send
      */
     @PutMapping("/{id}")
-    public ResponseEntity<PostDto> updatePost(
-            @Valid @RequestPart("post") PostDto postDto,
+    public ResponseEntity<PostDto> updateRevision(
+            @Valid @RequestPart("revision") RevisionDto revisionDto,
             @PathVariable long id) {
-        return ResponseEntity.ok(postService.updatePost(postDto, id));
+        return ResponseEntity.ok(revisionService.updateRevision(revisionDto, id));
     }
 
     /**
@@ -83,8 +72,8 @@ public class PostController {
      * @return a response entity with a string of the result.
      */
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> removePost(@PathVariable long id) {
-        postService.removePost(id);
+    public ResponseEntity<String> removeRevision(@PathVariable long id) {
+        revisionService.removeRevision(id);
         return ResponseEntity.ok("ok");
     }
 }

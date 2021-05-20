@@ -49,8 +49,8 @@ public class Post {
     @OneToMany(cascade = {CascadeType.ALL})
     private Set<Revision> revisions;
 
-    @OneToOne
-    private Revision isRevision;
+    @OneToOne(mappedBy = "post")
+    private Revision revision;
 
     public void update(PostDto postDto) {
         this.title = postDto.getTitle();
