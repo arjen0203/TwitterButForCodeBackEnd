@@ -1,9 +1,9 @@
-package com.highcrit.flowerpower.service.user.repositories;
+package com.arjen0203.codex.service.user.repositories;
 
 import java.util.Optional;
 import java.util.UUID;
 
-import com.highcrit.flowerpower.domain.user.entity.User;
+import com.arjen0203.codex.domain.user.entity.User;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 

@@ -1,11 +1,11 @@
-package com.highcrit.flowerpower.service.user.service;
+package com.arjen0203.codex.service.user.service;
 
-import com.highcrit.flowerpower.core.service.exceptions.NotFoundException;
-import com.highcrit.flowerpower.domain.auth.dto.UpdateUserPassword;
-import com.highcrit.flowerpower.domain.user.dto.CreateUser;
-import com.highcrit.flowerpower.domain.user.dto.UserDto;
-import com.highcrit.flowerpower.domain.user.entity.User;
-import com.highcrit.flowerpower.service.user.repositories.UserRepository;
+import com.arjen0203.codex.domain.core.general.exceptions.NotFoundException;
+import com.arjen0203.codex.domain.auth.dto.UpdateUserPassword;
+import com.arjen0203.codex.domain.user.dto.CreateUser;
+import com.arjen0203.codex.domain.user.dto.UserDto;
+import com.arjen0203.codex.domain.user.entity.User;
+import com.arjen0203.codex.service.user.repositories.UserRepository;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;

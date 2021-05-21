@@ -1,9 +1,7 @@
-package com.highcrit.flowerpower.service.user.configs;
+package com.arjen0203.codex.service.user.configs;
 
-import com.highcrit.flowerpower.core.kafka.configs.KafkaConfig;
-import com.highcrit.flowerpower.core.service.configs.BaseConfig;
-import com.highcrit.flowerpower.core.service.configs.PersistenceConfig;
-import com.highcrit.flowerpower.domain.user.entity.User;
+import com.arjen0203.codex.domain.core.general.errorhandlers.RestErrorHandler;
+import com.arjen0203.codex.domain.user.entity.User;
 import org.modelmapper.ModelMapper;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.Bean;
@@ -12,7 +10,7 @@ import org.springframework.context.annotation.Import;
 
 /** Configuration for the User-Service. */
 @Configuration
-@Import({BaseConfig.class, PersistenceConfig.class, KafkaConfig.class})
+@Import({RestErrorHandler.class})
 @EntityScan(basePackageClasses = {User.class})
 public class UserServiceConfig {
   /**

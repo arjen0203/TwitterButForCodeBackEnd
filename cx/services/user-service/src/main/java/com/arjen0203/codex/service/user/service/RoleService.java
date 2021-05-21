@@ -1,9 +1,9 @@
-package com.highcrit.flowerpower.service.user.service;
+package com.arjen0203.codex.service.user.service;
 
 import java.util.List;
 
-import com.highcrit.flowerpower.domain.user.dto.RoleDto;
-import com.highcrit.flowerpower.service.user.repositories.RoleRepository;
+import com.arjen0203.codex.domain.user.dto.RoleDto;
+import com.arjen0203.codex.service.user.repositories.RoleRepository;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;

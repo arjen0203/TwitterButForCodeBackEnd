@@ -1,7 +1,7 @@
-package com.highcrit.flowerpower.service.user.controllers;
+package com.arjen0203.codex.service.user.controllers;
 
-import com.highcrit.flowerpower.domain.user.dto.RoleDto;
-import com.highcrit.flowerpower.service.user.service.RoleService;
+import com.arjen0203.codex.domain.user.dto.RoleDto;
+import com.arjen0203.codex.service.user.service.RoleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

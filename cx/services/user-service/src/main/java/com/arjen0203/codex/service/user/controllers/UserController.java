@@ -1,9 +1,9 @@
-package com.highcrit.flowerpower.service.user.controllers;
+package com.arjen0203.codex.service.user.controllers;
 
 import java.util.UUID;
 
-import com.highcrit.flowerpower.domain.user.dto.UserDto;
-import com.highcrit.flowerpower.service.user.service.UserService;
+import com.arjen0203.codex.domain.user.dto.UserDto;
+import com.arjen0203.codex.service.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;

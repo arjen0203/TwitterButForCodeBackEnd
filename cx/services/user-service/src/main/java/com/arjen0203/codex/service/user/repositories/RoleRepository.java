@@ -1,6 +1,6 @@
-package com.highcrit.flowerpower.service.user.repositories;
+package com.arjen0203.codex.service.user.repositories;
 
-import com.highcrit.flowerpower.domain.user.entity.Role;
+import com.arjen0203.codex.domain.user.entity.Role;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
