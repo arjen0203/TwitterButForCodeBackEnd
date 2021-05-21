@@ -1,0 +1,12 @@
+spring:
+  applicaton:
+    name: post-service
+  cloud:
+    kubernetes:
+      discovery:
+        all-namespaces: true
+        service-labels:
+          spring-boot: true
+server:
+  servlet:
+    context-path: "/api/"

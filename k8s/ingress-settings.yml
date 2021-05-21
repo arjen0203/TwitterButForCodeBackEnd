@@ -17,6 +17,13 @@ spec:
                 name: example-service
                 port:
                   number: 8080
+          - path: /api/posts
+            pathType: Prefix
+            backend:
+              service:
+                name: post-service
+                port:
+                  number: 8080
           - path: /
             pathType: Prefix
             backend:

@@ -11,8 +11,9 @@
     <relativePath>../../../super/domain.xml</relativePath>
   </parent>
 
-  <artifactId>core-domain</artifactId>
-  <description>Domain for core objects</description>
+  <artifactId>post-domain</artifactId>
+  <description>Domain for the post service</description>
+
   <dependencies>
     <dependency>
       <groupId>org.projectlombok</groupId>
@@ -21,13 +22,13 @@
     </dependency>
 
     <dependency>
-      <groupId>commons-validator</groupId>
-      <artifactId>commons-validator</artifactId>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-data-jpa</artifactId>
     </dependency>
 
     <dependency>
       <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter-data-rest</artifactId>
+      <artifactId>spring-boot-starter-validation</artifactId>
     </dependency>
   </dependencies>
 </project>
