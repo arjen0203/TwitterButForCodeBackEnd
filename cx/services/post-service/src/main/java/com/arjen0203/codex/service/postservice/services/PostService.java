@@ -32,9 +32,15 @@ public class PostService {
    *
    * @return a list of all the posts.
    */
-  public Page<PostDto> getAllPosts(int pageNr, int size) {
+  public Page<PostDto.PostReturn> getAllPosts(int pageNr, int size) {
     var postPage = postRepository.findAll(PageRequest.of(pageNr, size));
-    return postPage.map(f -> modelMapper.map(f, PostDto.class));
+    return postPage.map(f -> {
+      val returnData = modelMapper.map(f, PostDto.PostReturn.class);
+      returnData.setCommentsCount(f.getComments().size());
+      returnData.setPostLikesCount(f.getPostLikes().size());
+      returnData.setRevisionsCount(f.getRevisions().size());
+      return returnData;
+    });
   }
 
   /**
@@ -43,8 +49,14 @@ public class PostService {
    * @param id id of project
    * @return Project
    */
-  public PostDto getPostDtoById(long id) {
-    return modelMapper.map(getPostById(id), PostDto.class);
+  public PostDto.PostReturn getPostDtoById(long id) {
+    val post = getPostById(id);
+    val returnData = modelMapper.map(post, PostDto.PostReturn.class);
+    returnData.setCommentsCount(post.getComments().size());
+    returnData.setPostLikesCount(post.getPostLikes().size());
+    returnData.setRevisionsCount(post.getRevisions().size());
+
+    return returnData;
   }
 
   public Post getPostById(long id) {

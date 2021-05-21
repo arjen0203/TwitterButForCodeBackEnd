@@ -25,18 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class RevisionController {
   private final RevisionService revisionService;
-
-  /**
-   * The method for getting a specific post.
-   *
-   * @param id the id of the desired post
-   * @return a response entity with the post (if found)
-   */
-  @GetMapping("/revisions/{id}")
-  public ResponseEntity<RevisionDto> getRevisionById(@PathVariable long id) {
-    return ResponseEntity.ok(revisionService.getRevisionById(id));
-  }
-
+  
   /**
    * Posting a post to be saved.
    *
@@ -48,29 +37,5 @@ public class RevisionController {
   public ResponseEntity<RevisionDto> createRevision(
       @PathVariable long postId, @RequestHeader UUID userId, @RequestBody RevisionDto.RequestData revisionDto) {
     return ResponseEntity.ok(revisionService.storeRevision(postId, userId, revisionDto));
-  }
-
-  /**
-   * Putting a post to be updated.
-   *
-   * @param id the id for the post you want to update
-   * @return a response entity with the updated post, hopefully the same as the one send
-   */
-  @PutMapping("/revisions/{id}")
-  public ResponseEntity<RevisionDto> updateRevision(
-      @Valid @RequestPart("revision") RevisionDto revisionDto, @PathVariable long id) {
-    return ResponseEntity.ok(revisionService.updateRevision(revisionDto, id));
-  }
-
-  /**
-   * A method for removing a post.
-   *
-   * @param id the id of the post that should be removed.
-   * @return a response entity with a string of the result.
-   */
-  @DeleteMapping("/revisions/{id}")
-  public ResponseEntity<String> removeRevision(@PathVariable long id) {
-    revisionService.removeRevision(id);
-    return ResponseEntity.ok("ok");
   }
 }

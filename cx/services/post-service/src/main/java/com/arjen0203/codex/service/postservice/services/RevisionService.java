@@ -26,20 +26,6 @@ public class RevisionService {
   private final ModelMapper modelMapper;
 
   /**
-   * Retrieves a specific revision by id.
-   *
-   * @param id id of revision
-   * @return Revision
-   */
-  public RevisionDto getRevisionById(long id) {
-    val oRevision = revisionRepository.findById(id);
-    if (oRevision.isEmpty()) {
-      throw new NotFoundException();
-    }
-    return modelMapper.map(oRevision.get(), RevisionDto.class);
-  }
-
-  /**
    * Creates a new Project with user as owner.
    *
    * @param user uuid of user
@@ -48,60 +34,23 @@ public class RevisionService {
    */
   public RevisionDto storeRevision(long postId, UUID user, RevisionDto.RequestData revisionDto) {
     val originalPost = postService.getPostById(postId);
-    //val post = modelMapper.map(revisionDto.getPost(), Post.class);
-    //post.setAuthor(user);
-    //post.setCreatedAt(Instant.now());
-
     val revision = modelMapper.map(revisionDto, Revision.class);
+
     revision.setOriginalPost(originalPost);
-    revision.getPost().setCreatedAt(Instant.now());
-    revision.getPost().setAuthor(user);
     originalPost.getRevisions().add(revision);
 
-    revisionRepository.save(revision);
-    //revision.setPost(post);
-    //revision.setOriginalPost(originalPost);
-
-    //post.setRevision(revision);
+    revision.getPost().setCreatedAt(Instant.now());
+    revision.getPost().setAuthor(user);
+    revision.getPost().setRevision(revision);
 
     try {
+      postRepository.save(revision.getPost());
+      revisionRepository.save(revision);
       postRepository.save(originalPost);
     } catch (DataIntegrityViolationException ex) {
       throw new ConflictException("Could not create revision");
     }
-
-    return modelMapper.map(revision, RevisionDto.class);
-  }
-
-  /**
-   * The method for updating a revision.
-   *
-   * <p>The method makes a revision entity based on the given dto. This entity is then stored.
-   *
-   * @param revisionDto the dto of the updated revision.
-   * @return the updated revision.
-   */
-  public RevisionDto updateRevision(RevisionDto revisionDto, long id) {
-    var oRevision = revisionRepository.findById(id);
-    if (oRevision.isEmpty()) {
-      throw new NotFoundException("Revision");
-    }
-
-    var revision = oRevision.get();
-
-    return modelMapper.map(revisionRepository.save(revision), RevisionDto.class);
-  }
-
-  /**
-   * The method for removing a revision.
-   *
-   * @param id the id of the revision that should be removed.
-   */
-  public void removeRevision(long id) {
-    try {
-      revisionRepository.deleteById(id);
-    } catch (EmptyResultDataAccessException ex) {
-      throw new NotFoundException("Revision");
-    }
+    val returnData = modelMapper.map(revision, RevisionDto.class);
+    return returnData;
   }
 }

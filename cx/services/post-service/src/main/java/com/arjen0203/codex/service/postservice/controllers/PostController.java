@@ -33,7 +33,7 @@ public class PostController {
    * @return a page of posts
    */
   @GetMapping
-  public ResponseEntity<Page<PostDto>> allPosts(
+  public ResponseEntity<Page<PostDto.PostReturn>> allPosts(
       @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "20") int size) {
     return ResponseEntity.ok(postService.getAllPosts(page, size));
   }
@@ -45,7 +45,7 @@ public class PostController {
    * @return a response entity with the post (if found)
    */
   @GetMapping("/{id}")
-  public ResponseEntity<PostDto> getPostById(@PathVariable long id) {
+  public ResponseEntity<PostDto.PostReturn> getPostById(@PathVariable long id) {
     return ResponseEntity.ok(postService.getPostDtoById(id));
   }
 

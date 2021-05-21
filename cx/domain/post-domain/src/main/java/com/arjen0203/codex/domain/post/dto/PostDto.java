@@ -36,10 +36,24 @@ public class PostDto {
   }
 
   @Data
-  public static class ShortReturn {
+  public static class PostReturn {
     private long id;
     private UUID author;
     private String title;
     private Instant createdAt;
+    private Set<ContentBlockDto> contentBlocks;
+    private int postLikesCount;
+    private int commentsCount;
+    private int revisionsCount;
+    private RevisionDto.PostReturnData revision;
+  }
+
+  @Data
+  public static class RevisionReturn {
+    private long id;
+    private UUID author;
+    private String title;
+    private Instant createdAt;
+    private Set<ContentBlockDto> contentBlocks;
   }
 }

@@ -23,8 +23,7 @@ public class Revision {
   @ManyToOne
   private Post originalPost;
 
-  @OneToOne
-  @JoinColumn(name = "post_id", nullable = false)
+  @OneToOne(mappedBy = "revision")
   private Post post;
 
   @Override

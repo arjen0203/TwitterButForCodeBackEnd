@@ -52,6 +52,9 @@ public class Post {
   @OneToMany(cascade = {CascadeType.ALL}, mappedBy = "originalPost")
   private Set<Revision> revisions;
 
+  @OneToOne(cascade = CascadeType.ALL)
+  private Revision revision;
+
 //  @OneToOne
 //  @JoinColumn(name = "revision_id", referencedColumnName = "id")
 //  private Revision revision;
