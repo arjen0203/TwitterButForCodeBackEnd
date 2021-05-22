@@ -2,13 +2,9 @@ package com.arjen0203.codex.service.auth.configs;
 
 import java.util.Arrays;
 
-
-import com.arjen0203.codex.domain.auth.entity.InviteToken;
-import com.arjen0203.codex.domain.auth.entity.ResetPassword;
 import com.arjen0203.codex.domain.core.general.errorhandlers.RestErrorHandler;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
@@ -16,7 +12,6 @@ import org.springframework.context.annotation.Import;
 /** Configuration for the AuthService. */
 @Configuration
 @Import({RestErrorHandler.class})
-@EntityScan(basePackageClasses = {ResetPassword.class, InviteToken.class})
 public class AuthServiceConfig {
   /**
    * Creates a default instance of ModelMapper for the entirety of this service.

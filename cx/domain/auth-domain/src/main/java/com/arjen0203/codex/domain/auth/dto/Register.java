@@ -27,7 +27,4 @@ public class Register implements Serializable {
   @NotBlank(message = "Password should not be empty")
   @Length(min = 8, max = 64, message = "Passwords should be between 8 and 64 characters")
   private String password;
-
-  @NotNull(message = "Token should not be null")
-  private UUID inviteToken;
 }
