@@ -5,7 +5,6 @@ import javax.validation.Valid;
 
 import com.arjen0203.codex.domain.auth.dto.Login;
 import com.arjen0203.codex.domain.auth.dto.Register;
-import com.arjen0203.codex.domain.auth.dto.ResetPasswordDto;
 import com.arjen0203.codex.service.auth.service.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.CookieValue;

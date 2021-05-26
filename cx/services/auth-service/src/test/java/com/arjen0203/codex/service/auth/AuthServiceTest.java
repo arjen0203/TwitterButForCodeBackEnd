@@ -21,7 +21,6 @@ import java.util.stream.Stream;
 import com.arjen0203.codex.service.auth.utils.JwtUtil;
 import com.arjen0203.codex.domain.auth.dto.Login;
 import com.arjen0203.codex.domain.auth.dto.Register;
-import com.arjen0203.codex.domain.auth.dto.ResetPasswordDto;
 import com.arjen0203.codex.domain.auth.exceptions.InvalidJwtException;
 import com.arjen0203.codex.domain.user.dto.RoleDto;
 import com.arjen0203.codex.domain.user.entity.Role;
@@ -54,7 +53,7 @@ class AuthServiceTest {
 
   private final Login mockLogin = new Login(MOCK_EMAIL, MOCK_PASSWORD, false);
   private final Register mockRegister =
-      new Register(MOCK_USERNAME, MOCK_EMAIL, MOCK_PASSWORD, UUID.randomUUID());
+      new Register(MOCK_USERNAME, MOCK_EMAIL, MOCK_PASSWORD);
   private final User mockUser =
       new User(UUID.randomUUID(), MOCK_USERNAME, mockRole, MOCK_EMAIL, MOCK_PASSWORD);
 
@@ -187,7 +186,7 @@ class AuthServiceTest {
   @ParameterizedTest
   @MethodSource("badUsernames")
   void testRegisterWithBadUsername(String username, String errorMsg) {
-    var register = new Register(username, MOCK_EMAIL, MOCK_PASSWORD, UUID.randomUUID());
+    var register = new Register(username, MOCK_EMAIL, MOCK_PASSWORD);
     var constraintViolations = localValidatorFactory.validate(register);
 
     assertFalse(constraintViolations.isEmpty());
@@ -199,7 +198,7 @@ class AuthServiceTest {
   @ParameterizedTest
   @MethodSource("badEmails")
   void testRegisterWithBadEmail(String email, String errorMsg) {
-    var register = new Register(MOCK_USERNAME, email, MOCK_PASSWORD, UUID.randomUUID());
+    var register = new Register(MOCK_USERNAME, email, MOCK_PASSWORD);
     var constraintViolations = localValidatorFactory.validate(register);
 
     assertFalse(constraintViolations.isEmpty());
@@ -211,7 +210,7 @@ class AuthServiceTest {
   @ParameterizedTest
   @MethodSource("badPasswords")
   void testRegisterWithBadPasswords(String password, String errorMsg) {
-    var register = new Register(MOCK_USERNAME, MOCK_EMAIL, password, UUID.randomUUID());
+    var register = new Register(MOCK_USERNAME, MOCK_EMAIL, password);
     var constraintViolations = localValidatorFactory.validate(register);
 
     assertFalse(constraintViolations.isEmpty());
