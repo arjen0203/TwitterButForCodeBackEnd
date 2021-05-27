@@ -17,6 +17,9 @@
   </properties>
 
   <modules>
+    <!-- Core -->
+    <module>cx/core/rabbit</module>
+
     <!-- Domain -->
     <module>cx/domain/core-domain</module>
     <module>cx/domain/post-domain</module>

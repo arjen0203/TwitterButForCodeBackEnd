@@ -137,5 +137,11 @@
       <groupId>org.mindrot</groupId>
       <artifactId>jbcrypt</artifactId>
     </dependency>
+
+    <dependency>
+      <groupId>com.arjen0203.codex</groupId>
+      <artifactId>rabbit</artifactId>
+    </dependency>
+
   </dependencies>
 </project>

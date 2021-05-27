@@ -5,6 +5,8 @@ import java.util.Map;
 
 import javax.servlet.http.Cookie;
 
+import com.arjen0203.codex.core.rabbit.utils.Messaging;
+import com.arjen0203.codex.domain.user.dto.UserDto;
 import com.arjen0203.codex.service.auth.messaging.TestSender;
 import com.arjen0203.codex.service.auth.utils.JwtUtil;
 import com.arjen0203.codex.domain.auth.dto.Login;
@@ -26,7 +28,7 @@ public class AuthService {
   private final ModelMapper modelMapper;
   private final JwtUtil jwtUtil;
   private final int expiration;
-  private final TestSender testSender;
+  private final Messaging messaging;
 
   @Value("${auth.cookie.httpOnly}")
   private boolean cookieHttpOnly = false;
@@ -45,11 +47,11 @@ public class AuthService {
       ModelMapper modelMapper,
       JwtUtil jwtUtil,
       @Qualifier("expiration") int expiration,
-      TestSender testSender) {
+      Messaging messaging) {
     this.modelMapper = modelMapper;
     this.jwtUtil = jwtUtil;
     this.expiration = expiration / 1000;
-    this.testSender = testSender;
+    this.messaging = messaging;
   }
 
   /**
@@ -134,7 +136,7 @@ public class AuthService {
     createUser.setRole(new RoleDto(0)); //For now standard role for every registration
 
     //messaging.sendAndReceive("user-create", createUser, UserDto.class);
-    testSender.send();
+    messaging.sendAndReceive("register", createUser, UserDto.class);
     //todo change this to use rabbitmq and no invite token necesarry
   }
 }

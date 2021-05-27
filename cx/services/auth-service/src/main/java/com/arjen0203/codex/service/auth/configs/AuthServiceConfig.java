@@ -2,6 +2,7 @@ package com.arjen0203.codex.service.auth.configs;
 
 import java.util.Arrays;
 
+import com.arjen0203.codex.core.rabbit.utils.Messaging;
 import com.arjen0203.codex.domain.core.general.errorhandlers.RestErrorHandler;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Value;
@@ -11,7 +12,7 @@ import org.springframework.context.annotation.Import;
 
 /** Configuration for the AuthService. */
 @Configuration
-@Import({RestErrorHandler.class})
+@Import({RestErrorHandler.class, Messaging.class})
 public class AuthServiceConfig {
   /**
    * Creates a default instance of ModelMapper for the entirety of this service.
