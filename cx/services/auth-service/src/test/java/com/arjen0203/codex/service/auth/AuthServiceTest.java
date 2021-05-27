@@ -18,6 +18,7 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Stream;
 
+import com.arjen0203.codex.service.auth.messaging.TestSender;
 import com.arjen0203.codex.service.auth.utils.JwtUtil;
 import com.arjen0203.codex.domain.auth.dto.Login;
 import com.arjen0203.codex.domain.auth.dto.Register;
@@ -62,6 +63,7 @@ class AuthServiceTest {
 
   private LocalValidatorFactoryBean localValidatorFactory = new LocalValidatorFactoryBean();
   private AuthService authService;
+  private TestSender testSender;
 
   private static Stream<Arguments> badUsernames() {
     return Stream.of(
@@ -96,7 +98,8 @@ class AuthServiceTest {
         new AuthService(
             new ModelMapper(),
             mockJwtUtil,
-            0);
+            0,
+            testSender);
 
     localValidatorFactory.setProviderClass(HibernateValidator.class);
     localValidatorFactory.afterPropertiesSet();

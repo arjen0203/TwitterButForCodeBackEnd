@@ -27,13 +27,6 @@ spec:
                 name: example-service
                 port:
                   number: 8080
-          - path: /api/posts
-            pathType: Prefix
-            backend:
-              service:
-                name: post-service
-                port:
-                  number: 8080
           - path: /api/users
             pathType: Prefix
             backend:
@@ -58,6 +51,13 @@ spec:
   rules:
     - host: codex.kube
       http:
+        - path: /
+          pathType: Prefix
+          backend:
+            service:
+              name: frontend-service
+              port:
+                number: 3000
         paths:
           - path: /api/auth
             pathType: Prefix
@@ -66,10 +66,10 @@ spec:
                 name: auth-service
                 port:
                   number: 8080
-          - path: /
+          - path: /api/posts
             pathType: Prefix
             backend:
               service:
-                name: frontend-service
+                name: post-service
                 port:
-                  number: 3000
+                  number: 8080
