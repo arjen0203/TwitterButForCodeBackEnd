@@ -22,7 +22,7 @@ public class AuthConsumer {
     public String createUser(String request) {
         var message = gson.fromJson(request, Request.class);
         var user = message.getData(CreateUser.class);
-
+        System.out.println("[x] received message " + message);
         try {
             var newUser = userService.createUser(user);
             return gson.toJson(Response.success(newUser));

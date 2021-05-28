@@ -14,16 +14,17 @@ public class Messaging {
   private final Gson gson;
   private final RabbitTemplate rabbitTemplate;
 
-  public <T, U> Response sendAndReceive(String queue, T data) {
+  public <T, U> U sendAndReceive(String queue, T data, Class<U> returnType) {
     String messageString = gson.toJson(new Request(data));
     System.out.println("[x] send message " + messageString);
 
-    String response = (String) rabbitTemplate.convertSendAndReceive(queue, messageString);
+    String responseMessage = (String) rabbitTemplate.convertSendAndReceive(queue, messageString);
 
-    Response responseMessage = gson.fromJson(response, Response.class);
+    Response response = gson.fromJson(responseMessage, Response.class);
     System.out.println("[x] received message " + responseMessage);
 
-    return responseMessage;
+    if (response.isSuccess()) return response.getData(returnType);
+    throw response.getException();
   }
 
   public <T> void send(String queue, T data) {

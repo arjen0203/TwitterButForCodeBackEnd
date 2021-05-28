@@ -95,10 +95,7 @@ public class AuthService {
    */
   public Cookie login(Login login) {
     try {
-      //var user = messaging.sendAndReceive("user-get-by-email", login.getEmail(), User.class);
-      //todo change login here to use rabbitMQ
-      var user = new User(); //yeet this
-
+      var user = messaging.sendAndReceive("get-user-by-email", login.getEmail(), User.class);
 
       if (!BCrypt.checkpw(login.getPassword(), user.getPassword())) {
         throw new InvalidEmailOrPasswordException();
@@ -134,8 +131,6 @@ public class AuthService {
     createUser.setPassword(BCrypt.hashpw(register.getPassword(), BCrypt.gensalt()));
     createUser.setRole(new RoleDto(0)); //For now standard role for every registration
 
-    var response = messaging.sendAndReceive("register", createUser);
-    if (response.isSuccess()) return;
-    throw response.getException();
+    messaging.sendAndReceive("register-user", createUser, UserDto.class);
   }
 }
