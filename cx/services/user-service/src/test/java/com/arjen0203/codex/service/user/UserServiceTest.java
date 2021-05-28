@@ -79,21 +79,4 @@ class UserServiceTest {
     assertEquals(mockUserDto, result);
     verify(mockUserRepository, times(1)).save(any());
   }
-
-  @Test
-  void updatePasswordUserNotFound() {
-    var updatePassword = new UpdateUserPassword(MOCK_EMAIL, "new-password");
-    when(mockUserRepository.findByEmail(MOCK_EMAIL)).thenReturn(Optional.empty());
-
-    assertThrows(NotFoundException.class, () -> userService.updatePassword(updatePassword));
-  }
-
-  @Test
-  void updatePassword() {
-    var updatePassword = new UpdateUserPassword(MOCK_EMAIL, "new-password");
-    when(mockUserRepository.findByEmail(MOCK_EMAIL)).thenReturn(Optional.of(mockUser));
-
-    userService.updatePassword(updatePassword);
-    verify(mockUserRepository, times(1)).save(any());
-  }
 }

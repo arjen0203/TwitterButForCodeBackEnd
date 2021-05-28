@@ -19,7 +19,6 @@ import java.util.UUID;
 import java.util.stream.Stream;
 
 import com.arjen0203.codex.core.rabbit.utils.Messaging;
-import com.arjen0203.codex.service.auth.messaging.TestSender;
 import com.arjen0203.codex.service.auth.utils.JwtUtil;
 import com.arjen0203.codex.domain.auth.dto.Login;
 import com.arjen0203.codex.domain.auth.dto.Register;
