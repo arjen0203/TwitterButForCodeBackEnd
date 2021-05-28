@@ -6,6 +6,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.UniqueConstraint;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -23,7 +24,7 @@ public class User {
   @Column(length = 36)
   private UUID id = UUID.randomUUID();
 
-  @Column(length = 32)
+  @Column(length = 32, unique = true)
   private String username;
 
   @ManyToOne private Role role;

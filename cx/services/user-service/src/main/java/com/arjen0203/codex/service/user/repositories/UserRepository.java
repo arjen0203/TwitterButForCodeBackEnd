@@ -10,5 +10,6 @@ import org.springframework.stereotype.Repository;
 /** The repository for interacting with the User database. */
 @Repository
 public interface UserRepository extends CrudRepository<User, UUID> {
+  Optional<User> findByUsername(String username);
   Optional<User> findByEmail(String email);
 }

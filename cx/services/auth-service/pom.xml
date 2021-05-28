@@ -83,6 +83,12 @@
       <artifactId>jaxb-api</artifactId>
     </dependency>
 
+    <dependency>
+      <groupId>com.google.code.gson</groupId>
+      <artifactId>gson</artifactId>
+    </dependency>
+
+
     <!-- unit test modules -->
     <dependency>
       <groupId>org.junit.jupiter</groupId>

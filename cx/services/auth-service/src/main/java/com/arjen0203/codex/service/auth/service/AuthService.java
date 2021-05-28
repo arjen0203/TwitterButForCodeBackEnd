@@ -6,8 +6,8 @@ import java.util.Map;
 import javax.servlet.http.Cookie;
 
 import com.arjen0203.codex.core.rabbit.utils.Messaging;
+import com.arjen0203.codex.domain.core.general.exceptions.ConflictException;
 import com.arjen0203.codex.domain.user.dto.UserDto;
-import com.arjen0203.codex.service.auth.messaging.TestSender;
 import com.arjen0203.codex.service.auth.utils.JwtUtil;
 import com.arjen0203.codex.domain.auth.dto.Login;
 import com.arjen0203.codex.domain.auth.dto.Register;
@@ -19,6 +19,7 @@ import org.mindrot.jbcrypt.BCrypt;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -129,14 +130,12 @@ public class AuthService {
    * @param register DTO containing the User's register info
    */
   public void register(Register register) {
-    // Make a CreateUserDTO with the hashed password and the role from the InviteToken
     var createUser = modelMapper.map(register, CreateUser.class);
-
     createUser.setPassword(BCrypt.hashpw(register.getPassword(), BCrypt.gensalt()));
     createUser.setRole(new RoleDto(0)); //For now standard role for every registration
 
-    //messaging.sendAndReceive("user-create", createUser, UserDto.class);
-    messaging.sendAndReceive("register", createUser, UserDto.class);
-    //todo change this to use rabbitmq and no invite token necesarry
+    var response = messaging.sendAndReceive("register", createUser);
+    if (response.isSuccess()) return;
+    throw response.getException();
   }
 }

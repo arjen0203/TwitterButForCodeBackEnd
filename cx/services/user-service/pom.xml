@@ -104,5 +104,15 @@
             <artifactId>core-domain</artifactId>
             <version>${project.version}</version>
         </dependency>
+
+        <dependency>
+          <groupId>com.google.code.gson</groupId>
+          <artifactId>gson</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.arjen0203.codex</groupId>
+            <artifactId>rabbit</artifactId>
+        </dependency>
     </dependencies>
 </project>

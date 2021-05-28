@@ -6,15 +6,17 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.SneakyThrows;
 
 @Data
-public class Message {
+@NoArgsConstructor
+public class Request {
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
     private String data;
 
-    public Message(Object data) {
+    public Request(Object data) {
         try {
             this.data = OBJECT_MAPPER.writeValueAsString(data);
         } catch (JsonProcessingException ex) {

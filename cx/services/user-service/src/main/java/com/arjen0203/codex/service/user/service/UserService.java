@@ -3,8 +3,11 @@ package com.arjen0203.codex.service.user.service;
 import com.arjen0203.codex.domain.core.general.exceptions.NotFoundException;
 import com.arjen0203.codex.domain.auth.dto.UpdateUserPassword;
 import com.arjen0203.codex.domain.user.dto.CreateUser;
+import com.arjen0203.codex.domain.user.dto.RoleDto;
 import com.arjen0203.codex.domain.user.dto.UserDto;
 import com.arjen0203.codex.domain.user.entity.User;
+import com.arjen0203.codex.domain.user.exceptions.EmailAlreadyInUseException;
+import com.arjen0203.codex.domain.user.exceptions.UsernameAlreadyInUseException;
 import com.arjen0203.codex.service.user.repositories.UserRepository;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -63,25 +66,13 @@ public class UserService {
    * @return UserDto of the newly created User
    */
   public UserDto createUser(CreateUser create) {
+    if (userRepository.findByUsername(create.getUsername()).isPresent()) throw new UsernameAlreadyInUseException();
+    if (userRepository.findByEmail(create.getEmail()).isPresent()) throw new EmailAlreadyInUseException();
+
+    create.setRole(new RoleDto(1)); //for now every user will be standardized to 1 (user)
     var user = modelMapper.map(create, User.class);
 
     var res = userRepository.save(user);
     return modelMapper.map(res, UserDto.class);
-  }
-
-  /**
-   * Updates the password for the user with the provided email.
-   *
-   * @param update DTO containing the new hashed password and email for the user we wish to update
-   */
-  public void updatePassword(UpdateUserPassword update) {
-    var oUser = userRepository.findByEmail(update.getEmail());
-    if (oUser.isEmpty()) {
-      throw new NotFoundException("User");
-    }
-
-    var user = oUser.get();
-    user.setPassword(update.getPassword());
-    userRepository.save(user);
   }
 }

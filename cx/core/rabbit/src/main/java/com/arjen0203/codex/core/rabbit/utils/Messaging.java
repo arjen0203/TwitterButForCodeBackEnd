@@ -1,10 +1,9 @@
 package com.arjen0203.codex.core.rabbit.utils;
 
-import com.arjen0203.codex.core.rabbit.objects.Message;
+import com.arjen0203.codex.core.rabbit.objects.Request;
+import com.arjen0203.codex.core.rabbit.objects.Response;
 import com.google.gson.Gson;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
-import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.stereotype.Component;
 
@@ -15,20 +14,20 @@ public class Messaging {
   private final Gson gson;
   private final RabbitTemplate rabbitTemplate;
 
-  public <T, U> U sendAndReceive(String queue, T data, Class<U> returnType) {
-    String messageString = gson.toJson(new Message(data));
+  public <T, U> Response sendAndReceive(String queue, T data) {
+    String messageString = gson.toJson(new Request(data));
     System.out.println("[x] send message " + messageString);
 
     String response = (String) rabbitTemplate.convertSendAndReceive(queue, messageString);
 
-    Message responseMessage = gson.fromJson(response, Message.class);
-    System.out.println("[x] send message " + responseMessage);
+    Response responseMessage = gson.fromJson(response, Response.class);
+    System.out.println("[x] received message " + responseMessage);
 
-    return responseMessage.getData(returnType);
+    return responseMessage;
   }
 
   public <T> void send(String queue, T data) {
-    String messageString = gson.toJson(new Message(data));
+    String messageString = gson.toJson(new Request(data));
     System.out.println("[x] send message " + messageString);
 
     rabbitTemplate.convertAndSend(queue, messageString);
