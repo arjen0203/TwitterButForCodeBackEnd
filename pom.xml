@@ -17,13 +17,20 @@
   </properties>
 
   <modules>
+    <!-- Core -->
+    <module>cx/core/rabbit</module>
+
     <!-- Domain -->
     <module>cx/domain/core-domain</module>
     <module>cx/domain/post-domain</module>
+    <module>cx/domain/auth-domain</module>
+    <module>cx/domain/user-domain</module>
 
     <!-- Services -->
     <module>cx/services/example-service</module>
     <module>cx/services/post-service</module>
+    <module>cx/services/auth-service</module>
+    <module>cx/services/user-service</module>
   </modules>
 
   <build>

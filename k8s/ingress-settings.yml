@@ -4,24 +4,58 @@ kind: Ingress
 metadata:
   name: ingress-settings
   annotations:
-    nginx.ingress.kubernetes.io/proxy-body-size: "20M"
+    nginx.ingress.kubernetes.io/auth-url: http://auth-service.insecure.svc.cluster.local:8080/api/auth/
+    nginx.ingress.kubernetes.io/auth-response-headers: userId, email, role
+    nginx.ingress.kubernetes.io/configuration-snippet: |
+      more_set_headers "Referrer-Policy: strict-origin-when-cross-origin";
+      more_set_headers "X-Content-Type-Options: nosniff";
+      more_set_headers "X-Frame-Options: DENY";
+      more_set_headers "X-XSS-Protection: 1; mode=block";
+      more_set_headers "Permissions-Policy: interest-cohort=(), accelerometer=(), camera=(), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), payment=(), usb=()";
+    nginx.ingress.kubernetes.io/proxy-body-size: 10m
+    nginx/client_max_body_size: 10m
 spec:
   rules:
     - host: codex.kube
       http:
         paths:
-          - path: /example
-            pathType: Prefix
-            backend:
-              service:
-                name: example-service
-                port:
-                  number: 8080
           - path: /api/posts
             pathType: Prefix
             backend:
               service:
                 name: post-service
+                port:
+                  number: 8080
+          - path: /api/users
+            pathType: Prefix
+            backend:
+              service:
+                name: user-service
+                port:
+                  number: 8080
+---
+
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress-settings-insecure
+  namespace: insecure
+  annotations:
+    nginx.ingress.kubernetes.io/configuration-snippet: |
+      more_set_headers "X-Content-Type-Options: nosniff";
+      more_set_headers "X-Frame-Options: DENY";
+      more_set_headers "X-XSS-Protection: 1; mode=block";
+      more_set_headers "Permissions-Policy: interest-cohort=(), accelerometer=(), camera=(), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), payment=(), usb=()";
+spec:
+  rules:
+    - host: codex.kube
+      http:
+        paths:
+          - path: /api/auth
+            pathType: Prefix
+            backend:
+              service:
+                name: auth-service
                 port:
                   number: 8080
           - path: /
