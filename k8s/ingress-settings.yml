@@ -5,7 +5,6 @@ metadata:
   name: ingress-settings
   annotations:
     nginx.ingress.kubernetes.io/auth-url: http://auth-service.insecure.svc.cluster.local:8080/api/auth/
-    nginx.ingress.kubernetes.io/auth-signin: http://codex.kube/%23/login
     nginx.ingress.kubernetes.io/auth-response-headers: userId, email, role
     nginx.ingress.kubernetes.io/configuration-snippet: |
       more_set_headers "Referrer-Policy: strict-origin-when-cross-origin";
