@@ -1,6 +1,9 @@
 import React, {Component} from 'react';
 import './Register.scss';
 import autobind from 'class-autobind';
+import Fetch from '../../utils/fetchUtil';
+import { toast } from 'react-toastify';
+import { UserContext } from '../../contexts/UserContext';
 
 class Register extends Component {
     constructor(props) {
@@ -8,6 +11,7 @@ class Register extends Component {
 
         this.state = {
             username: "",
+            email: "",
             password: "",
             passwordRepeat: ""
         }
@@ -15,41 +19,53 @@ class Register extends Component {
         autobind(this);
     }
 
-    tryRegistrating(){
-        if (!this.legalInput()) return;
+    async tryRegistrating(){
+        if (!this.legalInput()) {
+            this.setState({password: "", passwordRepeat: ""});
+            return;
+        }
+
+        const data = {username: this.state.username, email: this.state.email, password: this.state.password};
+        const result = await Fetch.post('auth/register', data, false);
+        if (result.ok) {
+            toast.success(`Successfully created your account! You can now login.`);
+            this.props.history.push('/login');
+        }
+        else {
+            this.setState({password: "", passwordRepeat: ""});
+        }
     }
 
     legalInput(){
-        if (this.state.username.length === "" || this.state.password === "" || this.state.passwordRepeat === "") {
-            this.setState({registerError: "Fill in all fields"})
+        if (this.state.username.length === "" || this.state.password === "" || this.state.passwordRepeat === "" || this.state.email === "") {
+            toast.warn("please fill in all fields");
             return false;
         }
 
-        if (this.state.username.length < 4) {
-            this.setState({registerError: "Username too short"})
+        if (!this.state.email.includes('@') || this.state.email.length < 3) {
+            toast.warn("Email filled in does not follow a valid pattern");
             return false;
         }
 
-        if (this.state.username.length > 32) {
-            this.setState({registerError: "Username too long"})
+        if (this.state.username.length < 4 || this.state.username.length > 32) {
+            toast.warn("Username should be between 4 and 32 charachters long");
             return false;
         }
 
-        if (this.state.password.length < 6) {
-            this.setState({registerError: "Password to short"})
-            return false;
-        }
-
-        if (this.state.password.length > 64) {
-            this.setState({registerError: "Password to long"})
+        if (this.state.password.length < 8 || this.state.password.length > 64) {
+            toast.warn("Password should be between 8 and 64 charachters long");
             return false;
         }
 
         if (this.state.password !== this.state.passwordRepeat) {
-            this.setState({registerError: "Passwords do match"})
+            toast.warn("Passwords do match");
             return false;
         }
         return true;
+    }
+
+    handleEmailChange(event){
+        this.setState({email: event.target.value});
     }
 
     handleNameChange(event){
@@ -73,6 +89,8 @@ class Register extends Component {
             <div className="center">
                 <div className="register-fields">
                     <b className="register-title">Register:</b>
+                    <label htmlFor="email">Email:</label>
+                    <input id="email" className="register-email-input" type="text" placeholder="Email" value={this.state.email} onChange={this.handleEmailChange}></input>
                     <label htmlFor="username">Username:</label>
                     <input id="username" className="register-username-input" type="text" placeholder="Username" value={this.state.username} onChange={this.handleNameChange}></input>
                     <label htmlFor="password">Password:</label>
@@ -84,6 +102,10 @@ class Register extends Component {
 
                     <div onClick={this.goToLogin} className="to-login-link">Already have an account? Login here.</div>
                 </div>
+
+                <UserContext>
+                    {userContext => {if(userContext.user.id !== 0) this.props.history.push("/");}}
+                </UserContext>
             </div>
         );
     }
