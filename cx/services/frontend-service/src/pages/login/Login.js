@@ -81,9 +81,10 @@ class Login extends Component {
                             <label htmlFor="password">Password:</label>
                             <input id="password" className="login-email-input" type="password" placeholder="Password" value={this.state.password} onChange={this.handlePasswordChange}></input>
 
-                            <label htmlFor="remember">Remember me:</label>
-                            <input id="remember" type="checkbox" value={this.state.rememberMe} onClick={this.handleRememberChange}></input>
-
+                            <div className="login-remember-div">
+                                <label htmlFor="remember">Remember me:</label>
+                                <input id="remember" type="checkbox" value={this.state.rememberMe} onClick={this.handleRememberChange}></input>
+                            </div>
                             <button className="login-submit-button" onClick={() => this.login(userContext.loginUser)}>Login</button>
 
                             <div className="to-register-link" onClick={this.toRegister}>Don't have an account yet? Register here.</div>
