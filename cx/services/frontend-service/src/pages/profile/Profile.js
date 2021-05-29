@@ -2,8 +2,11 @@ import React, { useState, useEffect } from 'react';
 import './Profile.scss';
 import Editsvg from './EditSVG';
 import Post from './../../component/posts/Post.js';
+import { UserContext } from '../../contexts/UserContext';
+import { useHistory } from "react-router";
 
 export default function Profile(props) {
+    const history = useHistory();
     const [isLoaded, setIsLoaded] = useState(false);
     const [name, setName] = useState("");
     const [status, setStatus] = useState("");
@@ -112,6 +115,9 @@ export default function Profile(props) {
             <div className='user-posts'>
                 {listPosts(posts)}
             </div>
+            <UserContext>
+                {userContext => { if(userContext.user.id === 0) history.push("/login");}}
+            </UserContext>
         </div>
     )
 }
