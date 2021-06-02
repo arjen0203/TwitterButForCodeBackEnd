@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import './post.scss'
+import Fetch from '../../utils/fetchUtil';
 
 export default function Post(props) {
-    const [liked, setLiked] = useState(props.liked);
-    const [disliked, setDisliked] = useState(props.disliked);
+    const [liked, setLiked] = useState(props.data.liked);
+    const [likeAmount, setLikeAmount] = useState(props.data.postLikesCount);
 
     function makePostBody(input) {
         var output = [];
@@ -19,14 +20,21 @@ export default function Post(props) {
         return output;
     }
 
-    function likePost() {
-        setLiked(!liked);
-        if (disliked) setDisliked(false);
-    }
-
-    function dislikePost() {
-        setDisliked(!disliked);
-        if (liked) setLiked(false);
+    async function likePost() {
+        var result;
+        if (liked) {
+            result = await Fetch.delete(`posts/${props.data.id}/likes`)
+            if (result.ok) {
+                setLiked(false);
+                setLikeAmount(likeAmount - 1);
+            }
+        } else {
+            result = await Fetch.post(`posts/${props.data.id}/likes`, null)
+            if (result.ok) {
+                setLiked(true);
+                setLikeAmount(likeAmount + 1);
+            }
+        }
     }
 
     return (
@@ -34,16 +42,15 @@ export default function Post(props) {
             <div className='title'>{props.data.title}</div>
             <div className='author'>Author: {props.data.author}</div>
             <div className='body'>
-            {makePostBody(props.data.body)}
+                {makePostBody(props.data.contentBlocks)}
             </div>
             <div className='stats'>
-                <div>{props.data.likes} likes</div>
-                <div>{props.data.commentAmount} comments</div>
-                <div>{props.data.revisionAmount} revisions</div>
+                <div>{likeAmount} likes</div>
+                <div>{props.data.commentsCount} comments</div>
+                <div>{props.data.revisionsCount} revisions</div>
             </div>
             <div className='bottom-buttons'>
                 {!props.isUser && <div>{liked ? <button onClick={() => likePost()} className='active-button'>like</button> : <button onClick={() => likePost()}>like</button>}</div>}
-                {!props.isUser && <div>{disliked ? <button onClick={() => dislikePost()} className='active-button'>dislike</button> : <button onClick={() => dislikePost()}>dislike</button>}</div>}
                 <button>discussion</button>
                 {!props.isUser ? <button>report</button> : <button>edit</button>}
             </div>

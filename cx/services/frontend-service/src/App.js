@@ -69,8 +69,9 @@ class App extends React.Component {
                     <nav>
                         <ul className="router-list">
                             {this.state.user.id !== 0 ? (<li><NavLink to={'/feed'} activeClassName="activeNav">Feed</NavLink></li>) : <li><NavLink to={'/home'} activeClassName="activeNav">Home</NavLink></li>}
-                            {this.state.user.id !== 0 && (<li><NavLink to={'/profile'} activeClassName="activeNav">Profile</NavLink></li>)}
+                            {this.state.user.id !== 0 && (<li><NavLink to={'/profile/' + userContext.user.id} activeClassName="activeNav">Your profile</NavLink></li>)}
                             <li><NavLink to={'/search'} activeClassName="activeNav">Search</NavLink></li>
+                            <li><NavLink to={'/profile/4625a65f-89e8-4c1a-97f0-0ced75c14779'} activeClassName="activeNav">rens profile</NavLink></li>
                             {this.state.user.id !== 0 && <li><NavLink to={'/post/create'} activeClassName="activeNav">Create post</NavLink></li>}
                             {this.state.user.id !== 0 ? (<li className="login-button"><div className="logout-button" onClick={this.logoutUser}>Logout</div></li>) : <li className="login-button"><NavLink to={'/login'} activeClassName="activeNav">Login</NavLink></li>}
                         </ul>
@@ -80,7 +81,7 @@ class App extends React.Component {
                         <Route exact path='/register' component={Register}/>
                         <Route exact path='/home' component={Home}/>
 
-                        <Route exact path='/profile' component={Profile}/>
+                        <Route exact path='/profile/:userId' component={(props) => <Profile {...props} key={window.location.pathname}/>}/>
                         <Route exact path='/profile/edit' component={EditProfile}/>
                         <Route exact path='/feed' component={Home}/>
 

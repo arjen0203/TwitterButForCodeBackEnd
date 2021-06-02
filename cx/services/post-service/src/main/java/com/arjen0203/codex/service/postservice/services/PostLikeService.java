@@ -64,11 +64,18 @@ public class PostLikeService {
    *
    * @param id the id of the like that should be removed.
    */
-  public void removePostLike(long id) {
+  public void removePostLike(UUID userId, long postId) {
+    var postLike = postLikeRepository.findByUserAndPostId(userId, postId);
+    if (postLike.isEmpty()) throw new NotFoundException("Like");
+    postLikeRepository.deleteById(postLike.get().getId());
+  }
+
+  public long getPostLikeCountOfPost(long id) {
     try {
-      postLikeRepository.deleteById(id);
+      return postLikeRepository.getPostLikeCountByPostId(id);
     } catch (EmptyResultDataAccessException ex) {
-      throw new NotFoundException("Like");
+      throw new NotFoundException("Post");
     }
   }
+
 }

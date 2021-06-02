@@ -3,11 +3,16 @@ import './Profile.scss';
 import Editsvg from './EditSVG';
 import Post from './../../component/posts/Post.js';
 import { UserContext } from '../../contexts/UserContext';
-import { useHistory } from "react-router";
+import { useHistory } from 'react-router';
+import Fetch from '../../utils/fetchUtil';
+import {useParams} from "react-router-dom";
 
 export default function Profile(props) {
+    const {userId} = useParams();
+
     const history = useHistory();
-    const [isLoaded, setIsLoaded] = useState(false);
+    const [isLoadingProfile, setIsLoadingProfile] = useState(true);
+    const [isLoadingPosts, setIsLoadingPosts] = useState(true);
     const [name, setName] = useState("");
     const [status, setStatus] = useState("");
     const [isUser, setIsUser] = useState(false);
@@ -15,56 +20,65 @@ export default function Profile(props) {
     const [isFriend, setIsFriend] = useState(false);
     const [isFollowerAmount, setFollowerAmount] = useState(0);
     const [posts, setPosts] = useState([]);
+    const [nextPage, setNextPage] = useState(0);
+    const [totalPages, setTotalPages] = useState(0);
 
     useEffect(() => {
         setName('renssssssss');
         setStatus('This is going to be the big ass status that I want people to have on their account it should be able to be very long and boring so we just gonne typ some placeholder text here just because i can hihi');
-        setIsLoaded(true);
-        setIsUser(true);
+        setIsLoadingProfile(false);
+
         setIsFollowing(false);
         setIsFriend(false);
         setFollowerAmount(69);
-        setPosts([{
-            title: 'Test title this is', 
-            author:'renssssssss',
-            body: [
-                {
-                subTitle: 'This is subtitle',
-                desc: 'This is a small discription of the given block very much wow',
-                fileName: 'rens.js',
-                code: 'if(rens) rens(RENS);'
-                }
-            ],
-            likes: 420,
-            commentAmount: 69,
-            revisionAmount: 38
-            },
-            {
-                title: 'Test title this is too', 
-                author:'renssssssss',
-                body: [
-                    {
-                        subTitle: 'This is subtitle 2',
-                        desc: 'This is a small discription of the given block very much wow this one is even longer just because i can and iwantto see stuff yesss',
-                        fileName: 'rens.js',
-                        code: `if(rens) {
-    rens(Rens);
-} else {
-    notRens(Rens);
-}`
-                    },
-                    {
-                        subTitle: 'This is subtitle 3',
-                        desc: 'This is a small discription of the given block very much wow numm three already',
-                        fileName: 'rensit.js',
-                        code: 'if(!rens) rensss(RENS);'
-                    }
-                ],
-                likes: 420,
-                commentAmount: 69,
-                revisionAmount: 38
-            }]);
+        
+        async function fetchData() {
+            var posts = await getPostsOfUser(0);
+        
+            if (posts) {
+                setPosts(posts);
+            }
+        }
+
+        fetchData();
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
       }, []);
+
+      useEffect(() => {
+        window.addEventListener('scroll', handleScroll);
+        return () => (window.removeEventListener('scroll', handleScroll));
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+      }, [nextPage, isLoadingPosts, posts]);
+
+      const handleScroll = async () => {
+
+        const bottom = Math.ceil(window.innerHeight + window.scrollY) >= document.documentElement.scrollHeight
+
+        if (bottom && nextPage !== totalPages && !isLoadingPosts) {
+            setIsLoadingPosts(true);
+            var newPosts = await getPostsOfUser(nextPage);
+            if (newPosts) {
+                var allPosts = [...posts, ...newPosts];
+                setPosts(allPosts);
+            }
+        }
+      };
+      
+    const getPostsOfUser = async (page) => {
+        const postsSize = 4;
+        
+        var result = await Fetch.get(`/posts/user/${userId}?size=${postsSize}&page=${page}`)
+        var posts = null;
+        if (result.ok) {
+            posts = result.data.content;
+            setTotalPages(result.data.totalPages);
+            setNextPage(nextPage + 1);
+            setIsLoadingPosts(false);
+        }
+        return posts;
+    }
 
     function follow() {
         setIsFollowing(!isFollowing);
@@ -88,8 +102,8 @@ export default function Profile(props) {
 
     return (
         <div className='profile-center'>
-            {!isLoaded ? 
-            <div>loading...</div> :
+            {isLoadingProfile ? 
+            <div className="loading">Loading...</div> :
             <div className='profile-header'>
                 {isUser ? 
                     <div className='title'><div>This is your profile, </div><div className='name'>{name}</div></div> : 
@@ -114,9 +128,13 @@ export default function Profile(props) {
             }
             <div className='user-posts'>
                 {listPosts(posts)}
+                {isLoadingPosts && <div className="loading">Loading...</div>}
             </div>
             <UserContext>
-                {userContext => { if(userContext.user.id === 0) history.push("/login");}}
+                {userContext => { 
+                    if(userContext.user.id === 0) history.push("/login");
+                    setIsUser(userContext.user.id === userId);
+            }}
             </UserContext>
         </div>
     )

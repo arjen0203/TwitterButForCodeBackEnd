@@ -90,4 +90,12 @@ public class CommentService {
       throw new NotFoundException("Comment");
     }
   }
+
+  public long getCommentCountOfPost(long id) {
+    try {
+      return commentRepository.getCommentCountByPostId(id);
+    } catch (EmptyResultDataAccessException ex) {
+      throw new NotFoundException("Post");
+    }
+  }
 }

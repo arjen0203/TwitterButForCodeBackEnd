@@ -53,4 +53,12 @@ public class RevisionService {
     val returnData = modelMapper.map(revision, RevisionDto.class);
     return returnData;
   }
+
+  public long getRevisionCountOfPost(long id) {
+    try {
+      return revisionRepository.getRevisionCountByPostId(id);
+    } catch (EmptyResultDataAccessException ex) {
+      throw new NotFoundException("Post");
+    }
+  }
 }

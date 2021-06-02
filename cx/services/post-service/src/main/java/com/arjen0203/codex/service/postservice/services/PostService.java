@@ -11,7 +11,10 @@ import com.arjen0203.codex.domain.core.general.exceptions.NotFoundException;
 import com.arjen0203.codex.domain.post.dto.PostDto;
 import com.arjen0203.codex.domain.post.entity.ContentBlock;
 import com.arjen0203.codex.domain.post.entity.Post;
+import com.arjen0203.codex.service.postservice.repositories.CommentRepository;
+import com.arjen0203.codex.service.postservice.repositories.PostLikeRepository;
 import com.arjen0203.codex.service.postservice.repositories.PostRepository;
+import com.arjen0203.codex.service.postservice.repositories.RevisionRepository;
 import lombok.AllArgsConstructor;
 import lombok.val;
 import org.modelmapper.ModelMapper;
@@ -19,12 +22,16 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 @Service
 @AllArgsConstructor
 public class PostService {
   private final PostRepository postRepository;
+  private final CommentRepository commentRepository;
+  private final PostLikeRepository postLikeRepository;
+  private final RevisionRepository revisionRepository;
   private final ModelMapper modelMapper;
 
   /**
@@ -32,15 +39,9 @@ public class PostService {
    *
    * @return a list of all the posts.
    */
-  public Page<PostDto.PostReturn> getAllPosts(int pageNr, int size) {
-    var postPage = postRepository.findAll(PageRequest.of(pageNr, size));
-    return postPage.map(f -> {
-      val returnData = modelMapper.map(f, PostDto.PostReturn.class);
-      returnData.setCommentsCount(f.getComments().size());
-      returnData.setPostLikesCount(f.getPostLikes().size());
-      returnData.setRevisionsCount(f.getRevisions().size());
-      return returnData;
-    });
+  public Page<PostDto.PostReturn> getAllPosts(UUID userId, int pageNr, int size) {
+    var postPage = postRepository.findAll(PageRequest.of(pageNr, size, Sort.by("createdAt").descending()));
+    return createPageOfPostDto(userId, postPage);
   }
 
   /**
@@ -48,13 +49,22 @@ public class PostService {
    *
    * @return a list of all the posts.
    */
-  public Page<PostDto.PostReturn> getAllUserPosts(UUID userId, int pageNr, int size) {
-    var postPage = postRepository.findAllPostByUserId(userId, PageRequest.of(pageNr, size));
+  public Page<PostDto.PostReturn> getAllUserPosts(UUID userId, UUID postUserId, int pageNr, int size) {
+    var postPage = postRepository.findAllPostByUserId(postUserId, PageRequest.of(pageNr, size,
+            Sort.by("createdAt").descending()));
+    return createPageOfPostDto(userId, postPage);
+  }
+
+  public <T> Page<PostDto.PostReturn> createPageOfPostDto(UUID user, Page<T> postPage) {
     return postPage.map(f -> {
       val returnData = modelMapper.map(f, PostDto.PostReturn.class);
-      returnData.setCommentsCount(f.getComments().size());
-      returnData.setPostLikesCount(f.getPostLikes().size());
-      returnData.setRevisionsCount(f.getRevisions().size());
+      //todo make this more efficient (possibly normal sql request)
+      returnData.setCommentsCount(commentRepository.getCommentCountByPostId(returnData.getId()));
+      returnData.setPostLikesCount(postLikeRepository.getPostLikeCountByPostId(returnData.getId()));
+      returnData.setRevisionsCount(revisionRepository.getRevisionCountByPostId(returnData.getId()));
+      System.out.println(user);
+      System.out.println(returnData.getId());
+      returnData.setLiked(postLikeRepository.findByUserAndPostId(user, returnData.getId()).isPresent());
       return returnData;
     });
   }

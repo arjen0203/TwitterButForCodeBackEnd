@@ -11,4 +11,7 @@ public interface CommentRepository extends PagingAndSortingRepository<Comment, L
 
   @Query("select c from Comment c where c.post.id = :postId")
   Page<Comment> findAllByPostId(@Param("postId") Long postId, final Pageable pageable);
+
+  @Query("SELECT COUNT(c) FROM Comment c WHERE c.post.id = :postId")
+  long getCommentCountByPostId(@Param("postId") long postId);
 }
