@@ -44,6 +44,22 @@ public class PostService {
   }
 
   /**
+   * The method for getting all the posts.
+   *
+   * @return a list of all the posts.
+   */
+  public Page<PostDto.PostReturn> getAllUserPosts(UUID userId, int pageNr, int size) {
+    var postPage = postRepository.findAllPostByUserId(userId, PageRequest.of(pageNr, size));
+    return postPage.map(f -> {
+      val returnData = modelMapper.map(f, PostDto.PostReturn.class);
+      returnData.setCommentsCount(f.getComments().size());
+      returnData.setPostLikesCount(f.getPostLikes().size());
+      returnData.setRevisionsCount(f.getRevisions().size());
+      return returnData;
+    });
+  }
+
+  /**
    * Retrieves a specific Project by id.
    *
    * @param id id of project

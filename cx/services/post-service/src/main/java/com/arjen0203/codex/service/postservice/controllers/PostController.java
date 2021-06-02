@@ -39,6 +39,17 @@ public class PostController {
   }
 
   /**
+   * Get all the posts (or at least a page) of a user.
+   *
+   * @return a page of posts
+   */
+  @GetMapping("/user/{userId}")
+  public ResponseEntity<Page<PostDto.PostReturn>> getAllUserPosts(@PathVariable UUID userId,
+          @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "20") int size) {
+    return ResponseEntity.ok(postService.getAllUserPosts(userId, page, size));
+  }
+
+  /**
    * The method for getting a specific post.
    *
    * @param id the id of the desired post
