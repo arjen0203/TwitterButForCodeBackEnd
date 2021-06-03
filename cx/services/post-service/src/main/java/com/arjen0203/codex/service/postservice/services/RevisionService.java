@@ -37,7 +37,7 @@ public class RevisionService {
    * @return created revision
    */
   public RevisionDto storeRevision(long postId, UUID user, RevisionDto.RequestData revisionDto) {
-    val originalPost = postService.getPostById(postId);
+    val originalPost = modelMapper.map(postService.getPostByIdWithRevisions(postId), Post.class);
     val revision = modelMapper.map(revisionDto, Revision.class);
 
     revision.setOriginalPost(originalPost);

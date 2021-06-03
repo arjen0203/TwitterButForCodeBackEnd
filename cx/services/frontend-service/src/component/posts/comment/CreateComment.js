@@ -7,7 +7,10 @@ export default function CreateComment(props) {
     const [content, setContent] = useState("");
 
     async function saveComment() {
-        if (content.length < 4 || content.length > 512) toast.warn("Comment should be between 4 and 512 charachters");
+        if (content.length < 4 || content.length > 512) {
+            toast.warn("Comment should be between 4 and 512 charachters");
+            return;
+        }
         var result = await Fetch.post(`/posts/${props.postId}/comments`, {content});
         if (result.ok) {
             props.closeCreateComment();

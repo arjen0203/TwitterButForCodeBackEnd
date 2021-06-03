@@ -13,7 +13,6 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 
 public interface PostLikeRepository extends CrudRepository<PostLike, Long> {
-  Optional<PostLike> findByUserAndPost(UUID user, Post post);
 
   @Query("select p from PostLike p where p.post.id = :postId and p.user = :user")
   Optional<PostLike> findByUserAndPostId(@Param("user") UUID user, @Param("postId") long postId);

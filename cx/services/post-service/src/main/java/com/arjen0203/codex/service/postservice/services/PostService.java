@@ -11,6 +11,8 @@ import com.arjen0203.codex.domain.core.general.exceptions.NotFoundException;
 import com.arjen0203.codex.domain.post.dto.PostDto;
 import com.arjen0203.codex.domain.post.entity.ContentBlock;
 import com.arjen0203.codex.domain.post.entity.Post;
+import com.arjen0203.codex.domain.post.interfaces.IPost;
+import com.arjen0203.codex.domain.post.interfaces.IPostIncludingRevisions;
 import com.arjen0203.codex.service.postservice.repositories.CommentRepository;
 import com.arjen0203.codex.service.postservice.repositories.PostLikeRepository;
 import com.arjen0203.codex.service.postservice.repositories.PostRepository;
@@ -81,8 +83,14 @@ public class PostService {
     return postReturn;
   }
 
-  public Post getPostById(long id) {
-    val oPost = postRepository.findById(id);
+  public IPost getPostById(long id) {
+    val oPost = postRepository.findIPostById(id);
+
+    return oPost.orElseThrow(NotFoundException::new);
+  }
+
+  public IPostIncludingRevisions getPostByIdWithRevisions(long id) {
+    val oPost = postRepository.findIPostByIdWithRevisions(id);
 
     return oPost.orElseThrow(NotFoundException::new);
   }

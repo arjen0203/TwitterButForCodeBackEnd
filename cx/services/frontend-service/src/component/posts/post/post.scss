@@ -11,11 +11,24 @@
 
     .title {
         font-weight: bold;
-        font-size: 28px;
+        font-size: 34px;
     }
 
-    .author {
+    .revision-link {
+        font-weight: bold;
+        font-size: 24px;
+        cursor: pointer;
+        word-break: break-word;
         font-style: italic;
+        margin-bottom: 12px;
+    
+        &:hover {
+            text-decoration: underline;
+        }
+    }
+
+
+    .author {
         font-size: 20px;
         margin-top: -5px;
         margin-left: 2px;

@@ -7,6 +7,7 @@ import com.arjen0203.codex.domain.core.general.exceptions.ConflictException;
 import com.arjen0203.codex.domain.core.general.exceptions.NotFoundException;
 import com.arjen0203.codex.domain.post.dto.CommentDto;
 import com.arjen0203.codex.domain.post.entity.Comment;
+import com.arjen0203.codex.domain.post.entity.Post;
 import com.arjen0203.codex.service.postservice.repositories.CommentRepository;
 import com.arjen0203.codex.service.postservice.repositories.PostRepository;
 import lombok.AllArgsConstructor;
@@ -44,12 +45,12 @@ public class CommentService {
    * @return the comment dto of the stored comment
    */
   public CommentDto storeComment(UUID user, CommentDto.RequestData commentDto, long postId) {
-    val post = postService.getPostById(postId);
+    val post = modelMapper.map(postService.getPostById(postId), Post.class);
 
     val comment = modelMapper.map(commentDto, Comment.class);
     comment.setUser(user);
     comment.setCreatedAt(Instant.now());
-    comment.setPost(post);
+    comment.setPost( post);
 
     commentRepository.save(comment);
     try {

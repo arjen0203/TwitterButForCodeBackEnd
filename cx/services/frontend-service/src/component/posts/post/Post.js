@@ -50,7 +50,8 @@ export default function Post(props) {
 
     return (
         <div className='post'>
-            <div className='title'>{props.data.title}</div>
+            <div className='title'>- {props.data.title}</div>
+            {props.data.revision && <div className='revision-link' onClick={() => history.push("/post/" + props.data.revision.originalPost.id)}>Revision of: {props.data.revision.originalPost.title}</div>}
             <div className='author' onClick={() => history.push("/profile/" + props.data.author)}>Author: {props.data.author}</div>
             <div className='body'>
                 {makePostBody(props.data.contentBlocks)}

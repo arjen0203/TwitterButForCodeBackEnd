@@ -139,7 +139,7 @@ export default function ExpandedPost(props) {
             </div>
             {!isLoadingPost &&<div className="add-buttons-div">
                 <button onClick={() => setIsCreatingComment(true)}>Add comment</button>
-                <button>Create revision</button>
+                <button onClick={() => history.push('/revision/create/' + postId)}>Create revision</button>
             </div>}
             {isCreatingComment && <div className="create-commment-div">
                 <CreateComment closeCreateComment={() => setIsCreatingComment(false)} addCommentToList={(comment) => addCommentToList(comment)} postId={postId}/>

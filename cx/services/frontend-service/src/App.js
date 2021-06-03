@@ -14,6 +14,8 @@ import Storage from './utils/storage';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.min.css';
 import ExpandedPost from './pages/post/ExpandedPost';
+import CreatePost from './pages/createPost/CreatePost';
+import CreateRevision from './pages/createRevision/CreateRevision';
 
 
 class App extends React.Component {
@@ -87,8 +89,10 @@ class App extends React.Component {
                         <Route exact path='/feed' component={Home}/>
 
                         <Route exact path='/reports' component={Home}/>
+                        <Route exact path='/post/create' component={CreatePost}/>
+                        <Route exact path='/revision/create/:postId' component={CreateRevision}/>
                         <Route exact path='/post/:postId' component={(props) => <ExpandedPost {...props} key={window.location.pathname}/>}/>
-                        <Route exact path='/post/create' component={Home}/>
+                        
 
                         <Route path='/' component={Home}/>
                     </Switch>

@@ -134,7 +134,7 @@ export default function Profile(props) {
                 {userContext => { 
                     if(userContext.user.id === 0) history.push("/login");
                     setIsUser(userContext.user.id === userId);
-            }}
+                }}
             </UserContext>
         </div>
     )

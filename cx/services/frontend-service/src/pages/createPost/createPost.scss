@@ -1,0 +1,129 @@
+@import './../../colors';
+.create-post {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    .post-div {
+        margin-top: 25px;
+        background-color: $terraCotta;
+        padding: 20px;
+        border-radius: 5px;
+        width: 90%;
+        max-width: 1000px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        .head-title {
+            font-size: 32px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        label {
+            font-size: 20px;
+            font-weight: bold;
+        }
+        
+        .input-div-title {
+            width: 85%;
+            padding: 20px;
+        }
+
+
+        .input-div, .text-div, .code-div {
+            width: 95%;
+            padding: 20px;
+        }
+
+        .code-div {
+            textarea {
+                font-family: 'Courier New', Courier, monospace;
+            }
+        }
+
+        textarea {
+            font-size: 20px;
+            resize: vertical;
+            width: 100%;
+        }
+
+        input {
+            font-size: 20px;
+            width: 100%;
+        }
+
+        .content-blocks {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 90%;
+
+            .block-div {
+                background-color: $terraCottaLight;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                margin-top: 20px;
+                margin-bottom: 10px;
+                padding: 10px;
+                width: 100%;
+            }
+        }
+        .add-block-button {
+            margin-top: 10px;
+        }
+    }
+
+    button {
+        display: inline-block;
+        font-size: 16px;
+        padding: 5px;
+        margin-left: 4px;
+        background-color: $greenSheenDark;
+        color: $eggShellLight;
+        cursor: pointer;
+        text-decoration: none;
+        transition: 0.4s;
+        border-radius: 5px;
+        border: 3.5px solid $greenSheenDarker;
+
+        &:hover {
+            background-color: $greenSheenDarker;
+        }
+        &:active {
+            position:relative;
+            top:1px;
+        }
+    }
+}
+
+button {
+    display: inline-block;
+    font-size: 16px;
+    padding: 5px;
+    margin-left: 4px;
+    background-color: $greenSheenDark;
+    color: $eggShellLight;
+    cursor: pointer;
+    text-decoration: none;
+    transition: 0.4s;
+    border-radius: 5px;
+    border: 3.5px solid $greenSheenDarker;
+
+    &:hover {
+        background-color: $greenSheenDarker;
+    }
+    &:active {
+        position:relative;
+        top:1px;
+    }
+}
+
+.post-button {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    padding: 8px !important;
+    font-size: 24px !important;
+}
