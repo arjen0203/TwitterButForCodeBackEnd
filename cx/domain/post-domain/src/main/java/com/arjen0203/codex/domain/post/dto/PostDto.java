@@ -57,4 +57,12 @@ public class PostDto {
     private Instant createdAt;
     private Set<ContentBlockDto> contentBlocks;
   }
+
+  @Data
+  public static class RevisionReferenceReturn {
+    private long id;
+    private UUID author;
+    private String title;
+    private Instant createdAt;
+  }
 }

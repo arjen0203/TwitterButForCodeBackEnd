@@ -1,10 +1,13 @@
 import React, { useState } from 'react';
 import './post.scss'
-import Fetch from '../../utils/fetchUtil';
+import Fetch from '../../../utils/fetchUtil';
+import { useHistory } from 'react-router';
+import { toast } from 'react-toastify';
 
 export default function Post(props) {
     const [liked, setLiked] = useState(props.data.liked);
     const [likeAmount, setLikeAmount] = useState(props.data.postLikesCount);
+    const history = useHistory();
 
     function makePostBody(input) {
         var output = [];
@@ -37,10 +40,18 @@ export default function Post(props) {
         }
     }
 
+    async function deletePost() {
+        var result = await Fetch.delete("/posts/" + props.data.id);
+        if (result.ok) {
+            toast.success("Succesfully deleted post");
+            history.push("/home");
+        }
+    }
+
     return (
         <div className='post'>
             <div className='title'>{props.data.title}</div>
-            <div className='author'>Author: {props.data.author}</div>
+            <div className='author' onClick={() => history.push("/profile/" + props.data.author)}>Author: {props.data.author}</div>
             <div className='body'>
                 {makePostBody(props.data.contentBlocks)}
             </div>
@@ -51,7 +62,8 @@ export default function Post(props) {
             </div>
             <div className='bottom-buttons'>
                 {!props.isUser && <div>{liked ? <button onClick={() => likePost()} className='active-button'>like</button> : <button onClick={() => likePost()}>like</button>}</div>}
-                <button>discussion</button>
+                {!props.isExpanded && <button onClick={() => history.push("/post/" + props.data.id)}>discussion</button>}
+                {props.isUser && props.isExpanded && <button onClick={() => deletePost()}>Delete</button>}
                 {!props.isUser ? <button>report</button> : <button>edit</button>}
             </div>
         </div>

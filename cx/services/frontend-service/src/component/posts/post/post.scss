@@ -1,4 +1,4 @@
-@import './../../colors';
+@import './../../../colors';
 
 .post {
     display: flex;
@@ -20,6 +20,11 @@
         margin-top: -5px;
         margin-left: 2px;
         margin-bottom: 5px;
+        cursor: pointer;
+
+        &:hover {
+            text-decoration: underline;
+        }
     }
     .body {
         background-color: $terraCottaLight;

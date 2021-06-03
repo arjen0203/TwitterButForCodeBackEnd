@@ -35,7 +35,7 @@ class Login extends Component {
 
         var data = {email: this.state.email, password: this.state.password, rememberMe: this.state.rememberMe}
 
-        const result = await Fetch.post('auth/login', data, false);
+        const result = await Fetch.post('auth/login', data);
         if (result.ok) {
             Storage.setRememberMe(this.state.rememberMe);
             toast.success('Login Successful');

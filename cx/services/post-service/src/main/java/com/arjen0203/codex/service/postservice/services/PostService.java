@@ -57,15 +57,7 @@ public class PostService {
 
   public <T> Page<PostDto.PostReturn> createPageOfPostDto(UUID user, Page<T> postPage) {
     return postPage.map(f -> {
-      val returnData = modelMapper.map(f, PostDto.PostReturn.class);
-      //todo make this more efficient (possibly normal sql request)
-      returnData.setCommentsCount(commentRepository.getCommentCountByPostId(returnData.getId()));
-      returnData.setPostLikesCount(postLikeRepository.getPostLikeCountByPostId(returnData.getId()));
-      returnData.setRevisionsCount(revisionRepository.getRevisionCountByPostId(returnData.getId()));
-      System.out.println(user);
-      System.out.println(returnData.getId());
-      returnData.setLiked(postLikeRepository.findByUserAndPostId(user, returnData.getId()).isPresent());
-      return returnData;
+      return createPostReturn(user, f);
     });
   }
 
@@ -75,14 +67,18 @@ public class PostService {
    * @param id id of project
    * @return Project
    */
-  public PostDto.PostReturn getPostDtoById(long id) {
+  public PostDto.PostReturn getPostDtoById(long id, UUID userId) {
     val post = getPostById(id);
-    val returnData = modelMapper.map(post, PostDto.PostReturn.class);
-    returnData.setCommentsCount(post.getComments().size());
-    returnData.setPostLikesCount(post.getPostLikes().size());
-    returnData.setRevisionsCount(post.getRevisions().size());
+    return createPostReturn(userId, post);
+  }
 
-    return returnData;
+  public <T> PostDto.PostReturn createPostReturn(UUID user, T post) {
+    val postReturn = modelMapper.map(post, PostDto.PostReturn.class);
+    postReturn.setCommentsCount(commentRepository.getCommentCountByPostId(postReturn.getId()));
+    postReturn.setPostLikesCount(postLikeRepository.getPostLikeCountByPostId(postReturn.getId()));
+    postReturn.setRevisionsCount(revisionRepository.getRevisionCountByPostId(postReturn.getId()));
+    postReturn.setLiked(postLikeRepository.findByUserAndPostId(user, postReturn.getId()).isPresent());
+    return postReturn;
   }
 
   public Post getPostById(long id) {

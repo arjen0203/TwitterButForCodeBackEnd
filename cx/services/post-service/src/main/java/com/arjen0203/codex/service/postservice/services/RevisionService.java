@@ -5,6 +5,7 @@ import java.util.UUID;
 
 import com.arjen0203.codex.domain.core.general.exceptions.ConflictException;
 import com.arjen0203.codex.domain.core.general.exceptions.NotFoundException;
+import com.arjen0203.codex.domain.post.dto.PostDto;
 import com.arjen0203.codex.domain.post.dto.RevisionDto;
 import com.arjen0203.codex.domain.post.entity.Post;
 import com.arjen0203.codex.domain.post.entity.Revision;
@@ -15,6 +16,9 @@ import lombok.val;
 import org.modelmapper.ModelMapper;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -50,8 +54,7 @@ public class RevisionService {
     } catch (DataIntegrityViolationException ex) {
       throw new ConflictException("Could not create revision");
     }
-    val returnData = modelMapper.map(revision, RevisionDto.class);
-    return returnData;
+    return modelMapper.map(revision, RevisionDto.class);
   }
 
   public long getRevisionCountOfPost(long id) {
@@ -60,5 +63,11 @@ public class RevisionService {
     } catch (EmptyResultDataAccessException ex) {
       throw new NotFoundException("Post");
     }
+  }
+
+  public Page<PostDto.RevisionReferenceReturn> getAllRevisionsOfPost(long postId, int pageNr, int size) {
+    var postPage = postRepository.findAllRevisionPostByOriginalPostId(postId, PageRequest.of(pageNr, size,
+            Sort.by("createdAt").descending()));
+    return postPage.map(f -> modelMapper.map(f, PostDto.RevisionReferenceReturn.class));
   }
 }

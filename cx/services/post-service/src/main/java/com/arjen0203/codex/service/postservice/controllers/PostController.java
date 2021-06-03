@@ -56,8 +56,8 @@ public class PostController {
    * @return a response entity with the post (if found)
    */
   @GetMapping("/{id}")
-  public ResponseEntity<PostDto.PostReturn> getPostById(@PathVariable long id) {
-    return ResponseEntity.ok(postService.getPostDtoById(id));
+  public ResponseEntity<PostDto.PostReturn> getPostById(@RequestHeader UUID userId, @PathVariable long id) {
+    return ResponseEntity.ok(postService.getPostDtoById(id, userId));
   }
 
   /**

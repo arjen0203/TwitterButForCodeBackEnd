@@ -16,6 +16,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 /** The service for dealing with all the comment actions. */
@@ -32,7 +33,7 @@ public class CommentService {
    * @return a list of all the comments.
    */
   public Page<CommentDto> getAllComments(long postId, int pageNr, int size) {
-    var commentPage = commentRepository.findAllByPostId(postId, PageRequest.of(pageNr, size));
+    var commentPage = commentRepository.findAllByPostId(postId, PageRequest.of(pageNr, size, Sort.by("createdAt").descending()));
     return commentPage.map(f -> modelMapper.map(f, CommentDto.class));
   }
 

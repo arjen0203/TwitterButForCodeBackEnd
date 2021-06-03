@@ -1,0 +1,51 @@
+@import './../../../colors';
+
+.create-comment {
+    display: flex;
+    flex-direction: column;
+    background-color: $terraCotta;
+    margin-bottom: 25px;
+    padding: 20px;
+    border-radius: 5px;
+    width: 100%;
+    
+    label {
+        font-size: 20px;
+        font-weight: bold;
+    }
+
+    .content {
+        font-size: 20px;
+        resize: vertical;
+    }
+
+    .button-wrapper {
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-end;
+        align-items: flex-end;
+        margin-top: 10px;
+        margin-bottom: -5px;
+    }
+
+    button {
+        display: inline-block;
+        font-size: 16px;
+        padding: 5px;
+        background-color: $greenSheenDark;
+        color: $eggShellLight;
+        cursor: pointer;
+        text-decoration: none;
+        transition: 0.4s;
+        border-radius: 5px;
+        border: 3.5px solid $greenSheenDarker;
+
+        &:hover {
+            background-color: $greenSheenDarker;
+        }
+        &:active {
+            position:relative;
+            top:1px;
+        }
+    }
+}

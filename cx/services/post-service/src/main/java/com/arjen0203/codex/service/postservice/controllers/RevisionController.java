@@ -4,9 +4,11 @@ import java.util.UUID;
 
 import javax.validation.Valid;
 
+import com.arjen0203.codex.domain.post.dto.PostDto;
 import com.arjen0203.codex.domain.post.dto.RevisionDto;
 import com.arjen0203.codex.service.postservice.services.RevisionService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -37,5 +39,17 @@ public class RevisionController {
   public ResponseEntity<RevisionDto> createRevision(
       @PathVariable long postId, @RequestHeader UUID userId, @RequestBody RevisionDto.RequestData revisionDto) {
     return ResponseEntity.ok(revisionService.storeRevision(postId, userId, revisionDto));
+  }
+
+  /**
+   * getting a page of revision posts.
+   *
+   * @param postId the post whos revisions need to be gotten
+   * @return a page containing the revision posts
+   */
+  @GetMapping("/{postId}/revisions")
+  public ResponseEntity<Page<PostDto.RevisionReferenceReturn>> getAllRevisionsOfPost(
+          @PathVariable long postId, @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "20") int size) {
+    return ResponseEntity.ok(revisionService.getAllRevisionsOfPost(postId, page, size));
   }
 }
