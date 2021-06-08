@@ -67,7 +67,7 @@ public class UserService {
   public void removeUserById(UUID id) {
     var user = getById(id);
 
-    //userRepository.delete(user);
+    userRepository.delete(user);
     var removeUser = modelMapper.map(user, RemoveUserDto.class);
     messaging.send("remove-posts-user", removeUser);
   }

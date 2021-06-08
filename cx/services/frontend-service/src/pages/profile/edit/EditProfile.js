@@ -52,7 +52,6 @@ export default function EditProfile(props) {
         <UserContext>
         {userContext => { 
             if(userContext.user.id === 0) history.push("/login");
-
             return (        
             <div className='center'>
                 {!isLoaded ? 
@@ -81,7 +80,7 @@ export default function EditProfile(props) {
                     </div>
                     <div className='remove-profile'>
                         <div className='remove-button'>
-                            <button onClick={() => removeUser(userContext.logout)} className='remove-user'>Remove this account</button>
+                            <button onClick={() => removeUser(userContext.logoutUser)} className='remove-user'>Remove this account</button>
                         </div>
                     </div>
                     <div className='bottom'>

@@ -100,4 +100,8 @@ public class CommentService {
       throw new NotFoundException("Post");
     }
   }
+
+  public void removeCommentsUser(UUID userId) {
+    commentRepository.deleteAllCommentsByUser(userId);
+  }
 }

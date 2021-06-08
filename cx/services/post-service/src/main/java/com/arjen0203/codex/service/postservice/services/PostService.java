@@ -159,10 +159,9 @@ public class PostService {
   /**
    * The method for removing a post.
    *
-   * @param id the id of the post that should be removed.
+   * @param userId the id of the post that should be removed.
    */
-  public void removeUserPosts(UUID id) {
-      var posts = postRepository.findAllPostByUserId(id); //fix this
-      postRepository.deleteAll((List<Post>)(List<?>)posts);
+  public void removeUserPosts(UUID userId) {
+      postRepository.deleteAllPostsByUser(userId);
   }
 }

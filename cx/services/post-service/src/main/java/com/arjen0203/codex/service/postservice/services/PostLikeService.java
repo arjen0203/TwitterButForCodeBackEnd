@@ -79,4 +79,8 @@ public class PostLikeService {
     }
   }
 
+  public void removePostLikesUser(UUID userId) {
+    postLikeRepository.deleteAllPostLikesByUser(userId);
+  }
+
 }

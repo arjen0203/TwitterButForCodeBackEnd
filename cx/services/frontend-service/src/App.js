@@ -63,9 +63,10 @@ class App extends React.Component {
     render() {
         const userContext = {
             user: this.state.user,
-            loginUser: this.loginUser
+            loginUser: this.loginUser,
+            logoutUser: this.logoutUser
         }
-        
+
         return (
             <UserContext.Provider value={userContext}>
                 <Router className="router">
