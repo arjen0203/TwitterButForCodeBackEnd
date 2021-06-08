@@ -40,7 +40,7 @@ public class Post {
   private Set<ContentBlock> contentBlocks;
 
   @OneToMany(
-      cascade = {CascadeType.ALL},
+      cascade = {CascadeType.REMOVE},
       mappedBy = "post")
   private Set<PostLike> postLikes;
 

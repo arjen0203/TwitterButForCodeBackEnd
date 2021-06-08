@@ -5,6 +5,7 @@ import java.util.UUID;
 import com.arjen0203.codex.domain.core.general.exceptions.ConflictException;
 import com.arjen0203.codex.domain.core.general.exceptions.NotFoundException;
 import com.arjen0203.codex.domain.post.dto.PostLikeDto;
+import com.arjen0203.codex.domain.post.entity.Post;
 import com.arjen0203.codex.domain.post.entity.PostLike;
 import com.arjen0203.codex.service.postservice.repositories.PostLikeRepository;
 import lombok.AllArgsConstructor;
@@ -41,8 +42,8 @@ public class PostLikeService {
    * @return created Project
    */
   public PostLikeDto storePostLike(UUID user, long postId) {
-    val post = postService.getPostById(postId);
-    if (postLikeRepository.findByUserAndPost(user, post).isPresent()) {
+    val post = modelMapper.map(postService.getPostById(postId), Post.class);
+    if (postLikeRepository.findByUserAndPostId(user, post.getId()).isPresent()) {
       throw new ConflictException("The post is already liked by this user");
     }
 
@@ -62,13 +63,24 @@ public class PostLikeService {
   /**
    * The method for removing a like.
    *
-   * @param id the id of the like that should be removed.
+   * @param postId the id of the post where the like should be removed.
    */
-  public void removePostLike(long id) {
+  public void removePostLike(UUID userId, long postId) {
+    var postLike = postLikeRepository.findByUserAndPostId(userId, postId);
+    if (postLike.isEmpty()) throw new NotFoundException("Like");
+    postLikeRepository.deleteById(postLike.get().getId());
+  }
+
+  public long getPostLikeCountOfPost(long id) {
     try {
-      postLikeRepository.deleteById(id);
+      return postLikeRepository.getPostLikeCountByPostId(id);
     } catch (EmptyResultDataAccessException ex) {
-      throw new NotFoundException("Like");
+      throw new NotFoundException("Post");
     }
   }
+
+  public void removePostLikesUser(UUID userId) {
+    postLikeRepository.deleteAllPostLikesByUser(userId);
+  }
+
 }

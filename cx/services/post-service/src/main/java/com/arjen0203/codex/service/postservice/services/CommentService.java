@@ -7,6 +7,7 @@ import com.arjen0203.codex.domain.core.general.exceptions.ConflictException;
 import com.arjen0203.codex.domain.core.general.exceptions.NotFoundException;
 import com.arjen0203.codex.domain.post.dto.CommentDto;
 import com.arjen0203.codex.domain.post.entity.Comment;
+import com.arjen0203.codex.domain.post.entity.Post;
 import com.arjen0203.codex.service.postservice.repositories.CommentRepository;
 import com.arjen0203.codex.service.postservice.repositories.PostRepository;
 import lombok.AllArgsConstructor;
@@ -16,6 +17,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 /** The service for dealing with all the comment actions. */
@@ -32,7 +34,7 @@ public class CommentService {
    * @return a list of all the comments.
    */
   public Page<CommentDto> getAllComments(long postId, int pageNr, int size) {
-    var commentPage = commentRepository.findAllByPostId(postId, PageRequest.of(pageNr, size));
+    var commentPage = commentRepository.findAllByPostId(postId, PageRequest.of(pageNr, size, Sort.by("createdAt").descending()));
     return commentPage.map(f -> modelMapper.map(f, CommentDto.class));
   }
 
@@ -43,12 +45,12 @@ public class CommentService {
    * @return the comment dto of the stored comment
    */
   public CommentDto storeComment(UUID user, CommentDto.RequestData commentDto, long postId) {
-    val post = postService.getPostById(postId);
+    val post = modelMapper.map(postService.getPostById(postId), Post.class);
 
     val comment = modelMapper.map(commentDto, Comment.class);
     comment.setUser(user);
     comment.setCreatedAt(Instant.now());
-    comment.setPost(post);
+    comment.setPost( post);
 
     commentRepository.save(comment);
     try {
@@ -89,5 +91,17 @@ public class CommentService {
     } catch (EmptyResultDataAccessException ex) {
       throw new NotFoundException("Comment");
     }
+  }
+
+  public long getCommentCountOfPost(long id) {
+    try {
+      return commentRepository.getCommentCountByPostId(id);
+    } catch (EmptyResultDataAccessException ex) {
+      throw new NotFoundException("Post");
+    }
+  }
+
+  public void removeCommentsUser(UUID userId) {
+    commentRepository.deleteAllCommentsByUser(userId);
   }
 }

@@ -1,0 +1,87 @@
+@import './../../colors';
+
+.expanded-post {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    .post-div {
+        width: 85%;
+        max-width: 950px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-bottom: 15px;
+    }
+
+    .comments-div, .revisions-div, .create-commment-div {
+        width: 85%;
+        max-width: 900px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-top: 5px;
+        margin-bottom: 5px;
+    }
+
+    .loading {
+        margin-top: 5px;
+        font-size: 24px;
+        color: $eggShellLight;
+    }
+
+    .add-buttons-div {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+        margin-bottom: 30px;
+    }
+
+    .view-buttons-div {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        margin-bottom: 10px;
+
+        button {
+            padding: 8px;
+            background-color: $greenSheen;
+            color: $eggShellLight;
+            border-radius: 20px;
+            margin-left: 10px;
+            margin-right: 10px;
+
+            &:active {
+                position:relative;
+                top:0px;
+            }
+
+            &:disabled {
+                background-color: $greenSheenDarker;
+            }
+        }
+    }
+
+    button {
+        display: inline-block;
+        font-size: 16px;
+        padding: 5px;
+        background-color: $greenSheenDark;
+        color: $eggShellLight;
+        cursor: pointer;
+        text-decoration: none;
+        transition: 0.4s;
+        border-radius: 5px;
+        border: 3.5px solid $greenSheenDarker;
+        margin-left: 5px;
+        margin-right: 5px;
+
+        &:hover {
+            background-color: $greenSheenDarker;
+        }
+        &:active {
+            position:relative;
+            top:1px;
+        }
+    }
+}

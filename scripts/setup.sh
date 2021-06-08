@@ -6,3 +6,4 @@ helm repo add bitnami https://charts.bitnami.com/bitnami
 helm repo update
 
 helm install rabbit --set auth.username=admin,auth.password=RabbitPassword bitnami/rabbitmq
+kubectl apply -f components.yaml

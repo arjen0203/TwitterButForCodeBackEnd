@@ -11,6 +11,7 @@ import static org.mockito.Mockito.when;
 import java.util.Optional;
 import java.util.UUID;
 
+import com.arjen0203.codex.core.rabbit.utils.Messaging;
 import com.arjen0203.codex.domain.core.general.exceptions.NotFoundException;
 import com.arjen0203.codex.service.user.repositories.UserRepository;
 import com.arjen0203.codex.service.user.service.UserService;
@@ -34,12 +35,13 @@ class UserServiceTest {
   private final UserRepository mockUserRepository = mock(UserRepository.class);
   private UserDto mockUserDto;
   private UserService userService;
+  private Messaging messaging;
 
   @BeforeEach
   void setUp() {
     var modelMapper = new ModelMapper();
     mockUserDto = modelMapper.map(mockUser, UserDto.class);
-    userService = new UserService(mockUserRepository, modelMapper);
+    userService = new UserService(mockUserRepository, modelMapper, messaging);
   }
 
   @Test

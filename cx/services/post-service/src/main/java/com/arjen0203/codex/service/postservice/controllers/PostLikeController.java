@@ -56,12 +56,12 @@ public class PostLikeController {
   /**
    * A method for removing a like.
    *
-   * @param id the id of the like that should be removed.
+   * @param postId the id of the like that should be removed.
    * @return a response entity with a string of the result.
    */
-  @DeleteMapping("/likes/{id}")
-  public ResponseEntity<String> removePostLIke(@PathVariable long id) {
-    postLikeService.removePostLike(id);
+  @DeleteMapping("/{postId}/likes")
+  public ResponseEntity<String> removePostLIke(@RequestHeader UUID userId, @PathVariable long postId) {
+    postLikeService.removePostLike(userId, postId);
     return ResponseEntity.ok("ok");
   }
 }

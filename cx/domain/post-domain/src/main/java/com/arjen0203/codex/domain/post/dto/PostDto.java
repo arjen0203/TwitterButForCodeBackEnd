@@ -42,10 +42,11 @@ public class PostDto {
     private String title;
     private Instant createdAt;
     private Set<ContentBlockDto> contentBlocks;
-    private int postLikesCount;
-    private int commentsCount;
-    private int revisionsCount;
+    private long postLikesCount;
+    private long commentsCount;
+    private long revisionsCount;
     private RevisionDto.PostReturnData revision;
+    private boolean isLiked;
   }
 
   @Data
@@ -55,5 +56,13 @@ public class PostDto {
     private String title;
     private Instant createdAt;
     private Set<ContentBlockDto> contentBlocks;
+  }
+
+  @Data
+  public static class RevisionReferenceReturn {
+    private long id;
+    private UUID author;
+    private String title;
+    private Instant createdAt;
   }
 }

@@ -33,9 +33,20 @@ public class PostController {
    * @return a page of posts
    */
   @GetMapping
-  public ResponseEntity<Page<PostDto.PostReturn>> allPosts(
+  public ResponseEntity<Page<PostDto.PostReturn>> allPosts(@RequestHeader UUID userId,
       @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "20") int size) {
-    return ResponseEntity.ok(postService.getAllPosts(page, size));
+    return ResponseEntity.ok(postService.getAllPosts(userId, page, size));
+  }
+
+  /**
+   * Get all the posts (or at least a page) of a user.
+   *
+   * @return a page of posts
+   */
+  @GetMapping("/user/{postUserId}")
+  public ResponseEntity<Page<PostDto.PostReturn>> getAllUserPosts(@RequestHeader UUID userId,
+          @PathVariable UUID postUserId, @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "20") int size) {
+    return ResponseEntity.ok(postService.getAllUserPosts(userId, postUserId, page, size));
   }
 
   /**
@@ -45,8 +56,8 @@ public class PostController {
    * @return a response entity with the post (if found)
    */
   @GetMapping("/{id}")
-  public ResponseEntity<PostDto.PostReturn> getPostById(@PathVariable long id) {
-    return ResponseEntity.ok(postService.getPostDtoById(id));
+  public ResponseEntity<PostDto.PostReturn> getPostById(@RequestHeader UUID userId, @PathVariable long id) {
+    return ResponseEntity.ok(postService.getPostDtoById(id, userId));
   }
 
   /**

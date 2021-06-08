@@ -25,5 +25,6 @@ public class RevisionDto {
   @Data
   public static class PostReturnData {
     private long id;
+    private PostDto.RevisionReferenceReturn originalPost;
   }
 }

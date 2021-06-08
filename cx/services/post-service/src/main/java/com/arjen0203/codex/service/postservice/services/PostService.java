@@ -1,17 +1,25 @@
 package com.arjen0203.codex.service.postservice.services;
 
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
 import com.arjen0203.codex.domain.core.general.exceptions.ConflictException;
+import com.arjen0203.codex.domain.core.general.exceptions.InternalServerException;
 import com.arjen0203.codex.domain.core.general.exceptions.NotFoundException;
 import com.arjen0203.codex.domain.post.dto.PostDto;
 import com.arjen0203.codex.domain.post.entity.ContentBlock;
 import com.arjen0203.codex.domain.post.entity.Post;
+import com.arjen0203.codex.domain.post.interfaces.IPost;
+import com.arjen0203.codex.domain.post.interfaces.IPostIncludingRevisions;
+import com.arjen0203.codex.service.postservice.repositories.CommentRepository;
+import com.arjen0203.codex.service.postservice.repositories.PostLikeRepository;
 import com.arjen0203.codex.service.postservice.repositories.PostRepository;
+import com.arjen0203.codex.service.postservice.repositories.RevisionRepository;
 import lombok.AllArgsConstructor;
 import lombok.val;
 import org.modelmapper.ModelMapper;
@@ -19,12 +27,16 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 @Service
 @AllArgsConstructor
 public class PostService {
   private final PostRepository postRepository;
+  private final CommentRepository commentRepository;
+  private final PostLikeRepository postLikeRepository;
+  private final RevisionRepository revisionRepository;
   private final ModelMapper modelMapper;
 
   /**
@@ -32,14 +44,25 @@ public class PostService {
    *
    * @return a list of all the posts.
    */
-  public Page<PostDto.PostReturn> getAllPosts(int pageNr, int size) {
-    var postPage = postRepository.findAll(PageRequest.of(pageNr, size));
+  public Page<PostDto.PostReturn> getAllPosts(UUID userId, int pageNr, int size) {
+    var postPage = postRepository.findAll(PageRequest.of(pageNr, size, Sort.by("createdAt").descending()));
+    return createPageOfPostDto(userId, postPage);
+  }
+
+  /**
+   * The method for getting all the posts.
+   *
+   * @return a list of all the posts.
+   */
+  public Page<PostDto.PostReturn> getAllUserPosts(UUID userId, UUID postUserId, int pageNr, int size) {
+    var postPage = postRepository.findAllPostByUserId(postUserId, PageRequest.of(pageNr, size,
+            Sort.by("createdAt").descending()));
+    return createPageOfPostDto(userId, postPage);
+  }
+
+  public <T> Page<PostDto.PostReturn> createPageOfPostDto(UUID user, Page<T> postPage) {
     return postPage.map(f -> {
-      val returnData = modelMapper.map(f, PostDto.PostReturn.class);
-      returnData.setCommentsCount(f.getComments().size());
-      returnData.setPostLikesCount(f.getPostLikes().size());
-      returnData.setRevisionsCount(f.getRevisions().size());
-      return returnData;
+      return createPostReturn(user, f);
     });
   }
 
@@ -49,18 +72,28 @@ public class PostService {
    * @param id id of project
    * @return Project
    */
-  public PostDto.PostReturn getPostDtoById(long id) {
+  public PostDto.PostReturn getPostDtoById(long id, UUID userId) {
     val post = getPostById(id);
-    val returnData = modelMapper.map(post, PostDto.PostReturn.class);
-    returnData.setCommentsCount(post.getComments().size());
-    returnData.setPostLikesCount(post.getPostLikes().size());
-    returnData.setRevisionsCount(post.getRevisions().size());
-
-    return returnData;
+    return createPostReturn(userId, post);
   }
 
-  public Post getPostById(long id) {
-    val oPost = postRepository.findById(id);
+  public <T> PostDto.PostReturn createPostReturn(UUID user, T post) {
+    val postReturn = modelMapper.map(post, PostDto.PostReturn.class);
+    postReturn.setCommentsCount(commentRepository.getCommentCountByPostId(postReturn.getId()));
+    postReturn.setPostLikesCount(postLikeRepository.getPostLikeCountByPostId(postReturn.getId()));
+    postReturn.setRevisionsCount(revisionRepository.getRevisionCountByPostId(postReturn.getId()));
+    postReturn.setLiked(postLikeRepository.findByUserAndPostId(user, postReturn.getId()).isPresent());
+    return postReturn;
+  }
+
+  public IPost getPostById(long id) {
+    val oPost = postRepository.findIPostById(id);
+
+    return oPost.orElseThrow(NotFoundException::new);
+  }
+
+  public IPostIncludingRevisions getPostByIdWithRevisions(long id) {
+    val oPost = postRepository.findIPostByIdWithRevisions(id);
 
     return oPost.orElseThrow(NotFoundException::new);
   }
@@ -121,5 +154,14 @@ public class PostService {
     } catch (EmptyResultDataAccessException ex) {
       throw new NotFoundException("Post");
     }
+  }
+
+  /**
+   * The method for removing a post.
+   *
+   * @param userId the id of the post that should be removed.
+   */
+  public void removeUserPosts(UUID userId) {
+      postRepository.deleteAllPostsByUser(userId);
   }
 }
