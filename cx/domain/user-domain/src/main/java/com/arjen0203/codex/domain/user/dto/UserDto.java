@@ -15,4 +15,15 @@ public class UserDto {
   private String username;
   private RoleDto role;
   private String email;
+
+  @Data
+  public final class Profile {
+    private UUID id;
+    private String username;
+  }
+
+  @Data
+  public final class Remove {
+    private UUID id;
+  }
 }

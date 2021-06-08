@@ -1,5 +1,6 @@
 package com.arjen0203.codex.service.user.service;
 
+import com.arjen0203.codex.core.rabbit.utils.Messaging;
 import com.arjen0203.codex.domain.core.general.exceptions.NotFoundException;
 import com.arjen0203.codex.domain.auth.dto.UpdateUserPassword;
 import com.arjen0203.codex.domain.user.dto.CreateUser;
@@ -22,6 +23,7 @@ import java.util.UUID;
 public class UserService {
   private final UserRepository userRepository;
   private final ModelMapper modelMapper;
+  private final Messaging messaging = new Messaging();
 
   /**
    * Gets a User by the provided UUID.
@@ -47,6 +49,25 @@ public class UserService {
   public UserDto getDtoById(UUID id) {
     var user = this.getById(id);
     return modelMapper.map(user, UserDto.class);
+  }
+
+  /**
+   * Gets a Users profile by the provided UUID and converts it to a DTO.
+   *
+   * @param id the UUID for the requested User
+   * @return UserDTO.Profile
+   */
+  public UserDto.Profile getProfileById(UUID id) {
+    var user = getById(id);
+    return modelMapper.map(user, UserDto.Profile.class);
+  }
+
+  public void removeUserById(UUID id) {
+    var user = getById(id);
+
+    userRepository.delete(user);
+    var removeUser = modelMapper.map(user, UserDto.Remove.class);
+    messaging.send("remove-posts-user", removeUser);
   }
 
   /**

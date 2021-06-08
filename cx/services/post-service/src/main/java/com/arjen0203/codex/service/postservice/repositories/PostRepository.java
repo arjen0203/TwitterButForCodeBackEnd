@@ -1,5 +1,6 @@
 package com.arjen0203.codex.service.postservice.repositories;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -19,6 +20,9 @@ import org.springframework.data.repository.query.Param;
 public interface PostRepository extends PagingAndSortingRepository<Post, Long> {
     @Query("select p from Post p where p.author =:userId")
     Page<IPost> findAllPostByUserId(@Param("userId") UUID userId, final Pageable pageable);
+
+    @Query("select p from Post p where p.author =:userId")
+    List<IPost> findAllPostByUserId(@Param("userId") UUID userId);
 
     @Query("select p from Post p where p.id =:postId")
     Optional<IPost> findIPostById(@Param("postId") long id);
