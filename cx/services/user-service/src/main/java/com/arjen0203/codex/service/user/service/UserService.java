@@ -4,6 +4,8 @@ import com.arjen0203.codex.core.rabbit.utils.Messaging;
 import com.arjen0203.codex.domain.core.general.exceptions.NotFoundException;
 import com.arjen0203.codex.domain.auth.dto.UpdateUserPassword;
 import com.arjen0203.codex.domain.user.dto.CreateUser;
+import com.arjen0203.codex.domain.user.dto.ProfileDto;
+import com.arjen0203.codex.domain.user.dto.RemoveUserDto;
 import com.arjen0203.codex.domain.user.dto.RoleDto;
 import com.arjen0203.codex.domain.user.dto.UserDto;
 import com.arjen0203.codex.domain.user.entity.User;
@@ -57,16 +59,16 @@ public class UserService {
    * @param id the UUID for the requested User
    * @return UserDTO.Profile
    */
-  public UserDto.Profile getProfileById(UUID id) {
+  public ProfileDto getProfileById(UUID id) {
     var user = getById(id);
-    return modelMapper.map(user, UserDto.Profile.class);
+    return modelMapper.map(user, ProfileDto.class);
   }
 
   public void removeUserById(UUID id) {
     var user = getById(id);
 
-    userRepository.delete(user);
-    var removeUser = modelMapper.map(user, UserDto.Remove.class);
+    //userRepository.delete(user);
+    var removeUser = modelMapper.map(user, RemoveUserDto.class);
     messaging.send("remove-posts-user", removeUser);
   }
 

@@ -2,6 +2,7 @@ package com.arjen0203.codex.service.user.controllers;
 
 import java.util.UUID;
 
+import com.arjen0203.codex.domain.user.dto.ProfileDto;
 import com.arjen0203.codex.domain.user.dto.UserDto;
 import com.arjen0203.codex.service.user.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -33,7 +34,7 @@ public class UserController {
   }
 
   @GetMapping("/{id}")
-  public ResponseEntity<UserDto.Profile> getProfile(@PathVariable UUID id, @RequestHeader UUID userId) {
+  public ResponseEntity<ProfileDto> getProfile(@PathVariable UUID id, @RequestHeader UUID userId) {
     var user = userService.getProfileById(id);
     return ResponseEntity.ok(user);
   }

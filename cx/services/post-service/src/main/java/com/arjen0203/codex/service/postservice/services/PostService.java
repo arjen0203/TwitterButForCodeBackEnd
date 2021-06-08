@@ -162,15 +162,7 @@ public class PostService {
    * @param id the id of the post that should be removed.
    */
   public void removeUserPosts(UUID id) {
-    try {
-      var iPosts = postRepository.findAllPostByUserId(id);
-      List<Post> posts = new ArrayList<>();
-      for (IPost iPost : iPosts) {
-          posts.add(modelMapper.map(iPost, Post.class));
-      }
-      postRepository.deleteAll(posts);
-    } catch (Exception ex) {
-      throw new InternalServerException();
-    }
+      var posts = postRepository.findAllPostByUserId(id); //fix this
+      postRepository.deleteAll((List<Post>)(List<?>)posts);
   }
 }

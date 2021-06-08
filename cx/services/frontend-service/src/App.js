@@ -84,8 +84,8 @@ class App extends React.Component {
                         <Route exact path='/register' component={Register}/>
                         <Route exact path='/home' component={Home}/>
 
-                        <Route exact path='/profile/:userId' component={(props) => <Profile {...props} key={window.location.pathname}/>}/>
                         <Route exact path='/profile/edit' component={EditProfile}/>
+                        <Route exact path='/profile/:userId' component={(props) => <Profile {...props} key={window.location.pathname}/>}/>
                         <Route exact path='/feed' component={Home}/>
 
                         <Route exact path='/reports' component={Home}/>

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import './EditProfile.scss';
 import {privacyEnum} from './PrivacyEnum';
 import { useHistory } from 'react-router';
-import Fetch from '../../utils/fetchUtil';
+import Fetch from '../../../utils/fetchUtil';
 import { toast } from 'react-toastify';
 import { UserContext } from '../../../contexts/UserContext';
 
@@ -38,10 +38,14 @@ export default function EditProfile(props) {
         setPostPrivacy(val);
     }
 
-    function removeUser(logout) {
-        result = Fetch.delete("/users");
-        logout();
-        history.push("/");
+    async function removeUser(logout) {
+        var result = await Fetch.delete("/users");
+        if (result.ok) {
+            toast.success("succesfully deleted acount");
+            logout();
+            history.push("/");
+        }
+
     }
 
     return (
@@ -77,7 +81,7 @@ export default function EditProfile(props) {
                     </div>
                     <div className='remove-profile'>
                         <div className='remove-button'>
-                            <button onClick={() => removeUser(logout())} className='remove-user'>Remove this account</button>
+                            <button onClick={() => removeUser(userContext.logout)} className='remove-user'>Remove this account</button>
                         </div>
                     </div>
                     <div className='bottom'>
