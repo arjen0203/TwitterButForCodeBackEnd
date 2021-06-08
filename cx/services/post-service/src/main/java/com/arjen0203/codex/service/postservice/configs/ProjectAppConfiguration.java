@@ -1,5 +1,6 @@
 package com.arjen0203.codex.service.postservice.configs;
 
+import com.arjen0203.codex.core.rabbit.utils.Messaging;
 import com.arjen0203.codex.domain.core.general.errorhandlers.RestErrorHandler;
 import com.arjen0203.codex.domain.post.entity.Comment;
 import com.arjen0203.codex.domain.post.entity.ContentBlock;
