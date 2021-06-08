@@ -23,7 +23,7 @@ import java.util.UUID;
 public class UserService {
   private final UserRepository userRepository;
   private final ModelMapper modelMapper;
-  private final Messaging messaging = new Messaging();
+  private final Messaging messaging;
 
   /**
    * Gets a User by the provided UUID.

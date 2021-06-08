@@ -41,7 +41,7 @@ class UserServiceTest {
   void setUp() {
     var modelMapper = new ModelMapper();
     mockUserDto = modelMapper.map(mockUser, UserDto.class);
-    userService = new UserService(mockUserRepository, modelMapper);
+    userService = new UserService(mockUserRepository, modelMapper, messaging);
   }
 
   @Test
