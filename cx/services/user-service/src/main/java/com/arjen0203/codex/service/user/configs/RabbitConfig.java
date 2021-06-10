@@ -19,6 +19,6 @@ public class RabbitConfig {
 
     @Bean
     public Queue removePostsUser() {
-        return new Queue("remove-posts-user");
+        return new Queue("remove-data-user");
     }
 }
