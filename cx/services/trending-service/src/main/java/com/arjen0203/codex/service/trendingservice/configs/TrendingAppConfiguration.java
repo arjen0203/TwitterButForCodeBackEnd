@@ -1,7 +1,9 @@
 package com.arjen0203.codex.service.trendingservice.configs;
 
+import com.arjen0203.codex.domain.core.general.configs.CachingConfig;
 import com.arjen0203.codex.domain.core.general.errorhandlers.RestErrorHandler;
 
+import com.arjen0203.codex.domain.trending.entity.Traffic;
 import lombok.val;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
@@ -12,7 +14,11 @@ import org.springframework.context.annotation.Import;
 
 /** Main configuration for the project service. */
 @Configuration
-@Import({RestErrorHandler.class})
+@EntityScan(
+        basePackageClasses = {
+                Traffic.class,
+        })
+@Import({RestErrorHandler.class, CachingConfig.class})
 public class TrendingAppConfiguration {
   /**
    * Creates a default instance of ModelMapper for the entirety of this service.
