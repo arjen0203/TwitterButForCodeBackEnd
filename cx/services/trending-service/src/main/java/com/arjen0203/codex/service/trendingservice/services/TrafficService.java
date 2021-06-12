@@ -1,6 +1,11 @@
 package com.arjen0203.codex.service.trendingservice.services;
 
+import java.time.LocalDateTime;
+
+import com.arjen0203.codex.domain.trending.dto.TrafficDto;
 import com.arjen0203.codex.domain.trending.dto.TrendingPostDto;
+import com.arjen0203.codex.domain.trending.entity.Traffic;
+import com.arjen0203.codex.domain.trending.enums.TrafficType;
 import com.arjen0203.codex.service.trendingservice.repositories.TrafficRepository;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -35,8 +40,19 @@ public class TrafficService {
         return null;
     }
 
+    public TrafficDto createTraffic() {
+        Traffic traffic = new Traffic();
+        traffic.setDateTime(LocalDateTime.now());
+        traffic.setPostId(5);
+        traffic.setType(TrafficType.POSTLIKE);
+
+        return modelMapper.map(trafficRepository.save(traffic), TrafficDto.class);
+    }
+
     public Page<TrendingPostDto> getAllTrafficCounter(int pageNr, int size) {
-        Page<TrendingPostDto> returnData = trafficRepository.getTrafficCounted(PageRequest.of(pageNr, size));
+        LocalDateTime now = LocalDateTime.now();
+        Page<TrendingPostDto> returnData = trafficRepository.getTrafficCounted(now.minusSeconds(10), now ,
+                PageRequest.of(pageNr, size));
         return returnData;
     }
 }

@@ -15,6 +15,8 @@ import com.arjen0203.codex.domain.trending.dto.TrendingPostDto;
 @Transactional
 public interface TrafficRepository extends PagingAndSortingRepository<Traffic, Long> {
     @Query("select new com.arjen0203.codex.domain.trending.dto.TrendingPostDto(t.postId, count(t)) from Traffic t "
+            + "where t.dateTime between :startDate and :endDate "
             + "group by t.postId order by count(t) desc")
-    Page<TrendingPostDto> getTrafficCounted(Pageable pageable);
+    Page<TrendingPostDto> getTrafficCounted(@Param("startDate") LocalDateTime startDate,
+            @Param("endDate") LocalDateTime endDate, Pageable pageable);
 }
