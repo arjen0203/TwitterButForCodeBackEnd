@@ -8,7 +8,6 @@ import lombok.Data;
 
 @Data
 public class TrafficDto {
-    private long id;
     private TrafficType type;
     private long postId;
     private LocalDateTime dateTime;
