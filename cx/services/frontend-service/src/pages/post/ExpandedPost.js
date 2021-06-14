@@ -1,14 +1,14 @@
-import React, { useState, useEffect } from 'react';
-import { UserContext } from '../../contexts/UserContext';
-import { useHistory } from 'react-router';
-import { useParams } from "react-router-dom";
+import React, {useEffect, useState} from 'react';
+import {UserContext} from '../../contexts/UserContext';
+import {useHistory} from 'react-router';
+import {useParams} from "react-router-dom";
 import Fetch from '../../utils/fetchUtil';
 import Post from './../../component/posts/post/Post.js';
 import './ExpandedPost.scss';
 import Comment from './../../component/posts/comment/Comment'
 import CreateComment from '../../component/posts/comment/CreateComment';
 import RevisionReference from '../../component/posts/revisionReference/RevisionReference';
-import { toast } from 'react-toastify';
+import {toast} from 'react-toastify';
 
 export default function ExpandedPost(props) {
     const {postId} = useParams();

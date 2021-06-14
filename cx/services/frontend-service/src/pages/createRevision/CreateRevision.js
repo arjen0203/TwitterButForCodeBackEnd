@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
-import { CodeBlockEnum } from '../createPost/CodeBlockEnum';
+import React, {useState} from 'react';
+import {CodeBlockEnum} from '../createPost/CodeBlockEnum';
 import Fetch from '../../utils/fetchUtil';
-import { toast } from 'react-toastify';
-import { useHistory, useParams } from 'react-router';
+import {toast} from 'react-toastify';
+import {useHistory, useParams} from 'react-router';
 import './createRevision.scss';
-import { UserContext } from '../../contexts/UserContext'
+import {UserContext} from '../../contexts/UserContext'
 
 export default function CreateRevision(props) {
     const history = useHistory();

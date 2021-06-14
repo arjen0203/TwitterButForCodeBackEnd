@@ -6,8 +6,8 @@ import java.util.UUID;
 
 import javax.transaction.Transactional;
 
-import com.arjen0203.codex.domain.post.interfaces.IPost;
 import com.arjen0203.codex.domain.post.entity.Post;
+import com.arjen0203.codex.domain.post.interfaces.IPost;
 import com.arjen0203.codex.domain.post.interfaces.IPostIncludingRevisions;
 import com.arjen0203.codex.domain.post.interfaces.IRevisionPost;
 import org.springframework.data.domain.Page;

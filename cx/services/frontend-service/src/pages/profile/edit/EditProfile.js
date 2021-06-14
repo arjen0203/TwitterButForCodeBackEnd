@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, {useEffect, useState} from 'react';
 import './EditProfile.scss';
 import {privacyEnum} from './PrivacyEnum';
-import { useHistory } from 'react-router';
+import {useHistory} from 'react-router';
 import Fetch from '../../../utils/fetchUtil';
-import { toast } from 'react-toastify';
-import { UserContext } from '../../../contexts/UserContext';
+import {toast} from 'react-toastify';
+import {UserContext} from '../../../contexts/UserContext';
 
 export default function EditProfile(props) {
     const history = useHistory();

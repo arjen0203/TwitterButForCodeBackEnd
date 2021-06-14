@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import './post.scss'
 import Fetch from '../../../utils/fetchUtil';
-import { useHistory } from 'react-router';
-import { toast } from 'react-toastify';
+import {useHistory} from 'react-router';
+import {toast} from 'react-toastify';
 
 export default function Post(props) {
     const [liked, setLiked] = useState(props.data.liked);

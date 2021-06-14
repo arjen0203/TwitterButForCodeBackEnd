@@ -14,7 +14,6 @@ import com.arjen0203.codex.domain.trending.enums.TrafficType;
 import com.arjen0203.codex.service.trendingservice.repositories.TrafficRepository;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;

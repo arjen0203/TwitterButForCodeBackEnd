@@ -1,7 +1,7 @@
-import React, { useState } from 'react'
+import React, {useState} from 'react'
 import './createComment.scss'
 import Fetch from './../../../utils/fetchUtil';
-import { toast } from 'react-toastify';
+import {toast} from 'react-toastify';
 
 export default function CreateComment(props) {
     const [content, setContent] = useState("");

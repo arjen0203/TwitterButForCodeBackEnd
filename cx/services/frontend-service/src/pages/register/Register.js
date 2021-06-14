@@ -2,8 +2,8 @@ import React, {Component} from 'react';
 import './Register.scss';
 import autobind from 'class-autobind';
 import Fetch from '../../utils/fetchUtil';
-import { toast } from 'react-toastify';
-import { UserContext } from '../../contexts/UserContext';
+import {toast} from 'react-toastify';
+import {UserContext} from '../../contexts/UserContext';
 
 class Register extends Component {
     constructor(props) {

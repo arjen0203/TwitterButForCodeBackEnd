@@ -1,15 +1,14 @@
 package com.arjen0203.codex.domain.auth.dto;
 
+import java.io.Serializable;
+
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Length;
-
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import java.io.Serializable;
-import java.util.UUID;
 
 /** DTO containing the register details a user sends to the api. */
 @Data

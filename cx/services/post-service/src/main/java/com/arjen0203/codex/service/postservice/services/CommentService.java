@@ -13,7 +13,6 @@ import com.arjen0203.codex.domain.post.entity.Comment;
 import com.arjen0203.codex.domain.post.entity.Post;
 import com.arjen0203.codex.domain.trending.dto.RabbitTrafficDto;
 import com.arjen0203.codex.service.postservice.repositories.CommentRepository;
-import com.arjen0203.codex.service.postservice.repositories.PostRepository;
 import lombok.AllArgsConstructor;
 import lombok.val;
 import org.modelmapper.ModelMapper;

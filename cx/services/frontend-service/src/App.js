@@ -1,17 +1,17 @@
 import React from 'react';
 import './GlobalStyle.scss';
 import Home from './pages/home/Home';
-import { BrowserRouter as Router, Switch, Route, NavLink } from 'react-router-dom';
+import {BrowserRouter as Router, NavLink, Route, Switch} from 'react-router-dom';
 import Login from './pages/login/Login';
 import Register from './pages/register/Register';
 import Profile from './pages/profile/Profile';
 import autobind from 'class-autobind';
 import EditProfile from './pages/profile/edit/EditProfile';
-import { UserContext } from './contexts/UserContext';
+import {UserContext} from './contexts/UserContext';
 import Fetch from './utils/fetchUtil';
 import Storage from './utils/storage';
 
-import { ToastContainer } from 'react-toastify';
+import {ToastContainer} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.min.css';
 import ExpandedPost from './pages/post/ExpandedPost';
 import CreatePost from './pages/createPost/CreatePost';

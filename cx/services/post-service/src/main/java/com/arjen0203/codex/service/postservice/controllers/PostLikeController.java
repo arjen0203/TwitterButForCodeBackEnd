@@ -2,7 +2,6 @@ package com.arjen0203.codex.service.postservice.controllers;
 
 import java.util.UUID;
 
-import com.arjen0203.codex.domain.post.dto.CommentDto;
 import com.arjen0203.codex.domain.post.dto.PostLikeDto;
 import com.arjen0203.codex.service.postservice.services.PostLikeService;
 import lombok.RequiredArgsConstructor;

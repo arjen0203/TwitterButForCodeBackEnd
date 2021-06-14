@@ -13,14 +13,13 @@ import java.util.UUID;
 
 import com.arjen0203.codex.core.rabbit.utils.Messaging;
 import com.arjen0203.codex.domain.core.general.exceptions.NotFoundException;
-import com.arjen0203.codex.service.user.repositories.UserRepository;
-import com.arjen0203.codex.service.user.service.UserService;
-import com.arjen0203.codex.domain.auth.dto.UpdateUserPassword;
 import com.arjen0203.codex.domain.user.dto.CreateUser;
 import com.arjen0203.codex.domain.user.dto.RoleDto;
 import com.arjen0203.codex.domain.user.dto.UserDto;
 import com.arjen0203.codex.domain.user.entity.Role;
 import com.arjen0203.codex.domain.user.entity.User;
+import com.arjen0203.codex.service.user.repositories.UserRepository;
+import com.arjen0203.codex.service.user.service.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.modelmapper.ModelMapper;

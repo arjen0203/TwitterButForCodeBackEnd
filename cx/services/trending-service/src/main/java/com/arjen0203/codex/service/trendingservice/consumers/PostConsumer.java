@@ -1,17 +1,14 @@
 package com.arjen0203.codex.service.trendingservice.consumers;
 
-
 import com.arjen0203.codex.core.rabbit.objects.Request;
 import com.arjen0203.codex.core.rabbit.objects.Response;
 import com.arjen0203.codex.domain.core.general.exceptions.InternalServerException;
-import com.arjen0203.codex.domain.core.general.exceptions.NotFoundException;
 import com.arjen0203.codex.domain.trending.dto.RabbitTrafficDto;
 import com.arjen0203.codex.domain.trending.dto.TrendingPostsRequest;
 import com.arjen0203.codex.service.trendingservice.services.TrafficService;
 import com.google.gson.Gson;
 import lombok.RequiredArgsConstructor;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
-import org.springframework.data.domain.jaxb.SpringDataJaxb;
 import org.springframework.stereotype.Service;
 
 @Service

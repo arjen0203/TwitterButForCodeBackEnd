@@ -1,8 +1,6 @@
 package com.arjen0203.codex.domain.trending.entity;
 
-import java.time.Instant;
 import java.time.LocalDateTime;
-import java.time.ZoneOffset;
 
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -11,7 +9,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
-import com.arjen0203.codex.domain.trending.dto.RabbitTrafficDto;
 import com.arjen0203.codex.domain.trending.enums.TrafficType;
 import lombok.Data;
 

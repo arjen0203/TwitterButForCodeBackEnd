@@ -1,9 +1,9 @@
 import React, {Component} from 'react';
 import './Login.scss';
-import { UserContext } from '../../contexts/UserContext'
+import {UserContext} from '../../contexts/UserContext'
 import Fetch from '../../utils/fetchUtil';
 import Storage from '../../utils/storage';
-import { toast } from 'react-toastify';
+import {toast} from 'react-toastify';
 import autobind from 'class-autobind';
 
 class Login extends Component {

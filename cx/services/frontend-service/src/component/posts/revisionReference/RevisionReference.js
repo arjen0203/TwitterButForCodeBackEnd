@@ -1,5 +1,5 @@
 import React from 'react'
-import { useHistory } from 'react-router';
+import {useHistory} from 'react-router';
 import './revisionReference.scss';
 
 export default function RevisionReference(props) {

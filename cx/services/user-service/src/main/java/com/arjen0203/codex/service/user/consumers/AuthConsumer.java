@@ -1,15 +1,14 @@
 package com.arjen0203.codex.service.user.consumers;
 
+import com.arjen0203.codex.core.rabbit.objects.Request;
 import com.arjen0203.codex.core.rabbit.objects.Response;
 import com.arjen0203.codex.domain.core.general.exceptions.NotFoundException;
 import com.arjen0203.codex.domain.user.dto.CreateUser;
 import com.arjen0203.codex.service.user.service.UserService;
 import com.google.gson.Gson;
 import lombok.RequiredArgsConstructor;
-import org.springframework.amqp.rabbit.annotation.RabbitHandler;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Service;
-import com.arjen0203.codex.core.rabbit.objects.Request;
 import org.springframework.web.server.ResponseStatusException;
 
 @Service

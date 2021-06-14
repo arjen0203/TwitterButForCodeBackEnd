@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
-import { CodeBlockEnum } from './CodeBlockEnum';
+import React, {useState} from 'react';
+import {CodeBlockEnum} from './CodeBlockEnum';
 import Fetch from '../../utils/fetchUtil';
-import { toast } from 'react-toastify';
-import { useHistory } from 'react-router';
+import {toast} from 'react-toastify';
+import {useHistory} from 'react-router';
 import './createPost.scss';
-import { UserContext } from '../../contexts/UserContext'
+import {UserContext} from '../../contexts/UserContext'
 
 export default function CreatePost(props) {
     const history = useHistory();

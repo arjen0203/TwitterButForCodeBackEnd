@@ -4,7 +4,6 @@ import java.time.LocalDateTime;
 
 import com.arjen0203.codex.domain.core.general.configs.CachingConfig;
 import com.arjen0203.codex.domain.core.general.errorhandlers.RestErrorHandler;
-
 import com.arjen0203.codex.domain.trending.entity.Traffic;
 import lombok.val;
 import org.modelmapper.ModelMapper;

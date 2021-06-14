@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, {useEffect, useState} from 'react';
 import './Profile.scss';
 import Editsvg from './EditSVG';
 import Post from './../../component/posts/post/Post.js';
-import { UserContext } from '../../contexts/UserContext';
-import { useHistory } from 'react-router';
+import {UserContext} from '../../contexts/UserContext';
+import {useHistory} from 'react-router';
 import Fetch from '../../utils/fetchUtil';
-import { useParams } from "react-router-dom";
+import {useParams} from "react-router-dom";
 
 export default function Profile(props) {
     const {userId} = useParams();

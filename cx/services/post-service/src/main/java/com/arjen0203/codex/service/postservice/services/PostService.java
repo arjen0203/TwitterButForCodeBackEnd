@@ -1,15 +1,12 @@
 package com.arjen0203.codex.service.postservice.services;
 
 import java.time.Instant;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
 import com.arjen0203.codex.domain.core.general.exceptions.ConflictException;
-import com.arjen0203.codex.domain.core.general.exceptions.InternalServerException;
 import com.arjen0203.codex.domain.core.general.exceptions.NotFoundException;
 import com.arjen0203.codex.domain.post.dto.PostDto;
 import com.arjen0203.codex.domain.post.entity.ContentBlock;

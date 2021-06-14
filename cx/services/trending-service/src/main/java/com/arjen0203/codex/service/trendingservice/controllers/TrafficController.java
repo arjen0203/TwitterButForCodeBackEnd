@@ -1,11 +1,9 @@
 package com.arjen0203.codex.service.trendingservice.controllers;
 
 import com.arjen0203.codex.domain.trending.dto.TrafficDto;
-import com.arjen0203.codex.domain.trending.dto.TrendingPostDto;
 import com.arjen0203.codex.domain.trending.dto.TrendingPostPageDto;
 import com.arjen0203.codex.service.trendingservice.services.TrafficService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;

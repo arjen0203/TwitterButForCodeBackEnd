@@ -1,8 +1,10 @@
 package com.arjen0203.codex.service.user.service;
 
+import java.util.Optional;
+import java.util.UUID;
+
 import com.arjen0203.codex.core.rabbit.utils.Messaging;
 import com.arjen0203.codex.domain.core.general.exceptions.NotFoundException;
-import com.arjen0203.codex.domain.auth.dto.UpdateUserPassword;
 import com.arjen0203.codex.domain.user.dto.CreateUser;
 import com.arjen0203.codex.domain.user.dto.ProfileDto;
 import com.arjen0203.codex.domain.user.dto.RemoveUserDto;
@@ -15,9 +17,6 @@ import com.arjen0203.codex.service.user.repositories.UserRepository;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
-
-import java.util.Optional;
-import java.util.UUID;
 
 /** UserService that handles all User related actions. */
 @Service
