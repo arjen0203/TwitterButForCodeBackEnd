@@ -87,6 +87,12 @@
     </dependency>
 
     <dependency>
+      <groupId>com.arjen0203.codex</groupId>
+      <artifactId>trending-domain</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+
+    <dependency>
       <groupId>org.mariadb.jdbc</groupId>
       <artifactId>mariadb-java-client</artifactId>
     </dependency>

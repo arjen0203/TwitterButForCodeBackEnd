@@ -10,4 +10,39 @@ public class RabbitConfig {
     public Queue removePostsUser() {
         return new Queue("remove-data-user");
     }
+
+    @Bean
+    public Queue postsLikeTraffic() {
+        return new Queue("post-like-traffic");
+    }
+
+    @Bean
+    public Queue postsCommentTraffic() {
+        return new Queue("post-comment-traffic");
+    }
+
+    @Bean
+    public Queue postsRevisionTraffic() {
+        return new Queue("post-revision-traffic");
+    }
+
+    @Bean
+    public Queue trendingPostDay() {
+        return new Queue("trending-post-day");
+    }
+
+    @Bean
+    public Queue trendingPostWeek() {
+        return new Queue("trending-post-week");
+    }
+
+    @Bean
+    public Queue trendingPostMonth() {
+        return new Queue("trending-post-month");
+    }
+
+    @Bean
+    public Queue trendingPostYear() {
+        return new Queue("trending-post-year");
+    }
 }
