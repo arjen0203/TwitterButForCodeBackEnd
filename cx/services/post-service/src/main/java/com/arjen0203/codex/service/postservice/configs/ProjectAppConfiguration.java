@@ -17,7 +17,7 @@ import org.springframework.context.annotation.Import;
 
 /** Main configuration for the project service. */
 @Configuration
-@Import({RestErrorHandler.class})
+@Import({RestErrorHandler.class, Messaging.class})
 @EntityScan(
     basePackageClasses = {
       Comment.class,

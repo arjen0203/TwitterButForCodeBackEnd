@@ -70,7 +70,8 @@ public class TrendingService {
 
        List<Long> postIds =
                 trendingPage.stream().map(p -> p.getPostId()).collect(Collectors.toList());
-        Page<IPost> posts = postRepository.findAllIPostByIds(postIds);
+        Page<IPost> posts = postRepository.findAllIPostByIds(postIds, PageRequest.of(trendingPage.getNumber(),
+                trendingPage.getSize()));
 
         return postService.createPageOfPostDto(user, posts);
     }

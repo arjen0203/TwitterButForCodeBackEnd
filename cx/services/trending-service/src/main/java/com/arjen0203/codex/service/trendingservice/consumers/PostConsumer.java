@@ -38,7 +38,7 @@ public class PostConsumer {
         trafficService.addPostRevisionTraffic(rabbitTraffic);
     }
 
-    @RabbitListener(queues = "trending-posts-day")
+    @RabbitListener(queues = "trending-post-day")
     public String getPageTrendingPostsDay(String request) {
         var trendingRequest = getTrendingRequestData(request);
 
@@ -51,7 +51,7 @@ public class PostConsumer {
         }
     }
 
-    @RabbitListener(queues = "trending-posts-week")
+    @RabbitListener(queues = "trending-post-week")
     public String getPageTrendingPostsWeek(String request) {
         var trendingRequest = getTrendingRequestData(request);
 
@@ -64,7 +64,7 @@ public class PostConsumer {
         }
     }
 
-    @RabbitListener(queues = "trending-posts-month")
+    @RabbitListener(queues = "trending-post-month")
     public String getPageTrendingPostsMonth(String request) {
         var trendingRequest = getTrendingRequestData(request);
 
@@ -78,7 +78,7 @@ public class PostConsumer {
     }
 
 
-    @RabbitListener(queues = "trending-posts-year")
+    @RabbitListener(queues = "trending-post-year")
     public String getPageTrendingPostsYear(String request) {
         var trendingRequest = getTrendingRequestData(request);
 

@@ -36,5 +36,5 @@ public interface PostRepository extends PagingAndSortingRepository<Post, Long> {
     Page<IRevisionPost> findAllRevisionPostByOriginalPostId(@Param("postId") long postId, final Pageable pageable);
 
     @Query("select p from Post p where p.id =:postIds")
-    Page<IPost> findAllIPostByIds(@Param("postIds") List<Long> inventoryIdList);
+    Page<IPost> findAllIPostByIds(@Param("postIds") List<Long> inventoryIdList, Pageable pageable);
 }

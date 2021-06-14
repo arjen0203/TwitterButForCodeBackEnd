@@ -33,7 +33,7 @@ public class TrendingController {
    *
    * @return a page of posts
    */
-  @GetMapping
+  @GetMapping("/day")
   public ResponseEntity<Page<PostDto.PostReturn>> trendingPostsDay(@RequestHeader UUID userId,
           @RequestParam(defaultValue = "0") int page,
           @RequestParam(defaultValue = "20") int size) {
@@ -45,7 +45,7 @@ public class TrendingController {
    *
    * @return a page of posts
    */
-  @GetMapping
+  @GetMapping("/week")
   public ResponseEntity<Page<PostDto.PostReturn>> trendingPostsWeek(@RequestHeader UUID userId,
           @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "20") int size) {
     return ResponseEntity.ok(trendingService.getTrendingPostsWeek(userId, page, size));
@@ -56,7 +56,7 @@ public class TrendingController {
    *
    * @return a page of posts
    */
-  @GetMapping
+  @GetMapping("/month")
   public ResponseEntity<Page<PostDto.PostReturn>> trendingPostsMonth(@RequestHeader UUID userId,
           @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "20") int size) {
     return ResponseEntity.ok(trendingService.getTrendingPostsMonth(userId, page, size));
@@ -67,7 +67,7 @@ public class TrendingController {
    *
    * @return a page of posts
    */
-  @GetMapping
+  @GetMapping("/year")
   public ResponseEntity<Page<PostDto.PostReturn>> trendingPostsYear(@RequestHeader UUID userId,
           @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "20") int size) {
     return ResponseEntity.ok(trendingService.getTrendingPostsYear(userId, page, size));

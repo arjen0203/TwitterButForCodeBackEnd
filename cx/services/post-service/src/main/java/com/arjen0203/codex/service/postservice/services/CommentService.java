@@ -1,13 +1,16 @@
 package com.arjen0203.codex.service.postservice.services;
 
 import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
+import com.arjen0203.codex.core.rabbit.utils.Messaging;
 import com.arjen0203.codex.domain.core.general.exceptions.ConflictException;
 import com.arjen0203.codex.domain.core.general.exceptions.NotFoundException;
 import com.arjen0203.codex.domain.post.dto.CommentDto;
 import com.arjen0203.codex.domain.post.entity.Comment;
 import com.arjen0203.codex.domain.post.entity.Post;
+import com.arjen0203.codex.domain.trending.dto.RabbitTrafficDto;
 import com.arjen0203.codex.service.postservice.repositories.CommentRepository;
 import com.arjen0203.codex.service.postservice.repositories.PostRepository;
 import lombok.AllArgsConstructor;
@@ -27,6 +30,7 @@ public class CommentService {
   private final CommentRepository commentRepository;
   private final ModelMapper modelMapper;
   private final PostService postService;
+  private final Messaging messaging;
 
   /**
    * The method for getting all the comments.
@@ -52,12 +56,13 @@ public class CommentService {
     comment.setCreatedAt(Instant.now());
     comment.setPost( post);
 
-    commentRepository.save(comment);
     try {
-      return modelMapper.map(comment, CommentDto.class);
+      commentRepository.save(comment);
     } catch (DataIntegrityViolationException ex) {
       throw new ConflictException("comment could not be saved");
     }
+    messaging.send("post-comment-traffic", new RabbitTrafficDto(post.getId(), LocalDateTime.now()));
+    return modelMapper.map(comment, CommentDto.class);
   }
 
   /**
