@@ -1,8 +1,9 @@
 package com.arjen0203.codex.service.trendingservice.services;
 
 import java.time.LocalDateTime;
-import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.arjen0203.codex.domain.trending.dto.RabbitTrafficDto;
 import com.arjen0203.codex.domain.trending.dto.TrafficDto;
@@ -14,11 +15,10 @@ import com.arjen0203.codex.service.trendingservice.repositories.TrafficRepositor
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.cache.CacheManager;
-import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.cache.annotation.Caching;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -27,7 +27,7 @@ public class TrafficService {
     private final TrafficRepository trafficRepository;
     private final ModelMapper modelMapper;
     private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-    private final CacheManager cacheManager;
+    private List<Traffic> inMemoryStoredTraffic = new ArrayList<>();
 
     @Cacheable(value = "trending-day", key = "{#pageNr, #size}")
     public TrendingPostPageDto getPageTrendingPostsDay(int pageNr, int size) {
@@ -93,14 +93,23 @@ public class TrafficService {
         traffic.setType(TrafficType.POSTREVISION);
 
         addTrafficToCacheQueue(traffic);
+
     }
 
     public void addTrafficToCacheQueue(Traffic traffic) {
-
-        trafficRepository.save(traffic);
+        inMemoryStoredTraffic.add(traffic);
+        if (inMemoryStoredTraffic.size() > 100) {
+            addCacheToDatabase();
+        }
     }
 
-    public void addQueueToTraffic() {
-
+    //will also be called every 5 minutes
+    @Scheduled(fixedDelay = 5 * 60 * 1000 ,  initialDelay = 5 * 60 * 1000)
+    public void addCacheToDatabase() {
+        trafficRepository.saveAll(inMemoryStoredTraffic);
+        inMemoryStoredTraffic.clear();
+        System.out.println("traffic cache cleared and stored in db");
     }
+
+
 }

@@ -41,28 +41,28 @@ public class TrendingAppConfiguration {
   }
 
   //evicts cache every 5 minutes
-  @CacheEvict(value = "trending-day")
+  @CacheEvict(value = "trending-day", allEntries = true)
   @Scheduled(fixedDelay = 5 * 60 * 1000 ,  initialDelay = 5 * 60 * 1000)
   public void dayCacheEvict() {
     System.out.println("Flush trending day cache " + LocalDateTime.now());
   }
 
   //evicts cache every hour
-  @CacheEvict(value = "trending-week")
+  @CacheEvict(value = "trending-week", allEntries = true)
   @Scheduled(fixedDelay = 60 * 60 * 1000 ,  initialDelay = 60 * 60 * 1000)
   public void weekCacheEvict() {
     System.out.println("Flush trending day cache " + LocalDateTime.now());
   }
 
   //evicts cache every day
-  @CacheEvict(value = "trending-month")
+  @CacheEvict(value = "trending-month", allEntries = true)
   @Scheduled(fixedDelay = 24 * 60 * 60 * 1000 ,  initialDelay = 24 * 60 * 60 * 1000)
   public void monthCacheEvict() {
     System.out.println("Flush trending day cache " + LocalDateTime.now());
   }
 
   //evicts cache every week
-  @CacheEvict(value = "trending-day")
+  @CacheEvict(value = "trending-day", allEntries = true)
   @Scheduled(fixedDelay = 7 * 24 * 60 * 60 * 1000 ,  initialDelay = 7 * 24 * 60 * 60 * 1000)
   public void yearCacheEvict() {
     System.out.println("Flush trending day cache " + LocalDateTime.now());
