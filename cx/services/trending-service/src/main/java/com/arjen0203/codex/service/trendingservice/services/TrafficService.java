@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import com.arjen0203.codex.domain.trending.dto.RabbitTrafficDto;
 import com.arjen0203.codex.domain.trending.dto.TrafficDto;
 import com.arjen0203.codex.domain.trending.dto.TrendingPostDto;
+import com.arjen0203.codex.domain.trending.dto.TrendingPostPageDto;
 import com.arjen0203.codex.domain.trending.entity.Traffic;
 import com.arjen0203.codex.domain.trending.enums.TrafficType;
 import com.arjen0203.codex.service.trendingservice.repositories.TrafficRepository;
@@ -20,33 +21,35 @@ public class TrafficService {
     private final TrafficRepository trafficRepository;
     private final ModelMapper modelMapper;
 
-    public Page<TrendingPostDto> getPageTrendingPostsDay(int pageNr, int size) {
+    public TrendingPostPageDto getPageTrendingPostsDay(int pageNr, int size) {
         LocalDateTime now = LocalDateTime.now();
         Page<TrendingPostDto> returnData = trafficRepository.getTrafficCounted(now.minusDays(1), now ,
                 PageRequest.of(pageNr, size));
-        return returnData;
+
+
+        return new TrendingPostPageDto(returnData);
     }
 
-    public Page<TrendingPostDto> getPageTrendingPostsWeek(int pageNr, int size) {
+    public TrendingPostPageDto getPageTrendingPostsWeek(int pageNr, int size) {
         LocalDateTime now = LocalDateTime.now();
         Page<TrendingPostDto> returnData = trafficRepository.getTrafficCounted(now.minusWeeks(1), now ,
                 PageRequest.of(pageNr, size));
-        return returnData;
+        return new TrendingPostPageDto(returnData);
     }
 
-    public Page<TrendingPostDto> getPageTrendingPostsMonth(int pageNr, int size) {
+    public TrendingPostPageDto getPageTrendingPostsMonth(int pageNr, int size) {
         LocalDateTime now = LocalDateTime.now();
         Page<TrendingPostDto> returnData = trafficRepository.getTrafficCounted(now.minusMonths(1), now ,
                 PageRequest.of(pageNr, size));
-        return returnData;
+        return new TrendingPostPageDto(returnData);
     }
 
 
-    public Page<TrendingPostDto> getPageTrendingPostsYear(int pageNr, int size) {
+    public TrendingPostPageDto getPageTrendingPostsYear(int pageNr, int size) {
         LocalDateTime now = LocalDateTime.now();
         Page<TrendingPostDto> returnData = trafficRepository.getTrafficCounted(now.minusYears(1), now ,
                 PageRequest.of(pageNr, size));
-        return returnData;
+        return new TrendingPostPageDto(returnData);
     }
 
     public TrafficDto createTraffic() {
