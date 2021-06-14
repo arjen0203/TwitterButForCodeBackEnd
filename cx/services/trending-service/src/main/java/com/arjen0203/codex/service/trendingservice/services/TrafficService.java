@@ -13,6 +13,10 @@ import com.arjen0203.codex.domain.trending.enums.TrafficType;
 import com.arjen0203.codex.service.trendingservice.repositories.TrafficRepository;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.cache.CacheManager;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -23,7 +27,9 @@ public class TrafficService {
     private final TrafficRepository trafficRepository;
     private final ModelMapper modelMapper;
     private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+    private final CacheManager cacheManager;
 
+    @Cacheable(value = "trending-day", key = "{#pageNr, #size}")
     public TrendingPostPageDto getPageTrendingPostsDay(int pageNr, int size) {
         LocalDateTime now = LocalDateTime.now();
         Page<TrendingPostDto> returnData = trafficRepository.getTrafficCounted(now.minusDays(1), now ,
@@ -32,6 +38,7 @@ public class TrafficService {
         return new TrendingPostPageDto(returnData);
     }
 
+    @Cacheable(value = "trending-week", key = "{#pageNr, #size}")
     public TrendingPostPageDto getPageTrendingPostsWeek(int pageNr, int size) {
         LocalDateTime now = LocalDateTime.now();
         Page<TrendingPostDto> returnData = trafficRepository.getTrafficCounted(now.minusWeeks(1), now ,
@@ -39,6 +46,7 @@ public class TrafficService {
         return new TrendingPostPageDto(returnData);
     }
 
+    @Cacheable(value = "trending-month", key = "{#pageNr, #size}")
     public TrendingPostPageDto getPageTrendingPostsMonth(int pageNr, int size) {
         LocalDateTime now = LocalDateTime.now();
         Page<TrendingPostDto> returnData = trafficRepository.getTrafficCounted(now.minusMonths(1), now ,
@@ -46,7 +54,7 @@ public class TrafficService {
         return new TrendingPostPageDto(returnData);
     }
 
-
+    @Cacheable(value = "trending-year", key = "{#pageNr, #size}")
     public TrendingPostPageDto getPageTrendingPostsYear(int pageNr, int size) {
         LocalDateTime now = LocalDateTime.now();
         Page<TrendingPostDto> returnData = trafficRepository.getTrafficCounted(now.minusYears(1), now ,
@@ -88,6 +96,11 @@ public class TrafficService {
     }
 
     public void addTrafficToCacheQueue(Traffic traffic) {
+
         trafficRepository.save(traffic);
+    }
+
+    public void addQueueToTraffic() {
+
     }
 }

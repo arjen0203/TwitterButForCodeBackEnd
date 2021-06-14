@@ -74,7 +74,7 @@ public class TrendingService {
        List<IPost> posts = postRepository.findAllIPostByIds(postIds);
 
        var postPage = new CustomTrendingPostPage();
-       postPage.setContent(posts.stream().map(p -> modelMapper.map(p, PostDto.PostReturn.class)).collect(Collectors.toList()));
+       postPage.setContent(posts.stream().map(p -> postService.createPostReturn(user, p)).collect(Collectors.toList()));
        postPage.setPageNumber(trendingPage.getPageNumber());
        postPage.setMaxPages(trendingPage.getMaxPages());
        postPage.setPageSize(trendingPage.getPageSize());
