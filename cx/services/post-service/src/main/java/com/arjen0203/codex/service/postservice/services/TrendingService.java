@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 import com.arjen0203.codex.core.rabbit.utils.Messaging;
 import com.arjen0203.codex.domain.core.general.exceptions.ConflictException;
 import com.arjen0203.codex.domain.core.general.exceptions.NotFoundException;
+import com.arjen0203.codex.domain.post.dto.CustomTrendingPostPage;
 import com.arjen0203.codex.domain.post.dto.PostDto;
 import com.arjen0203.codex.domain.post.dto.RevisionDto;
 import com.arjen0203.codex.domain.post.entity.Post;
@@ -37,42 +38,47 @@ public class TrendingService {
   private final ModelMapper modelMapper;
 
 
-  public Page<PostDto.PostReturn> getTrendingPostsDay(UUID user, int pageNr, int size) {
+  public CustomTrendingPostPage getTrendingPostsDay(UUID user, int pageNr, int size) {
      var trendingPage = messaging.sendAndReceive("trending-post-day", new TrendingPostsRequest(pageNr, size),
-             TrendingPostPageDto.class).getTrendingPostPage();
+             TrendingPostPageDto.class);
 
       return convertRequestToListGetPostsAndConvertToDTO(user, trendingPage);
   }
 
-  public Page<PostDto.PostReturn> getTrendingPostsWeek(UUID user, int pageNr, int size) {
+  public CustomTrendingPostPage getTrendingPostsWeek(UUID user, int pageNr, int size) {
     var trendingPage = messaging.sendAndReceive("trending-post-week", new TrendingPostsRequest(pageNr, size),
-            TrendingPostPageDto.class).getTrendingPostPage();
+            TrendingPostPageDto.class);
 
       return convertRequestToListGetPostsAndConvertToDTO(user, trendingPage);
   }
 
-  public Page<PostDto.PostReturn> getTrendingPostsMonth(UUID user, int pageNr, int size) {
+  public CustomTrendingPostPage getTrendingPostsMonth(UUID user, int pageNr, int size) {
     var trendingPage = messaging.sendAndReceive("trending-post-month", new TrendingPostsRequest(pageNr, size),
-            TrendingPostPageDto.class).getTrendingPostPage();
+            TrendingPostPageDto.class);
 
       return convertRequestToListGetPostsAndConvertToDTO(user, trendingPage);
   }
 
-  public Page<PostDto.PostReturn> getTrendingPostsYear(UUID user, int pageNr, int size) {
+  public CustomTrendingPostPage getTrendingPostsYear(UUID user, int pageNr, int size) {
     var trendingPage = messaging.sendAndReceive("trending-post-year", new TrendingPostsRequest(pageNr, size),
-            TrendingPostPageDto.class).getTrendingPostPage();
+            TrendingPostPageDto.class);
 
       return convertRequestToListGetPostsAndConvertToDTO(user, trendingPage);
   }
 
-    public Page<PostDto.PostReturn> convertRequestToListGetPostsAndConvertToDTO(UUID user,
-            Page<TrendingPostDto> trendingPage) {
+    public CustomTrendingPostPage convertRequestToListGetPostsAndConvertToDTO(UUID user,
+            TrendingPostPageDto trendingPage) {
 
        List<Long> postIds =
-                trendingPage.stream().map(p -> p.getPostId()).collect(Collectors.toList());
-        Page<IPost> posts = postRepository.findAllIPostByIds(postIds, PageRequest.of(trendingPage.getNumber(),
-                trendingPage.getSize()));
+                trendingPage.getTrendingPosts().stream().map(p -> p.getPostId()).collect(Collectors.toList());
+       List<IPost> posts = postRepository.findAllIPostByIds(postIds);
 
-        return postService.createPageOfPostDto(user, posts);
+       var postPage = new CustomTrendingPostPage();
+       postPage.setContent(posts.stream().map(p -> modelMapper.map(p, PostDto.PostReturn.class)).collect(Collectors.toList()));
+       postPage.setPageNumber(trendingPage.getPageNumber());
+       postPage.setMaxPages(trendingPage.getMaxPages());
+       postPage.setPageSize(trendingPage.getPageSize());
+
+        return postPage;
     }
 }

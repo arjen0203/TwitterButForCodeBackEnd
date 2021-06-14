@@ -1,6 +1,8 @@
 package com.arjen0203.codex.service.trendingservice.services;
 
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
 
 import com.arjen0203.codex.domain.trending.dto.RabbitTrafficDto;
 import com.arjen0203.codex.domain.trending.dto.TrafficDto;
@@ -20,12 +22,12 @@ import org.springframework.stereotype.Service;
 public class TrafficService {
     private final TrafficRepository trafficRepository;
     private final ModelMapper modelMapper;
+    private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
     public TrendingPostPageDto getPageTrendingPostsDay(int pageNr, int size) {
         LocalDateTime now = LocalDateTime.now();
         Page<TrendingPostDto> returnData = trafficRepository.getTrafficCounted(now.minusDays(1), now ,
                 PageRequest.of(pageNr, size));
-
 
         return new TrendingPostPageDto(returnData);
     }
@@ -63,6 +65,7 @@ public class TrafficService {
 
     public void addPostLikeTraffic(RabbitTrafficDto trafficDto) {
         var traffic = modelMapper.map(trafficDto, Traffic.class);
+        traffic.setDateTime(LocalDateTime.parse(trafficDto.getDateTimeString(), formatter));
         traffic.setType(TrafficType.POSTLIKE);
 
         addTrafficToCacheQueue(traffic);
@@ -70,6 +73,7 @@ public class TrafficService {
 
     public void addPostCommentTraffic(RabbitTrafficDto trafficDto) {
         var traffic = modelMapper.map(trafficDto, Traffic.class);
+        traffic.setDateTime(LocalDateTime.parse(trafficDto.getDateTimeString(), formatter));
         traffic.setType(TrafficType.POSTCOMMENT);
 
         addTrafficToCacheQueue(traffic);
@@ -77,6 +81,7 @@ public class TrafficService {
 
     public void addPostRevisionTraffic(RabbitTrafficDto trafficDto) {
         var traffic = modelMapper.map(trafficDto, Traffic.class);
+        traffic.setDateTime(LocalDateTime.parse(trafficDto.getDateTimeString(), formatter));
         traffic.setType(TrafficType.POSTREVISION);
 
         addTrafficToCacheQueue(traffic);

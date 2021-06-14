@@ -4,6 +4,7 @@ import java.util.UUID;
 
 import javax.validation.Valid;
 
+import com.arjen0203.codex.domain.post.dto.CustomTrendingPostPage;
 import com.arjen0203.codex.domain.post.dto.PostDto;
 import com.arjen0203.codex.service.postservice.services.PostService;
 import com.arjen0203.codex.service.postservice.services.TrendingService;
@@ -34,7 +35,7 @@ public class TrendingController {
    * @return a page of posts
    */
   @GetMapping("/day")
-  public ResponseEntity<Page<PostDto.PostReturn>> trendingPostsDay(@RequestHeader UUID userId,
+  public ResponseEntity<CustomTrendingPostPage> trendingPostsDay(@RequestHeader UUID userId,
           @RequestParam(defaultValue = "0") int page,
           @RequestParam(defaultValue = "20") int size) {
     return ResponseEntity.ok(trendingService.getTrendingPostsDay(userId, page, size));
@@ -46,7 +47,7 @@ public class TrendingController {
    * @return a page of posts
    */
   @GetMapping("/week")
-  public ResponseEntity<Page<PostDto.PostReturn>> trendingPostsWeek(@RequestHeader UUID userId,
+  public ResponseEntity<CustomTrendingPostPage> trendingPostsWeek(@RequestHeader UUID userId,
           @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "20") int size) {
     return ResponseEntity.ok(trendingService.getTrendingPostsWeek(userId, page, size));
   }
@@ -57,7 +58,7 @@ public class TrendingController {
    * @return a page of posts
    */
   @GetMapping("/month")
-  public ResponseEntity<Page<PostDto.PostReturn>> trendingPostsMonth(@RequestHeader UUID userId,
+  public ResponseEntity<CustomTrendingPostPage> trendingPostsMonth(@RequestHeader UUID userId,
           @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "20") int size) {
     return ResponseEntity.ok(trendingService.getTrendingPostsMonth(userId, page, size));
   }
@@ -68,7 +69,7 @@ public class TrendingController {
    * @return a page of posts
    */
   @GetMapping("/year")
-  public ResponseEntity<Page<PostDto.PostReturn>> trendingPostsYear(@RequestHeader UUID userId,
+  public ResponseEntity<CustomTrendingPostPage> trendingPostsYear(@RequestHeader UUID userId,
           @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "20") int size) {
     return ResponseEntity.ok(trendingService.getTrendingPostsYear(userId, page, size));
   }

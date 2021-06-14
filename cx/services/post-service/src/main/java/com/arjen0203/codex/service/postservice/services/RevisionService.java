@@ -2,6 +2,7 @@ package com.arjen0203.codex.service.postservice.services;
 
 import java.time.Instant;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.UUID;
 
 import com.arjen0203.codex.core.rabbit.utils.Messaging;
@@ -32,6 +33,7 @@ public class RevisionService {
   private final PostService postService;
   private final ModelMapper modelMapper;
   private final Messaging messaging;
+  private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
   /**
    * Creates a new Project with user as owner.
@@ -58,7 +60,8 @@ public class RevisionService {
     } catch (DataIntegrityViolationException ex) {
       throw new ConflictException("Could not create revision");
     }
-    messaging.send("post-revision-traffic", new RabbitTrafficDto(originalPost.getId(), LocalDateTime.now()));
+    messaging.send("post-revision-traffic", new RabbitTrafficDto(originalPost.getId(),
+            LocalDateTime.now().format(formatter)));
     return modelMapper.map(revision, RevisionDto.class);
   }
 

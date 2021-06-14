@@ -2,6 +2,7 @@ package com.arjen0203.codex.service.postservice.services;
 
 import java.time.Instant;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.UUID;
 
 import com.arjen0203.codex.core.rabbit.utils.Messaging;
@@ -31,6 +32,7 @@ public class CommentService {
   private final ModelMapper modelMapper;
   private final PostService postService;
   private final Messaging messaging;
+  private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
   /**
    * The method for getting all the comments.
@@ -61,7 +63,7 @@ public class CommentService {
     } catch (DataIntegrityViolationException ex) {
       throw new ConflictException("comment could not be saved");
     }
-    messaging.send("post-comment-traffic", new RabbitTrafficDto(post.getId(), LocalDateTime.now()));
+    messaging.send("post-comment-traffic", new RabbitTrafficDto(post.getId(), LocalDateTime.now().format(formatter)));
     return modelMapper.map(comment, CommentDto.class);
   }
 
