@@ -7,3 +7,5 @@ helm repo update
 
 helm install rabbit --set auth.username=admin,auth.password=RabbitPassword bitnami/rabbitmq
 kubectl apply -f components.yaml
+
+helm install cx-redis stable/redis --values ../k8s/redis-settings.yml

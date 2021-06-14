@@ -11,8 +11,8 @@
     <relativePath>../../../super/service.xml</relativePath>
   </parent>
 
-  <artifactId>post-service</artifactId>
-  <description>Post Service, used to manage the users posts</description>
+  <artifactId>trending-service</artifactId>
+  <description>Trending Service, used to manage the trending posts</description>
 
   <dependencies>
     <dependency>
@@ -75,30 +75,17 @@
     </dependency>
 
     <dependency>
-      <groupId>com.arjen0203.codex</groupId>
-      <artifactId>post-domain</artifactId>
-      <version>${project.version}</version>
-    </dependency>
-
-    <dependency>
-      <groupId>com.arjen0203.codex</groupId>
-      <artifactId>core-domain</artifactId>
-      <version>${project.version}</version>
-    </dependency>
-
-    <dependency>
-      <groupId>com.arjen0203.codex</groupId>
-      <artifactId>trending-domain</artifactId>
-      <version>${project.version}</version>
-    </dependency>
-
-    <dependency>
       <groupId>org.mariadb.jdbc</groupId>
       <artifactId>mariadb-java-client</artifactId>
     </dependency>
     <dependency>
       <groupId>com.arjen0203.codex</groupId>
-      <artifactId>user-domain</artifactId>
+      <artifactId>core-domain</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.arjen0203.codex</groupId>
+      <artifactId>trending-domain</artifactId>
       <version>${project.version}</version>
     </dependency>
   </dependencies>

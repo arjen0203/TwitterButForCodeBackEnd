@@ -18,7 +18,7 @@ public class PostConsumer {
     private final PostLikeService postLikeService;
     private final CommentService commentService;
 
-    @RabbitListener(queues = "remove-posts-user")
+    @RabbitListener(queues = "remove-data-user")
     public void removeUserPosts(String request) {
         var message = gson.fromJson(request, Request.class);
         var user = message.getData(RemoveUserDto.class);

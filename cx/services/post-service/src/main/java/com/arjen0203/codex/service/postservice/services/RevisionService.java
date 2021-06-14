@@ -1,14 +1,18 @@
 package com.arjen0203.codex.service.postservice.services;
 
 import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.UUID;
 
+import com.arjen0203.codex.core.rabbit.utils.Messaging;
 import com.arjen0203.codex.domain.core.general.exceptions.ConflictException;
 import com.arjen0203.codex.domain.core.general.exceptions.NotFoundException;
 import com.arjen0203.codex.domain.post.dto.PostDto;
 import com.arjen0203.codex.domain.post.dto.RevisionDto;
 import com.arjen0203.codex.domain.post.entity.Post;
 import com.arjen0203.codex.domain.post.entity.Revision;
+import com.arjen0203.codex.domain.trending.dto.RabbitTrafficDto;
 import com.arjen0203.codex.service.postservice.repositories.PostRepository;
 import com.arjen0203.codex.service.postservice.repositories.RevisionRepository;
 import lombok.AllArgsConstructor;
@@ -28,6 +32,8 @@ public class RevisionService {
   private final PostRepository postRepository;
   private final PostService postService;
   private final ModelMapper modelMapper;
+  private final Messaging messaging;
+  private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
   /**
    * Creates a new Project with user as owner.
@@ -54,6 +60,8 @@ public class RevisionService {
     } catch (DataIntegrityViolationException ex) {
       throw new ConflictException("Could not create revision");
     }
+    messaging.send("post-revision-traffic", new RabbitTrafficDto(originalPost.getId(),
+            LocalDateTime.now().format(formatter)));
     return modelMapper.map(revision, RevisionDto.class);
   }
 

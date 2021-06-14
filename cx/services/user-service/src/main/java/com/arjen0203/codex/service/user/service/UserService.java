@@ -69,7 +69,7 @@ public class UserService {
 
     userRepository.delete(user);
     var removeUser = modelMapper.map(user, RemoveUserDto.class);
-    messaging.send("remove-posts-user", removeUser);
+    messaging.send("remove-data-user", removeUser);
   }
 
   /**

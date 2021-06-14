@@ -25,12 +25,14 @@
     <module>cx/domain/post-domain</module>
     <module>cx/domain/auth-domain</module>
     <module>cx/domain/user-domain</module>
+    <module>cx/domain/trending-domain</module>
 
     <!-- Services -->
     <module>cx/services/example-service</module>
     <module>cx/services/post-service</module>
     <module>cx/services/auth-service</module>
     <module>cx/services/user-service</module>
+    <module>cx/services/trending-service</module>
   </modules>
 
   <build>
