@@ -14,7 +14,9 @@ import com.arjen0203.codex.domain.trending.enums.TrafficType;
 import com.arjen0203.codex.service.trendingservice.repositories.TrafficRepository;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -75,7 +77,7 @@ public class TrafficService {
         traffic.setDateTime(LocalDateTime.parse(trafficDto.getDateTimeString(), formatter));
         traffic.setType(TrafficType.POSTLIKE);
 
-        addTrafficToCacheQueue(traffic);
+        addTrafficToQueue(traffic);
     }
 
     public void addPostCommentTraffic(RabbitTrafficDto trafficDto) {
@@ -83,7 +85,7 @@ public class TrafficService {
         traffic.setDateTime(LocalDateTime.parse(trafficDto.getDateTimeString(), formatter));
         traffic.setType(TrafficType.POSTCOMMENT);
 
-        addTrafficToCacheQueue(traffic);
+        addTrafficToQueue(traffic);
     }
 
     public void addPostRevisionTraffic(RabbitTrafficDto trafficDto) {
@@ -91,24 +93,31 @@ public class TrafficService {
         traffic.setDateTime(LocalDateTime.parse(trafficDto.getDateTimeString(), formatter));
         traffic.setType(TrafficType.POSTREVISION);
 
-        addTrafficToCacheQueue(traffic);
-
+        addTrafficToQueue(traffic);
     }
 
-    public void addTrafficToCacheQueue(Traffic traffic) {
+    public void addTrafficToQueue(Traffic traffic) {
         inMemoryStoredTraffic.add(traffic);
         if (inMemoryStoredTraffic.size() > 100) {
-            addCacheToDatabase();
+            addQueueToDatabase();
         }
     }
 
-    //will also be called every 5 minutes
-    @Scheduled(fixedDelay = 5 * 60 * 1000 ,  initialDelay = 5 * 60 * 1000)
-    public void addCacheToDatabase() {
+    //will also be called every 2 minutes
+    @Scheduled(fixedDelay = 2 * 60 * 1000 ,  initialDelay = 2 * 60 * 1000)
+    public void addQueueToDatabase() {
         trafficRepository.saveAll(inMemoryStoredTraffic);
         inMemoryStoredTraffic.clear();
         System.out.println("traffic cache cleared and stored in db");
     }
 
-
+    @Caching( evict = {
+            @CacheEvict(value = "trending-day", allEntries = true),
+            @CacheEvict(value = "trending-week", allEntries = true),
+            @CacheEvict(value = "trending-month", allEntries = true),
+            @CacheEvict(value = "trending-year", allEntries = true)
+    })
+    public void flushQueuesAndCaches() {
+        addQueueToDatabase();
+    }
 }

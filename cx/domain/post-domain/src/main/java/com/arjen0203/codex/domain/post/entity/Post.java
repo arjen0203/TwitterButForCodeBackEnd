@@ -44,7 +44,7 @@ public class Post {
   private Set<PostLike> postLikes;
 
   @OneToMany(
-      cascade = {CascadeType.ALL},
+      cascade = {CascadeType.REMOVE},
       mappedBy = "post")
   private Set<Comment> comments;
 

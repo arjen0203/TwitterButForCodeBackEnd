@@ -33,6 +33,13 @@ spec:
                 name: user-service
                 port:
                   number: 8080
+          - path: /api/traffic
+            pathType: Prefix
+            backend:
+              service:
+                name: trending-service
+                port:
+                  number: 8080
 ---
 
 apiVersion: networking.k8s.io/v1

@@ -5,6 +5,7 @@ import com.arjen0203.codex.domain.trending.dto.TrendingPostPageDto;
 import com.arjen0203.codex.service.trendingservice.services.TrafficService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,8 +25,9 @@ public class TrafficController {
         return ResponseEntity.ok(trafficService.getPageTrendingPostsDay(page, size));
     }
 
-    @PostMapping
-    public ResponseEntity<TrafficDto> createTraffic() {
-        return ResponseEntity.ok(trafficService.createTraffic());
+    @PostMapping("/flush")
+    public String clearQueueAndCaches() {
+        trafficService.flushQueuesAndCaches();
+        return "Success";
     }
 }
