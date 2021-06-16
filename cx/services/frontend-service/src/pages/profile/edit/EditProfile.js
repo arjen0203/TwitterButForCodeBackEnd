@@ -49,7 +49,7 @@ export default function EditProfile(props) {
     }
 
     return (
-        <UserContext>
+        <UserContext.Consumer>
         {userContext => { 
             if(userContext.user.id === 0) history.push("/login");
             return (        
@@ -92,7 +92,7 @@ export default function EditProfile(props) {
                 }
             </div>)
         }}
-        </UserContext>
+        </UserContext.Consumer>
 
     )
 }

@@ -129,11 +129,11 @@ export default function CreateRevision(props) {
                 {contentBlocks.length < 5 && <button className="add-block-button" onClick={() => addContentBlock()}>Add contentBlock</button>}
             </div>
             <button className="post-button" onClick={() => saveRevision()}>Post</button>
-            <UserContext>
+            <UserContext.Consumer>
                 {userContext => { 
                     if(userContext.user.id === 0) history.push("/login");
                 }}
-            </UserContext>
+            </UserContext.Consumer>
         </div>
     )
 }
