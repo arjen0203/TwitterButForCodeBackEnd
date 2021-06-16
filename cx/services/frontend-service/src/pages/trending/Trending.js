@@ -34,7 +34,7 @@ export default function Profile(props) {
         return () => (window.removeEventListener('scroll', handleScroll));
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
-      }, [nextPage, isLoadingPosts, posts]);
+      }, [nextPage, isLoadingPosts, posts, timeFrame]);
 
       const handleScroll = async () => {
 
@@ -42,7 +42,7 @@ export default function Profile(props) {
 
         if (bottom && nextPage !== totalPages && !isLoadingPosts) {
             setIsLoadingPosts(true);
-            var newPosts = await getPostsOfTimeFrame(nextPage);
+            var newPosts = await getPostsOfTimeFrame(nextPage, timeFrame);
             if (newPosts) {
                 var allPosts = [...posts, ...newPosts];
                 setPosts(allPosts);
@@ -55,10 +55,10 @@ export default function Profile(props) {
         var posts = null;
         if (result.ok) {
             posts = result.data.content;
-            setTotalPages(result.data.totalPages);
-            setNextPage(nextPage + 1);
-            setIsLoadingPosts(false);
+            setTotalPages(result.data.maxPages);
+            setNextPage(page + 1);
         }
+        setIsLoadingPosts(false);
         return posts;
     }
 
@@ -66,15 +66,14 @@ export default function Profile(props) {
         const postsSize = 4;
         switch(postsTimeFrame) {
             case TimeFrameEnum.DAY:
-                return `/posts/trending/day?size=${postsSize}&page=${page}`;
+                return `posts/trending/day?size=${postsSize}&page=${page}`;
             case TimeFrameEnum.WEEK:
-                return `/posts/trending/week?size=${postsSize}&page=${page}`;
+                return `posts/trending/week?size=${postsSize}&page=${page}`;
             case TimeFrameEnum.MONTH:
-                return `/posts/trending/month?size=${postsSize}&page=${page}`;
+                return `posts/trending/month?size=${postsSize}&page=${page}`;
             case TimeFrameEnum.YEAR:
-                return `/posts/trending/year?size=${postsSize}&page=${page}`;
+                return `posts/trending/year?size=${postsSize}&page=${page}`;
             default:
-                console.log('DAT MOET Niet');
                 return;
           }
     }
@@ -87,7 +86,7 @@ export default function Profile(props) {
         return output;
     }
 
-    function changeTimeFrame(newTimeFrame) {
+    async function changeTimeFrame(newTimeFrame) {
         if (isLoadingPosts) {
             toast.warn("Please wait till posts are done loading")
             return;
@@ -97,16 +96,20 @@ export default function Profile(props) {
         setPosts([]);
         setIsLoadingPosts(true);
         setNextPage(0);
-        setPosts(getPostsOfTimeFrame(0, newTimeFrame));
+        let posts = await getPostsOfTimeFrame(0, newTimeFrame);
+        setPosts(posts);
     }
 
     return (
         <div className='trending-center'>
-            <div className="change-time-frame-buttons">
-                <button disabled={timeFrame === TimeFrameEnum.DAY} onClick={() => changeTimeFrame(TimeFrameEnum.DAY)}>Day</button>
-                <button disabled={timeFrame === TimeFrameEnum.WEEK} onClick={() => changeTimeFrame(TimeFrameEnum.WEEK)}>Week</button>
-                <button disabled={timeFrame === TimeFrameEnum.MONTH} onClick={() => changeTimeFrame(TimeFrameEnum.MONTH)}>Month</button>
-                <button disabled={timeFrame === TimeFrameEnum.YEAR} onClick={() => changeTimeFrame(TimeFrameEnum.YEAR)}>Year</button>
+            <div className='top-div'>
+                <div className="title">Trending posts:</div>
+                <div className="change-time-frame-buttons">
+                    <button disabled={timeFrame === TimeFrameEnum.DAY} onClick={() => changeTimeFrame(TimeFrameEnum.DAY)}>Day</button>
+                    <button disabled={timeFrame === TimeFrameEnum.WEEK} onClick={() => changeTimeFrame(TimeFrameEnum.WEEK)}>Week</button>
+                    <button disabled={timeFrame === TimeFrameEnum.MONTH} onClick={() => changeTimeFrame(TimeFrameEnum.MONTH)}>Month</button>
+                    <button disabled={timeFrame === TimeFrameEnum.YEAR} onClick={() => changeTimeFrame(TimeFrameEnum.YEAR)}>Year</button>
+                </div>
             </div>
             <div className='trending-posts'>
                 {listPosts(posts)}
@@ -114,7 +117,7 @@ export default function Profile(props) {
             </div>
             <UserContext.Consumer>
                 {userContext => { 
-                    if(userContext.user.id !== 0) history.push("/login");
+                    if(userContext.user.id === 0) history.push("/login");
                 }}
             </UserContext.Consumer>
         </div>

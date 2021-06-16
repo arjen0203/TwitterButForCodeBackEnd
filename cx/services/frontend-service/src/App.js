@@ -73,7 +73,7 @@ class App extends React.Component {
                 <Router className="router">
                     <nav>
                         <ul className="router-list">
-                            {this.state.user.id === 0 ? (<li><NavLink to={'/trending'} activeClassName="activeNav">Trending</NavLink></li>) : <li><NavLink to={'/home'} activeClassName="activeNav">Home</NavLink></li>}
+                            {this.state.user.id !== 0 ? (<li><NavLink to={'/trending'} activeClassName="activeNav">Trending</NavLink></li>) : <li><NavLink to={'/home'} activeClassName="activeNav">Home</NavLink></li>}
                             {this.state.user.id !== 0 && (<li><NavLink to={'/profile/' + userContext.user.id} activeClassName="activeNav">Your profile</NavLink></li>)}
                             <li><NavLink to={'/search'} activeClassName="activeNav">Search</NavLink></li>
                             <li><NavLink to={'/profile/4625a65f-89e8-4c1a-97f0-0ced75c14779'} activeClassName="activeNav">rens profile</NavLink></li>
