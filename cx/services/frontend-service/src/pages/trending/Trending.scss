@@ -1,0 +1,109 @@
+@import './../../colors';
+.profile-center {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    .profile-header {
+        margin-top: 25px;
+        background-color: $terraCotta;
+        padding: 20px;
+        border-radius: 5px;
+        width: 90%;
+        max-width: 1000px;
+    
+        .title {
+            margin-top: 10px;
+            font-size: 36px;
+            display: flex;
+            width: 100%;
+            white-space: pre-wrap;
+            flex-wrap: wrap;
+            
+            .name {
+                font-weight: bold;
+            }
+        }
+    
+        .status {
+            margin-top: 10px;
+            margin-bottom: 10px;
+            font-size: 20px;
+        }
+    
+        .bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+    
+            .stats {
+                font-size: 18px;
+            }
+    
+            .edit-profile {
+                display: inline-block;
+                padding: 5px;
+                background-color: $greenSheenDark;
+                color: $eggShellLight;
+                cursor: pointer;
+                text-decoration: none;
+                transition: 0.4s;
+                border-radius: 5px;
+                border: 3.5px solid $greenSheenDarker;
+                width: 40px;
+    
+                &:hover {
+                    background-color: $greenSheenDarker;
+                }
+                &:active {
+                    position:relative;
+                    top:1px;
+                }
+    
+                svg {
+                    width: 20px;
+                    fill: $eggShellLight
+                }
+            }
+    
+            .buttons {
+                button {
+                    display: inline-block;
+                    font-size: 16px;
+                    padding: 5px;
+                    margin-left: 4px;
+                    background-color: $greenSheenDark;
+                    color: $eggShellLight;
+                    cursor: pointer;
+                    text-decoration: none;
+                    transition: 0.4s;
+                    border-radius: 5px;
+                    border: 3.5px solid $greenSheenDarker;
+        
+                    &:hover {
+                        background-color: $greenSheenDarker;
+                    }
+                    &:active {
+                        position:relative;
+                        top:1px;
+                    }
+                }
+            }
+        }
+    }
+    
+    .user-posts {
+        width: 85%;
+        max-width: 950px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-bottom: 10px;
+    }
+
+    .loading {
+        margin-top: 5px;
+        font-size: 24px;
+        color: $eggShellLight;
+    }
+}
