@@ -130,12 +130,12 @@ export default function Profile(props) {
                 {listPosts(posts)}
                 {isLoadingPosts && <div className="loading">Loading...</div>}
             </div>
-            <UserContext>
+            <UserContext.Consumer>
                 {userContext => { 
                     if(userContext.user.id === 0) history.push("/login");
                     setIsUser(userContext.user.id === userId);
                 }}
-            </UserContext>
+            </UserContext.Consumer>
         </div>
     )
 }

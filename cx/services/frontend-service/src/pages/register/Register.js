@@ -103,9 +103,9 @@ class Register extends Component {
                     <div onClick={this.goToLogin} className="to-login-link">Already have an account? Login here.</div>
                 </div>
 
-                <UserContext>
+                <UserContext.Consumer>
                     {userContext => {if(userContext.user.id !== 0) this.props.history.push("/");}}
-                </UserContext>
+                </UserContext.Consumer>
             </div>
         );
     }

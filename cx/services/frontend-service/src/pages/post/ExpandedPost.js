@@ -156,13 +156,13 @@ export default function ExpandedPost(props) {
                 {showRevisions(revisions)}
                 {(isLoadingComments && !isLoadingPost) && <div className="loading">Loading...</div>}
             </div>}
-            <UserContext>
+            <UserContext.Consumer>
                 {userContext => { 
                     if(userContext.user.id === 0) history.push("/login");
                     setIsUser(userContext.user.id === post.author);
                     setUser(userContext.user.id);
                 }}
-            </UserContext>
+            </UserContext.Consumer>
         </div>
     )
 }
