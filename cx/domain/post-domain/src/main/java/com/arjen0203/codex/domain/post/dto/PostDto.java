@@ -42,10 +42,15 @@ public class PostDto {
     private String title;
     private Instant createdAt;
     private Set<ContentBlockDto> contentBlocks;
+    private RevisionDto.PostReturnData revision;
+  }
+
+  @Data
+  public static class PostStatReturn {
+    private long id;
     private long postLikesCount;
     private long commentsCount;
     private long revisionsCount;
-    private RevisionDto.PostReturnData revision;
     private boolean isLiked;
   }
 

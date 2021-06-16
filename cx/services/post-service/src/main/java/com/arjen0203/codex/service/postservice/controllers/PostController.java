@@ -61,6 +61,17 @@ public class PostController {
   }
 
   /**
+   * The method for getting a specific post.
+   *
+   * @param id the id of the desired post
+   * @return a response entity with the post (if found)
+   */
+  @GetMapping("/{id}/stats")
+  public ResponseEntity<PostDto.PostStatReturn> getPostStatsById(@RequestHeader UUID userId, @PathVariable long id) {
+    return ResponseEntity.ok(postService.getPostStatsDto(id, userId));
+  }
+
+  /**
    * Posting a post to be saved.
    *
    * @param postDto the post to be stored

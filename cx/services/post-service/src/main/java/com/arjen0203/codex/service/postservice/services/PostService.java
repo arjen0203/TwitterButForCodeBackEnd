@@ -76,10 +76,6 @@ public class PostService {
 
   public <T> PostDto.PostReturn createPostReturn(UUID user, T post) {
     val postReturn = modelMapper.map(post, PostDto.PostReturn.class);
-    postReturn.setCommentsCount(commentRepository.getCommentCountByPostId(postReturn.getId()));
-    postReturn.setPostLikesCount(postLikeRepository.getPostLikeCountByPostId(postReturn.getId()));
-    postReturn.setRevisionsCount(revisionRepository.getRevisionCountByPostId(postReturn.getId()));
-    postReturn.setLiked(postLikeRepository.findByUserAndPostId(user, postReturn.getId()).isPresent());
     return postReturn;
   }
 
@@ -121,6 +117,17 @@ public class PostService {
     } catch (DataIntegrityViolationException ex) {
       throw new ConflictException("Could not create post");
     }
+  }
+
+  public PostDto.PostStatReturn getPostStatsDto(long id, UUID user) {
+    var returnData = new PostDto.PostStatReturn();
+    returnData.setId(id);
+    returnData.setPostLikesCount(postLikeRepository.getPostLikeCountByPostId(id));
+    returnData.setCommentsCount(commentRepository.getCommentCountByPostId(id));
+    returnData.setRevisionsCount(revisionRepository.getRevisionCountByPostId(id));
+    returnData.setLiked(postLikeRepository.findByUserAndPostId(user, id).isPresent());
+
+    return returnData;
   }
 
   /**
