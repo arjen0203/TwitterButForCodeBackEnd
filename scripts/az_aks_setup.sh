@@ -1,7 +1,7 @@
 #!/bin/sh
-RG_NAME="code-x"
-ACR_NAME="code-xacr"
-AKS_NAME="code-x-aks"
+RG_NAME="codex"
+ACR_NAME="codexacr"
+AKS_NAME="codex-aks"
 INGRESS_NAMESPACE="ingress-nginx"
 HOST="code-x.club"
 
@@ -12,8 +12,8 @@ read -p "Press enter to continue or ctrl-c to exit."
 
 # Set script to exit on error
 set -e
-# Login to Azure
-# https://docs.microsoft.com/en-us/cli/azure/reference-index?view=azure-cli-latest#az_login
+ Login to Azure
+ https://docs.microsoft.com/en-us/cli/azure/reference-index?view=azure-cli-latest#az_login
 az login
 
 # Create resource group
@@ -42,19 +42,16 @@ do
   dir=${service_dir%*/} # Remove trailing slash
   service=${dir##*/} # Remove everything till final slash
 
-  # Don't deploy AI and ODM services, we ain't rich!
-  if [[ "$service" != "odm-service" && "$service" != "ai-service" ]]; then
-    # Build and push each service's container
-    # https://docs.microsoft.com/en-us/cli/azure/acr?view=azure-cli-latest#az_acr_build
-    az acr build -r $ACR_NAME -t $service -f $dir/deploy/docker/Dockerfile $dir
+  # Build and push each service's container
+  # https://docs.microsoft.com/en-us/cli/azure/acr?view=azure-cli-latest#az_acr_build
+  az acr build -r $ACR_NAME -t $service -f $dir/deploy/docker/Dockerfile $dir
 
-    # Let's read the current deployment file for this service
-    k8s_deployment=`cat $dir/deploy/k8s/deployment.yml`
-    # Set the image property to the image just pushed to ACR
-    updated_k8s_deployment=${k8s_deployment//"image: $service"/"image: $ACR_NAME.azurecr.io/$service"}
-    # Apply the updated k8s deployment on AKS
-    echo "$updated_k8s_deployment" | kubectl apply -f -
-  fi
+  # Let's read the current deployment file for this service
+  k8s_deployment=`cat $dir/deploy/k8s/deployment.yml`
+  # Set the image property to the image just pushed to ACR
+  updated_k8s_deployment=${k8s_deployment//"image: $service"/"image: $ACR_NAME.azurecr.io/$service"}
+  # Apply the updated k8s deployment on AKS
+  echo "$updated_k8s_deployment" | kubectl apply -f -
 done
 
 # Let's read the ingress settings

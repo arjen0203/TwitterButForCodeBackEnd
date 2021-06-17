@@ -1,5 +1,5 @@
 #!/bin/sh
-RG_NAME="code-x"
+RG_NAME="codex"
 
 # Set script to exit on error
 set -e

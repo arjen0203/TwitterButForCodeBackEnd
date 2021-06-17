@@ -6,6 +6,6 @@ helm repo add bitnami https://charts.bitnami.com/bitnami
 helm repo update
 
 helm install rabbit --set auth.username=admin,auth.password=RabbitPassword bitnami/rabbitmq
-kubectl apply -f components.yaml
+#kubectl apply -f components.yaml
 
 helm install cx-redis stable/redis --values ../k8s/redis-settings.yml
