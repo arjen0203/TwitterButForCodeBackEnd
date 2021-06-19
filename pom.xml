@@ -28,7 +28,6 @@
     <module>cx/domain/trending-domain</module>
 
     <!-- Services -->
-    <module>cx/services/example-service</module>
     <module>cx/services/post-service</module>
     <module>cx/services/auth-service</module>
     <module>cx/services/user-service</module>

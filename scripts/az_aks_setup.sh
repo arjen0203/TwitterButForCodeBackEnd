@@ -12,8 +12,8 @@ read -p "Press enter to continue or ctrl-c to exit."
 
 # Set script to exit on error
 set -e
- Login to Azure
- https://docs.microsoft.com/en-us/cli/azure/reference-index?view=azure-cli-latest#az_login
+# Login to Azure
+# https://docs.microsoft.com/en-us/cli/azure/reference-index?view=azure-cli-latest#az_login
 az login
 
 # Create resource group
