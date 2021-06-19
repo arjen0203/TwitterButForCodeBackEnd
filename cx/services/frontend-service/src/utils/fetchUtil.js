@@ -2,6 +2,7 @@ import {toast} from 'react-toastify';
 
 //const LOCALURL = "http://localhost:8080/api";
 const KUBEURL = "http://codex.kube/api/"
+const DEPLOYURL = "/api/"
 
 
 class Fetch {
@@ -79,7 +80,7 @@ class Fetch {
         }
 
         try {
-            const result = await fetch(KUBEURL + path, init);
+            const result = await fetch(DEPLOYURL + path, init);
 
             const ret = { 
                 ok: result.ok, 
