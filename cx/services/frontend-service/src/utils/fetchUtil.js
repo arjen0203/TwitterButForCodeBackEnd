@@ -1,7 +1,7 @@
 import {toast} from 'react-toastify';
 
 //const LOCALURL = "http://localhost:8080/api";
-const KUBEURL = "http://codex.kube/api/"
+//const KUBEURL = "http://codex.kube/api/"
 const DEPLOYURL = "/api/"
 
 
